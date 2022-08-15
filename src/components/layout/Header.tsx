@@ -9,7 +9,14 @@ export const Header = () => {
   const label = mode === 'dark' ? 'light' : 'dark';
   
   return (
-    <AppBar position="static" className={classes.header}>
+    <AppBar
+      position="static"
+      sx={{ flexDirection: 'row' }}
+      classes={{ root: classes.header }}
+    >
+      <Typography variant="h6">
+        Diagram Builder
+      </Typography>
       <div>
         <Switch checked={mode === 'dark'} onChange={toggleColorMode} />
         <Typography variant="body1" component="span">

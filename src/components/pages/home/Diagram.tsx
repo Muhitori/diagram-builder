@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import ReactFlow from 'react-flow-renderer';
-import { useStyles } from './styles';
+import ReactFlow, { MiniMap, Controls } from 'react-flow-renderer';
 
 const initialNodes = [
   {
@@ -32,5 +31,10 @@ export const Diagram = () => {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
-  return <ReactFlow defaultNodes={nodes} defaultEdges={edges} fitView />;
+  return (
+    <ReactFlow defaultNodes={nodes} defaultEdges={edges} fitView>
+      {/* <MiniMap /> */}
+      <Controls />
+    </ReactFlow>
+  );
 };
