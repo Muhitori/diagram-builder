@@ -7,11 +7,12 @@ import {
   ThemeProvider,
 } from '@mui/material';
 
-import { Home } from './pages/Home';
+import { Home } from './pages/home/Home';
 
 import { store } from 'src/store';
 import { getDesignedTheme } from 'src/theme';
 import { IColorModeContext } from 'src/types/UI';
+import { Layout } from './layout/Layout';
 
 export const ColorModeContext = createContext<IColorModeContext>({});
 
@@ -37,7 +38,9 @@ export const App = () => {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Home />
+          <Layout>
+            <Home />
+          </Layout>
         </ThemeProvider>
       </Provider>
     </ColorModeContext.Provider>

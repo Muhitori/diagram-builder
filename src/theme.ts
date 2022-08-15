@@ -9,7 +9,7 @@ export const getDesignedTheme = (mode: PaletteMode) => {
     divider: amber[200],
     background: {
       default: amber[50],
-      paper: amber[50],
+      paper: amber[100],
     },
     text: {
       primary: grey[900],
@@ -21,7 +21,7 @@ export const getDesignedTheme = (mode: PaletteMode) => {
     primary: deepOrange,
     divider: deepOrange[700],
     background: {
-      default: deepOrange[900],
+      default: deepOrange[800],
       paper: deepOrange[900],
     },
     text: {
