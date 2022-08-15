@@ -1,15 +1,15 @@
 import { PaletteMode, ThemeOptions } from '@mui/material';
-import { amber, grey, deepOrange } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 
 const themeOptions: ThemeOptions = {};
 
 export const getDesignedTheme = (mode: PaletteMode) => {
   const lightThemeOptions = {
-    primary: amber,
-    divider: amber[200],
+    primary: grey,
+    divider: grey[200],
     background: {
-      default: amber[50],
-      paper: amber[100],
+      default: grey[50],
+      paper: grey[100],
     },
     text: {
       primary: grey[900],
@@ -18,15 +18,15 @@ export const getDesignedTheme = (mode: PaletteMode) => {
   };
 
   const darkThemeOptions = {
-    primary: deepOrange,
-    divider: deepOrange[700],
+    primary: grey,
+    divider: grey[700],
     background: {
-      default: deepOrange[800],
-      paper: deepOrange[900],
+      default: grey[800],
+      paper: grey[900],
     },
     text: {
       primary: '#fff',
-      secondary: grey[500],
+      secondary: grey[300],
     },
   };
 
