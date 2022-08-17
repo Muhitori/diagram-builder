@@ -1,5 +1,8 @@
 import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { grey } from '@mui/material/colors';
+
+const getBorderColor = (themeMode: string) => themeMode === 'light' ? grey[900] : grey[50];
 
 export const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -11,7 +14,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   element: {
     minWidth: '50%',
     padding: theme.spacing(1, 2),
-    border: '1px solid black',
+    border: `1px solid ${getBorderColor(theme.palette.mode)}`,
     borderRadius: '0.2rem',
   },
 }));
