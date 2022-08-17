@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { ElementGroup } from 'src/components/common/elementGroup/ElementGroup';
 import { elementGroupsSelector } from 'src/store/selector/Element.selector';
 import { useStyles } from './styles';
+import { ToolbarControls } from './ToolbarControls';
 
 export const Toolbar = () => {
   const classes = useStyles();
@@ -10,9 +11,13 @@ export const Toolbar = () => {
   const elementGroups = useSelector(elementGroupsSelector);
 
   return (
-    <Paper className={classes.sidebar}>
+    <Paper className={classes.root}>
+      <ToolbarControls />
       <div className={classes.toolbar}>
-        {!!elementGroups.length && elementGroups.map(group => <ElementGroup key={group.id} group={group} />)}
+        {!!elementGroups.length &&
+          elementGroups.map((group) => (
+            <ElementGroup key={group.name} group={group} />
+          ))}
       </div>
     </Paper>
   );

@@ -1,25 +1,25 @@
 import { Box, Typography } from '@mui/material';
 import { FC } from 'react';
 import { IElementGroup } from 'src/types/Elements';
-
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-
 import { useDispatch } from 'react-redux';
 import { deleteGroup } from 'src/store/slice';
 import { Element } from 'src/components/common/element/Element';
 import { useStyles } from './styles';
+import { AddElementFlow } from '../addElementFlow/AddElementFlow';
+import { Icon } from '../Icon/Icon';
+
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Props {
   group: IElementGroup;
 }
 
-export const ElementGroup: FC<Props> = ({ group: { id, name, elements } }) => {
+export const ElementGroup: FC<Props> = ({ group: { name, elements } }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const deleteGroupHandler = () => {
-    dispatch(deleteGroup(id));
+    dispatch(deleteGroup(name));
   }
 
   return (
@@ -28,17 +28,17 @@ export const ElementGroup: FC<Props> = ({ group: { id, name, elements } }) => {
         <Typography variant="h6">{name}</Typography>
 
         <Box display="flex">
-          <AddIcon />
-          <div className={classes.icon} onClick={deleteGroupHandler}>
+          <AddElementFlow groupName={name} />
+          <Icon onClick={deleteGroupHandler}>
             <DeleteIcon />
-          </div>
+          </Icon>
         </Box>
       </Box>
 
       <div className={classes.elements}>
         {!!elements.length &&
           elements.map((element) => (
-            <Element key={element.id} groupId={id} element={element} />
+            <Element key={element.id} groupName={name} element={element} />
           ))}
       </div>
     </div>

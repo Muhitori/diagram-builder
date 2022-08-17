@@ -3,12 +3,12 @@ import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
+    width: '100%',
+    height: '100%',
+    padding: theme.spacing(1),
   },
-  elements: {
+  toolbar: {
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing(0, 2)
   },
 }));

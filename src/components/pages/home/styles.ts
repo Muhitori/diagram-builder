@@ -9,10 +9,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
   sidebar: {
     width: '100%',
     height: '100%',
+    padding: theme.spacing(1),
   },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing(1)
-  }
 }));

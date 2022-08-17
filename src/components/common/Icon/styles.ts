@@ -9,9 +9,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(1, 0),
   },
   element: {
-    minWidth: '50%',
     padding: theme.spacing(1, 2),
     border: '1px solid black',
     borderRadius: '0.2rem',
+  },
+  icon: {
+    width: '24px',
+    height: '24px',
   },
 }));

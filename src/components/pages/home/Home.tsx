@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import { Diagram } from './Diagram';
 import { ElementDetails } from './ElementDetails';
 import { useStyles } from './styles';
-import { Toolbar } from './Toolbar';
+import { Toolbar } from './toolbar/Toolbar';
 
 export const Home = () => {
   const classes = useStyles();

@@ -1,19 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IElementGroup } from 'src/types/Elements';
-
-interface ElementGroupPayload {
-  id: string;
-  name: string;
-}
+import { v4 as uuid } from 'uuid';
 
 interface AddElementPayload {
-  groupId: string;
-  id: string;
+  groupName: string;
   name: string;
 }
 
 interface DeleteElementPayload {
-  groupId: string;
+  groupName: string;
   id: string;
 }
 
@@ -22,8 +17,7 @@ interface ElementsState {
 }
 
 const initialState: ElementsState = {
-  groupSample: {
-    id: 'groupSample',
+  'Group Sample': {
     name: 'Group Sample',
     elements: [
       { id: 'elementSample1', name: 'Element Sample 1' },
@@ -38,53 +32,51 @@ export const elementSlice = createSlice({
   name: 'element',
   initialState,
   reducers: {
-    addGroup(state, action: PayloadAction<ElementGroupPayload>) {
-      const {
-        payload: { id, name },
-      } = action;
+    addGroup(state, action: PayloadAction<string>) {
+      const { payload: name } = action;
 
       return {
         ...state,
-        [id]: {
-          id,
+        [name]: {
           name,
           elements: [],
         },
       };
     },
     deleteGroup(state, action: PayloadAction<string>) {
-      const { payload: groupId } = action;
-      delete state[groupId];
+      const { payload: groupName } = action;
+      delete state[groupName];
       return state;
     },
     addElement(state, action: PayloadAction<AddElementPayload>) {
       const {
-        payload: { groupId, id, name },
+        payload: { groupName, name },
       } = action;
 
-      const elements = [...state[groupId].elements, { id, name }];
+      const id = uuid();
+      const elements = [...state[groupName].elements, { id, name }];
 
       return {
         ...state,
-        [groupId]: {
-          ...state[groupId],
+        [groupName]: {
+          ...state[groupName],
           elements,
         },
       };
     },
     deleteElement(state, action: PayloadAction<DeleteElementPayload>) {
       const {
-        payload: { groupId, id },
+        payload: { groupName, id },
       } = action;
 
-      const elements = state[groupId].elements.filter(
+      const elements = state[groupName].elements.filter(
         (element) => element.id !== id
       );
 
       return {
         ...state,
-        [groupId]: {
-          ...state[groupId],
+        [groupName]: {
+          ...state[groupName],
           elements,
         },
       };

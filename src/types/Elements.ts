@@ -4,7 +4,6 @@ export interface IElement {
 }
 
 export interface IElementGroup {
-  id: string;
   name: string;
   elements: IElement[];
 }
