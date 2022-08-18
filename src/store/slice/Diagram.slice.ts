@@ -1,33 +1,41 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IEdge, INode } from 'src/types/Diagram';
+import {
+  Connection,
+  Edge,
+  EdgeChange,
+  Node,
+  NodeChange,
+  addEdge,
+  applyNodeChanges,
+  applyEdgeChanges,
+} from 'react-flow-renderer';
 import { v4 as uuid } from 'uuid';
 import { RootState } from '..';
 
 interface AddNodePayload {
   groupName: string;
   id: string;
-}
-
-interface AddEdgePayload {
-  sourceId: string;
-  targetId: string;
+  position: {
+    x: number;
+    y: number;
+  }
 }
 
 interface DiagramState {
-  nodes: INode[];
-  edges: IEdge[];
+  nodes: Node[];
+  edges: Edge[];
 }
 
-export const addNodeAsync = createAsyncThunk(
+export const createNodeAsync = createAsyncThunk(
   'diagram/node-add',
   (payload: AddNodePayload, dispatch) => {
-    const { id, groupName } = payload;
+    const { id, groupName, position } = payload;
     const globalState = dispatch.getState() as RootState;
 
     const element = globalState.elements[groupName].elements.find(
       (el) => el.id === id
     );
-    return element;
+    return { element, position };
   }
 );
 
@@ -62,19 +70,20 @@ export const diagramSlice = createSlice({
   name: 'element',
   initialState,
   reducers: {
-    addEdge(state, action: PayloadAction<AddEdgePayload>) {
-      const { sourceId: source, targetId: target } = action.payload;
-      const id = source + target;
-
-      const newEdges = [...state.edges, { id, source, target }];
-
-      return { ...state, edges: newEdges };
+    onNodesChange(state, action: PayloadAction<NodeChange[]>) {
+      const changes = action.payload;
+      const nodes = applyNodeChanges(changes, state.nodes);
+      return { ...state, nodes };
     },
-    updateNodes(state, action: PayloadAction<INode[]>) {
-      return { ...state, nodes: action.payload };
+    onEdgesChange(state, action: PayloadAction<EdgeChange[]>) {
+      const changes = action.payload;
+      const edges = applyEdgeChanges(changes, state.edges);
+      return { ...state, edges };
     },
-    updateEdges(state, action: PayloadAction<IEdge[]>) {
-      return { ...state, edges: action.payload };
+    onConnect(state, action: PayloadAction<Connection>) {
+      const connection = action.payload;
+      const edges = addEdge(connection, state.edges);
+      return { ...state, edges };
     },
     deleteNode(state, action: PayloadAction<string>) {
       const { payload: id } = action;
@@ -90,16 +99,15 @@ export const diagramSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(addNodeAsync.fulfilled, (state, { payload }) => {
-      if (!payload) return;
+    builder.addCase(createNodeAsync.fulfilled, (state, { payload }) => {
+      if (!payload.element) return;
 
-      const { name } = payload;
+      const { element: { name }, position } = payload;
 
       const id = uuid();
       const data = {
         label: name,
       };
-      const position = { x: 0, y: 0 };
 
       const newNodes = [...state.nodes, { id, data, position }];
 
@@ -109,5 +117,10 @@ export const diagramSlice = createSlice({
 });
 
 export const { reducer: diagramReducer } = diagramSlice;
-export const { deleteNode, addEdge, deleteEdge, updateNodes, updateEdges } =
-  diagramSlice.actions;
+export const {
+  deleteNode,
+  deleteEdge,
+  onNodesChange,
+  onEdgesChange,
+  onConnect,
+} = diagramSlice.actions;
