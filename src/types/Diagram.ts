@@ -4,7 +4,7 @@ export interface INode {
   id: string;
   type?: string;
   data: {
-    label: string | ReactNode
+    label?: string | ReactNode
   };
   position: {
     x: number;

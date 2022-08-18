@@ -1,10 +1,35 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IEdge, INode } from 'src/types/Diagram';
+import { v4 as uuid } from 'uuid';
+import { RootState } from '..';
+
+interface AddNodePayload {
+  groupName: string;
+  id: string;
+}
+
+interface AddEdgePayload {
+  sourceId: string;
+  targetId: string;
+}
 
 interface DiagramState {
   nodes: INode[];
   edges: IEdge[];
 }
+
+export const addNodeAsync = createAsyncThunk(
+  'diagram/node-add',
+  async (payload: AddNodePayload, dispatch) => {
+    const { id, groupName } = payload;
+    const globalState = dispatch.getState() as RootState;
+
+    const element = globalState.elements[groupName].elements.find(
+      (el) => el.id === id
+    );
+    return element;
+  }
+);
 
 const initialState: DiagramState = {
   nodes: [
@@ -37,12 +62,45 @@ export const diagramSlice = createSlice({
   name: 'element',
   initialState,
   reducers: {
-    addNode(state, action: PayloadAction<string>) {},
-    deleteNode(state, action: PayloadAction<string>) {},
-    addEdge(state, action: PayloadAction<string>) {},
-    deleteEdge(state, action: PayloadAction<string>) {},
+    deleteNode(state, action: PayloadAction<string>) {
+      const { payload: id } = action;
+
+      const newNodes = state.nodes.filter((node) => node.id !== id);
+      return { ...state, nodes: newNodes };
+    },
+    addEdge(state, action: PayloadAction<AddEdgePayload>) {
+      const id = uuid();
+      const { sourceId: source, targetId: target } = action.payload;
+
+      const newEdges = [...state.edges, { id, source, target }];
+
+      return { ...state, edges: newEdges };
+    },
+    deleteEdge(state, action: PayloadAction<string>) {
+      const { payload: id } = action;
+
+      const newEdges = state.edges.filter((edge) => edge.id !== id);
+      return { ...state, edges: newEdges };
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addNodeAsync.fulfilled, (state, {payload}) => {
+      if (!payload) return;
+
+      const { name } = payload;
+
+      const id = uuid();
+      const data = {
+        label: name,
+      };
+      const position = { x: 0, y: 0 };
+
+      const newNodes = [...state.nodes, { id, data, position }];
+
+      return { ...state, nodes: newNodes };
+    });
   },
 });
 
 export const { reducer: diagramReducer } = diagramSlice;
-export const { addNode, deleteNode, addEdge, deleteEdge } = diagramSlice.actions;
+export const { deleteNode, addEdge, deleteEdge } = diagramSlice.actions;
