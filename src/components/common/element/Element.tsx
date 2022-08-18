@@ -1,5 +1,5 @@
 import { DragEvent, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteElement } from 'src/store/slice';
 import { IElement } from 'src/types/Elements';
 
@@ -7,7 +7,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useStyles } from './styles';
 import { Typography } from '@mui/material';
 import { Icon } from '../Icon/Icon';
-import { elementSelector } from 'src/store/selector/Element.selector';
 
 interface Props {
   groupName: string;

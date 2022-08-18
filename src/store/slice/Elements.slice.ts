@@ -21,9 +21,6 @@ const initialState: ElementsState = {
     name: 'Group Sample',
     elements: [
       { id: 'elementSample1', name: 'Element Sample 1' },
-      { id: 'elementSample2', name: 'Element Sample 2' },
-      { id: 'elementSample3', name: 'Element Sample 3' },
-      { id: 'elementSample4', name: 'Element Sample 4' },
     ],
   },
 };

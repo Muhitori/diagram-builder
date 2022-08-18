@@ -20,7 +20,7 @@ interface DiagramState {
 
 export const addNodeAsync = createAsyncThunk(
   'diagram/node-add',
-  async (payload: AddNodePayload, dispatch) => {
+  (payload: AddNodePayload, dispatch) => {
     const { id, groupName } = payload;
     const globalState = dispatch.getState() as RootState;
 
@@ -62,19 +62,25 @@ export const diagramSlice = createSlice({
   name: 'element',
   initialState,
   reducers: {
+    addEdge(state, action: PayloadAction<AddEdgePayload>) {
+      const { sourceId: source, targetId: target } = action.payload;
+      const id = source + target;
+
+      const newEdges = [...state.edges, { id, source, target }];
+
+      return { ...state, edges: newEdges };
+    },
+    updateNodes(state, action: PayloadAction<INode[]>) {
+      return { ...state, nodes: action.payload };
+    },
+    updateEdges(state, action: PayloadAction<IEdge[]>) {
+      return { ...state, edges: action.payload };
+    },
     deleteNode(state, action: PayloadAction<string>) {
       const { payload: id } = action;
 
       const newNodes = state.nodes.filter((node) => node.id !== id);
       return { ...state, nodes: newNodes };
-    },
-    addEdge(state, action: PayloadAction<AddEdgePayload>) {
-      const id = uuid();
-      const { sourceId: source, targetId: target } = action.payload;
-
-      const newEdges = [...state.edges, { id, source, target }];
-
-      return { ...state, edges: newEdges };
     },
     deleteEdge(state, action: PayloadAction<string>) {
       const { payload: id } = action;
@@ -84,7 +90,7 @@ export const diagramSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(addNodeAsync.fulfilled, (state, {payload}) => {
+    builder.addCase(addNodeAsync.fulfilled, (state, { payload }) => {
       if (!payload) return;
 
       const { name } = payload;
@@ -103,4 +109,5 @@ export const diagramSlice = createSlice({
 });
 
 export const { reducer: diagramReducer } = diagramSlice;
-export const { deleteNode, addEdge, deleteEdge } = diagramSlice.actions;
+export const { deleteNode, addEdge, deleteEdge, updateNodes, updateEdges } =
+  diagramSlice.actions;

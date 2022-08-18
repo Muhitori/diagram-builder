@@ -1,9 +1,9 @@
-import { DragEvent } from 'react';
-import ReactFlow, { Controls } from 'react-flow-renderer';
+import { DragEvent, useCallback } from 'react';
+import ReactFlow, { applyNodeChanges, Connection, Controls, NodeChange } from 'react-flow-renderer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'src/store';
 import { edgesSelector, nodesSelector } from 'src/store/selector/Node.selector';
-import { addNodeAsync } from 'src/store/slice/Diagram.slice';
+import { addEdge, addNodeAsync, updateEdges, updateNodes } from 'src/store/slice/Diagram.slice';
 
 export const Diagram = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,15 +23,42 @@ export const Diagram = () => {
     dispatch(addNodeAsync({ groupName, id }));
   }
 
+  // const onNodesChange = useCallback(
+  //   (changes: NodeChange[]) => {
+  //     dispatch(updateNodes(applyNodeChanges(changes, nodes)))
+  //   },
+  //   [dispatch]
+  // );
+  
+  // const onEdgesChange = useCallback(
+  //   (changes: EdgeChange[]) =>
+  //     dispatch(updateEdges(applyEdgeChanges(changes, edges))),
+  //   [dispatch]
+  // );
+  
+  const onConnect = useCallback(
+    (connection: Connection) => {
+      const { source, target } = connection;
+
+      if (source && target) {
+        dispatch(addEdge({sourceId: source, targetId: target}));
+      }
+    },
+    [dispatch]
+  );
+
   return (
-    <div
-      style={{ width: '100%', height: '100%' }}
+    <ReactFlow
+      defaultNodes={nodes}
+      defaultEdges={edges}
+      // onNodesChange={onNodesChange}
+      // onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
+      fitView
     >
-      <ReactFlow defaultNodes={nodes} defaultEdges={edges} fitView>
-        <Controls />
-      </ReactFlow>
-    </div>
+      <Controls />
+    </ReactFlow>
   );
 };
