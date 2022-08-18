@@ -1,1 +1,1 @@
-export * from './Element.slice';
+export * from './Elements.slice';

@@ -28,7 +28,7 @@ const initialState: ElementsState = {
   },
 };
 
-export const elementSlice = createSlice({
+export const elementsSlice = createSlice({
   name: 'element',
   initialState,
   reducers: {
@@ -84,5 +84,6 @@ export const elementSlice = createSlice({
   },
 });
 
-export const { reducer: elementReducer } = elementSlice;
-export const { addGroup, deleteGroup, addElement, deleteElement } = elementSlice.actions;
+export const { reducer: elementsReducer } = elementsSlice;
+export const { addGroup, deleteGroup, addElement, deleteElement } =
+  elementsSlice.actions;
