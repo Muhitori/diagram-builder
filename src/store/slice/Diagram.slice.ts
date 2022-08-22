@@ -11,6 +11,7 @@ import {
 } from 'react-flow-renderer';
 import { v4 as uuid } from 'uuid';
 import { RootState } from '..';
+import { toggleBar } from './UI.slice';
 
 interface AddNodePayload {
   groupName: string;
@@ -36,6 +37,14 @@ export const createNodeAsync = createAsyncThunk(
       (el) => el.id === id
     );
     return { element, position };
+  }
+);
+
+export const onNodeClick = createAsyncThunk(
+  'diagram/node-click',
+  (payload: Node, { dispatch }) => {
+    console.log(payload);
+    dispatch(toggleBar('elementBar'));
   }
 );
 

@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { diagramReducer } from './slice/Diagram.slice';
-import { elementsReducer } from './slice/Elements.slice';
+import { uiReducer, diagramReducer, elementsReducer } from './slice';
 
 
 export const store = configureStore({
   reducer: {
+    ui: uiReducer,
     elements: elementsReducer,
     diagram: diagramReducer
   },

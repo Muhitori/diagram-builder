@@ -4,10 +4,8 @@ import { HEADER_HEIGHT } from 'src/utils/UI.constants'
 
 export const useStyles = makeStyles((theme: Theme) => ({
   header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: theme.spacing(0, 2),
     height: theme.spacing(HEADER_HEIGHT),
   },

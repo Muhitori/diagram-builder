@@ -1,5 +1,12 @@
 import { DragEvent, useCallback, useRef, useState } from 'react';
-import ReactFlow, { Connection, Controls, EdgeChange, NodeChange, ReactFlowInstance } from 'react-flow-renderer';
+import ReactFlow, {
+  Node,
+  Connection,
+  Controls,
+  EdgeChange,
+  NodeChange,
+  ReactFlowInstance,
+} from 'react-flow-renderer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'src/store';
 import { edgesSelector, nodesSelector } from 'src/store/selector/Node.selector';
@@ -8,6 +15,7 @@ import {
   onConnect,
   onEdgesChange,
   onNodesChange,
+  onNodeClick,
 } from 'src/store/slice/Diagram.slice';
 import debounce from 'lodash/debounce';
 
@@ -57,6 +65,11 @@ export const Diagram = () => {
     [dispatch]
   );
 
+  const nodeClickHandler = useCallback(
+    (node: Node) => dispatch(onNodeClick(node)),
+    [dispatch]
+  );
+
   return (
     <ReactFlow
       ref={reactFlowWrapper}
@@ -68,6 +81,7 @@ export const Diagram = () => {
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       onInit={setReactFlowInstance}
+      onNodeClick={(event, node) => nodeClickHandler(node)}
       fitView
     >
       <Controls />

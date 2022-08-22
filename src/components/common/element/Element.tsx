@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { deleteElement } from 'src/store/slice';
 import { IElement } from 'src/types/Elements';
 
-import ClearIcon from '@mui/icons-material/Clear';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useStyles } from './styles';
 import { Typography } from '@mui/material';
 import { Icon } from '../Icon/Icon';
@@ -33,7 +33,7 @@ export const Element: FC<Props> = ({ groupName, element: { id, name } }) => {
       </div>
 
       <Icon onClick={deleteElementHandler}>
-        <ClearIcon />
+        <DeleteIcon />
       </Icon>
     </div>
   );
