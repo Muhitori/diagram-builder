@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { elementDetailsOpenedSelector, toolbarOpenedSelector } from 'src/store/selector/UI.selector';
 import { Diagram } from './Diagram';
 import { ElementDetails } from './ElementDetails';
+import { Sidebar } from './Sidebar';
 import { useStyles } from './styles';
 import { Toolbar } from './toolbar/Toolbar';
 
@@ -35,19 +36,15 @@ export const Home = () => {
 
   return (
     <Grid container className={classes.root}>
-      {toolbarOpened && (
-        <Grid item sm={toolbarWidth} md={toolbarWidth} lg={toolbarWidth}>
-          <Toolbar />
-        </Grid>
-      )}
+      <Sidebar opened={toolbarOpened} size={toolbarWidth}>
+        <Toolbar />
+      </Sidebar>
       <Grid item sm={diagramWidth} md={diagramWidth} lg={diagramWidth}>
         <Diagram />
       </Grid>
-      {elementOpened && (
-        <Grid item sm={elementWidth} md={elementWidth} lg={elementWidth}>
-          <ElementDetails />
-        </Grid>
-      )}
+      <Sidebar opened={elementOpened} size={elementWidth}>
+        <ElementDetails />
+      </Sidebar>
     </Grid>
   );
 }

@@ -12,7 +12,7 @@ interface UIState {
 const initialState: UIState = {
   bars: {
     toolbar: false,
-    elementBar: true,
+    elementBar: false,
   },
 };
 
