@@ -16,6 +16,7 @@ import {
   onEdgesChange,
   onNodesChange,
   onNodeClick,
+  deleteNode,
 } from 'src/store/slice/Diagram.slice';
 import debounce from 'lodash/debounce';
 
@@ -70,6 +71,13 @@ export const Diagram = () => {
     [dispatch]
   );
 
+  const nodeContextMenuHandler = useCallback(
+    (node: Node) => {
+      dispatch(deleteNode(node.id));
+    },
+    [dispatch]
+  );
+
   return (
     <ReactFlow
       ref={reactFlowWrapper}
@@ -82,6 +90,11 @@ export const Diagram = () => {
       onDrop={handleDrop}
       onInit={setReactFlowInstance}
       onNodeClick={(event, node) => nodeClickHandler(node)}
+      onNodeContextMenu={(event, node) => {
+          event.preventDefault();
+          nodeContextMenuHandler(node);
+        }
+      }
       fitView
     >
       <Controls />

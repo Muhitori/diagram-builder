@@ -11,7 +11,6 @@ import {
 } from 'react-flow-renderer';
 import { v4 as uuid } from 'uuid';
 import { RootState } from '..';
-import { toggleBar } from './UI.slice';
 
 interface AddNodePayload {
   groupName: string;
@@ -23,32 +22,34 @@ interface AddNodePayload {
 }
 
 interface DiagramState {
+  currentNodeId: string | null;
   nodes: Node[];
   edges: Edge[];
 }
 
 export const createNodeAsync = createAsyncThunk(
   'diagram/node-add',
-  (payload: AddNodePayload, dispatch) => {
+  (payload: AddNodePayload, { getState }) => {
     const { id, groupName, position } = payload;
-    const globalState = dispatch.getState() as RootState;
+    const globalState = getState() as RootState;
 
     const element = globalState.elements[groupName].elements.find(
       (el) => el.id === id
     );
+
     return { element, position };
   }
 );
 
 export const onNodeClick = createAsyncThunk(
   'diagram/node-click',
-  (payload: Node, { dispatch }) => {
-    console.log(payload);
-    dispatch(toggleBar('elementBar'));
+  (node: Node) => {
+    return node.id;
   }
 );
 
 const initialState: DiagramState = {
+  currentNodeId: null,
   nodes: [
     {
       id: '1',
@@ -106,22 +107,32 @@ export const diagramSlice = createSlice({
       const newEdges = state.edges.filter((edge) => edge.id !== id);
       return { ...state, edges: newEdges };
     },
+    setCurrentNodeId(state, action: PayloadAction<string | null>) {
+      return { ...state, currentNodeId: action.payload };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNodeAsync.fulfilled, (state, { payload }) => {
       if (!payload.element) return;
 
-      const { element: { name }, position } = payload;
+      const {
+        element: { name, content },
+        position,
+      } = payload;
 
       const id = uuid();
       const data = {
         label: name,
+        content,
       };
 
       const newNodes = [...state.nodes, { id, data, position }];
 
       return { ...state, nodes: newNodes };
     });
+    builder.addCase(onNodeClick.fulfilled, (state, { payload }) => {
+      return { ...state, currentNodeId: payload };
+    })
   },
 });
 
@@ -132,4 +143,5 @@ export const {
   onNodesChange,
   onEdgesChange,
   onConnect,
+  setCurrentNodeId,
 } = diagramSlice.actions;
