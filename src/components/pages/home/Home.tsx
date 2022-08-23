@@ -6,7 +6,6 @@ import { ElementDetails } from './ElementDetails';
 import { Sidebar } from '../../common/sidebar/Sidebar';
 import { useStyles } from './styles';
 import { Toolbar } from './toolbar/Toolbar';
-import { useRef } from 'react';
 
 export const Home = () => {
   const classes = useStyles();
