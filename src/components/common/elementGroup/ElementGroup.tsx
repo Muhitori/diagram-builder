@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Icon, Typography } from '@mui/material';
 import { FC } from 'react';
 import { IElementGroup } from 'src/types/Elements';
 import { useDispatch } from 'react-redux';
@@ -6,7 +6,6 @@ import { deleteGroup } from 'src/store/slice';
 import { Element } from 'src/components/common/element/Element';
 import { useStyles } from './styles';
 import { AddElementFlow } from '../addElementFlow/AddElementFlow';
-import { Icon } from '../Icon/Icon';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 

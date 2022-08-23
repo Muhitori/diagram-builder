@@ -1,5 +1,4 @@
-import { Paper } from '@mui/material'
-import { Icon } from 'src/components/common/Icon/Icon';
+import { Icon, Paper } from '@mui/material'
 import { useStyles } from './styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import { toggleBar } from 'src/store/slice';
@@ -17,7 +16,7 @@ export const ElementDetails = () => {
   return (
     <Paper className={classes.elementDetails}>
       <Icon
-        style={{ marginLeft: 'auto', marginBottom: '1rem' }}
+        sx={{ display: 'block', marginLeft: 'auto', marginBottom: '1rem' }}
         onClick={toggleElementDetailsHandler}
       >
         <ClearIcon />

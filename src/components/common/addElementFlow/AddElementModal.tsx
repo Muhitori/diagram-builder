@@ -1,7 +1,6 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, TextField, Typography } from '@mui/material';
 import { FC, useRef } from 'react';
 import CloseIcon from '@mui/icons-material/Clear';
-import { Icon } from '../Icon/Icon';
 import { useDispatch } from 'react-redux';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { addElement } from 'src/store/slice';
@@ -42,7 +41,7 @@ export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <DialogTitle component='div' sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h6">Create Element for {groupName}</Typography>
         <Icon onClick={onClose}>
           <CloseIcon />

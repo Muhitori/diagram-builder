@@ -1,8 +1,7 @@
-import { Paper } from '@mui/material';
+import { Icon, Paper } from '@mui/material';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ElementGroup } from 'src/components/common/elementGroup/ElementGroup';
-import { Icon } from 'src/components/common/Icon/Icon';
 import { elementGroupsSelector } from 'src/store/selector/Element.selector';
 import { toggleBar } from 'src/store/slice';
 import { useStyles } from './styles';
@@ -21,7 +20,7 @@ export const Toolbar = () => {
 
   return (
     <Paper className={classes.root}>
-      <Icon style={{ marginLeft: 'auto', marginBottom: '1rem'}} onClick={toggleToolbarHandler}>
+      <Icon sx={{ display: 'block', marginLeft: 'auto', marginBottom: '1rem'}} onClick={toggleToolbarHandler}>
         <ClearIcon />
       </Icon>
       <ToolbarControls />

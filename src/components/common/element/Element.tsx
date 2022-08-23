@@ -5,8 +5,7 @@ import { IElement } from 'src/types/Elements';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useStyles } from './styles';
-import { Typography } from '@mui/material';
-import { Icon } from '../Icon/Icon';
+import { Icon, Typography } from '@mui/material';
 
 interface Props {
   groupName: string;

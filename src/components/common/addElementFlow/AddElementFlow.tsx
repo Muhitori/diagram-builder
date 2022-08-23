@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
+import { Icon } from '@mui/material';
 import { FC, useState } from 'react';
-import { Icon } from '../Icon/Icon';
 import { AddElementModal } from './AddElementModal';
 
 interface Props {

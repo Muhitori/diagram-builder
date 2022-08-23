@@ -27,7 +27,7 @@ export const Header = () => {
             Diagram Builder
           </Typography>
           {!toolbarOpened && (
-            <Button color='secondary' onClick={toggleToolbarHandler}>
+            <Button color='success' onClick={toggleToolbarHandler}>
               Open toolbar
             </Button>
           )}
