@@ -15,7 +15,7 @@ export const ElementDetails = () => {
   }, [dispatch]);
 
   return (
-    <Paper className={classes.sidebar}>
+    <Paper className={classes.elementDetails}>
       <Icon
         style={{ marginLeft: 'auto', marginBottom: '1rem' }}
         onClick={toggleElementDetailsHandler}
