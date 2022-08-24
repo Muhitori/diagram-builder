@@ -31,7 +31,7 @@ export const NodeInfo: FC<Props> = ({ node }) => {
             y: {roundCoords(node.position.y)}
           </Typography>
         </Box>
-        <ConnectedNodes currentNodeId={node.id} />
+        <ConnectedNodes />
       </Box>
     </>
   );
