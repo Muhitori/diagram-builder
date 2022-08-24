@@ -1,5 +1,7 @@
-import { Box, Slide } from '@mui/material';
-import { FC, MutableRefObject, ReactElement, useMemo } from 'react';
+import { Box, Paper, Slide } from '@mui/material';
+import { FC, MutableRefObject, ReactElement, useContext, useMemo } from 'react';
+import { ColorModeContext } from 'src/components/App';
+import { SIDEBAR_ELEVATION } from 'src/utils/UI.constants';
 
 interface Props {
   opened: boolean;
@@ -8,7 +10,13 @@ interface Props {
   parentRef?: MutableRefObject<HTMLDivElement | null>;
 }
 export const Sidebar: FC<Props> = ({ opened, side, children, parentRef }) => {
+  const { mode } = useContext(ColorModeContext);
+  
   const direction = useMemo(() => (side === 'left' ? 'right' : 'left'), []);
+  const backgroundColor = useMemo(
+    () => (mode === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)'),
+    [mode]
+  );
 
   return (
     <Slide
@@ -29,7 +37,18 @@ export const Sidebar: FC<Props> = ({ opened, side, children, parentRef }) => {
         }}
         p={1}
       >
-        {children}
+        <Paper
+          elevation={SIDEBAR_ELEVATION}
+          sx={{
+            width: '100%',
+            height: '100%',
+            p: 1,
+            backgroundColor,
+            backdropFilter: 'blur(3px)',
+          }}
+        >
+          {children}
+        </Paper>
       </Box>
     </Slide>
   );

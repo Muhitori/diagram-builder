@@ -15,7 +15,7 @@ export const Home = () => {
   const currentNode = useSelector(currentNodeSelector);
 
   return (
-    <Grid container className={classes.root}>
+    <Grid container sx={classes.root}>
       <Sidebar opened={toolbarOpened} side="left">
         <Toolbar />
       </Sidebar>

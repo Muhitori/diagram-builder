@@ -22,7 +22,7 @@ export const ElementGroup: FC<Props> = ({ group: { name, elements } }) => {
   }
 
   return (
-    <div className={classes.root}>
+    <Box sx={classes.root}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h6">{name}</Typography>
 
@@ -34,12 +34,12 @@ export const ElementGroup: FC<Props> = ({ group: { name, elements } }) => {
         </Box>
       </Box>
 
-      <div className={classes.elements}>
+      <Box sx={classes.elements}>
         {!!elements.length &&
           elements.map((element) => (
             <Element key={element.id} groupName={name} element={element} />
           ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };

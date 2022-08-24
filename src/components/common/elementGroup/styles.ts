@@ -1,7 +1,4 @@
-import { Theme } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-
-export const useStyles = makeStyles((theme: Theme) => ({
+export const useStyles = () => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -9,6 +6,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   elements: {
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing(0, 2)
+    pr: 2,
+    pl: 2
   },
-}));
+});

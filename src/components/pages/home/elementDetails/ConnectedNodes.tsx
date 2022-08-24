@@ -9,16 +9,15 @@ interface Props {
 }
 
 interface ConnectedNodeProps {
-  id: string;
   name: string;
 }
 
-const Output: FC<ConnectedNodeProps> = ({ id, name }) => {
-  return name ? <Typography key={`output${id}`}>Output: {name}</Typography> : null;
+const Output: FC<ConnectedNodeProps> = ({ name }) => {
+  return name ? <Typography>Output: {name}</Typography> : null;
 };
 
-const Input: FC<ConnectedNodeProps> = ({ id, name }) => {
-  return name ? <Typography key={`input${id}`}>Input: {name}</Typography> : null;
+const Input: FC<ConnectedNodeProps> = ({ name }) => {
+  return name ? <Typography>Input: {name}</Typography> : null;
 };
 
 export const ConnectedNodes: FC<Props> = ({ currentNodeId }) => {
@@ -35,9 +34,9 @@ export const ConnectedNodes: FC<Props> = ({ currentNodeId }) => {
 
   const renderConnectedNode = (edge: Edge) => {
     if (currentNodeId === edge.source) {
-      return <Output id={edge.target} name={getName(edge.target)} />;
+      return <Output key={'output' + edge.target} name={getName(edge.target)} />;
     }
-    return <Input id={edge.source} name={getName(edge.source)} />;
+    return <Input key={'input' + edge.source} name={getName(edge.source)} />;
   }
 
   return nodeEdges.length ? (
