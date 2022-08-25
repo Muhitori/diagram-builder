@@ -1,9 +1,11 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, Typography } from '@mui/material';
 import { FC, useRef } from 'react';
 import CloseIcon from '@mui/icons-material/Clear';
 import { useDispatch } from 'react-redux';
-import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { addElement } from 'src/store/slice';
+import { Form } from '../form/Form';
+import { FormikProps } from 'formik';
+import { IField } from 'src/types/UI';
 
 interface AddElementFields {
   name: string;
@@ -18,6 +20,10 @@ interface Props {
 const initialValues = {
   name: ''
 };
+
+const fields: IField[] = [
+  { name: 'name', label: 'Element name', fullWidth: true }
+];
 
 export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
   const dispatch = useDispatch();
@@ -41,34 +47,25 @@ export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle component='div' sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <DialogTitle
+        component="div"
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+      >
         <Typography variant="h6">Create Element for {groupName}</Typography>
         <Icon onClick={onClose}>
           <CloseIcon />
         </Icon>
       </DialogTitle>
+
       <DialogContent>
-        <Formik
-          innerRef={formRef}
+        <Form
+          formRef={formRef}
           initialValues={initialValues}
           onSubmit={handleAddElement}
-        >
-          <Form>
-            <Field name="name">
-              {({ field }: FieldProps) => (
-                <>
-                  <TextField
-                    variant="standard"
-                    fullWidth
-                    label="Element name"
-                    {...field}
-                  />
-                </>
-              )}
-            </Field>
-          </Form>
-        </Formik>
+          fields={fields}
+        />
       </DialogContent>
+
       <DialogActions>
         <Box
           width="100%"
