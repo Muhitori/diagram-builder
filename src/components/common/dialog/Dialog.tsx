@@ -30,8 +30,14 @@ export const Dialog: FC<Props> = ({
   onClose,
   size,
 }) => {
+
   return (
-    <MuiDialog open={open} onClose={onClose} fullWidth maxWidth={size || 'sm'}>
+    <MuiDialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth={size || 'sm'}
+    >
       <DialogTitle
         component="div"
         sx={{ display: 'flex', justifyContent: 'space-between' }}
