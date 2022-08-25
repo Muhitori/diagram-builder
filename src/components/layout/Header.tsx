@@ -22,7 +22,7 @@ export const Header = () => {
   return (
     <AppBar position="static">
       <Grid sx={classes.header} container>
-        <Grid item>
+        <Grid item display='flex' alignItems='center'>
           <Typography sx={{ marginRight: '1rem' }} variant="h6" component="span">
             Diagram Builder
           </Typography>
