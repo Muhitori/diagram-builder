@@ -1,11 +1,10 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, Typography } from '@mui/material';
 import { FC, useRef } from 'react';
-import CloseIcon from '@mui/icons-material/Clear';
 import { useDispatch } from 'react-redux';
 import { addElement } from 'src/store/slice';
 import { Form } from '../form/Form';
 import { FormikProps } from 'formik';
 import { IField } from 'src/types/UI';
+import { Dialog } from '../dialog/Dialog';
 
 interface AddElementFields {
   name: string;
@@ -46,46 +45,19 @@ export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle
-        component="div"
-        sx={{ display: 'flex', justifyContent: 'space-between' }}
-      >
-        <Typography variant="h6">Create Element for {groupName}</Typography>
-        <Icon onClick={onClose}>
-          <CloseIcon />
-        </Icon>
-      </DialogTitle>
-
-      <DialogContent>
-        <Form
-          formRef={formRef}
-          initialValues={initialValues}
-          onSubmit={handleAddElement}
-          fields={fields}
-        />
-      </DialogContent>
-
-      <DialogActions>
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="space-between"
-          pl={5}
-          pr={5}
-        >
-          <Button onClick={onClose} variant="contained" color="error">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleCreateClick}
-            variant="contained"
-            color="success"
-          >
-            Create
-          </Button>
-        </Box>
-      </DialogActions>
+    <Dialog
+      title={`Create Element for ${groupName}`}
+      open={open}
+      onClose={onClose}
+      onSubmit={handleCreateClick}
+      size="sm"
+    >
+      <Form
+        formRef={formRef}
+        initialValues={initialValues}
+        onSubmit={handleAddElement}
+        fields={fields}
+      />
     </Dialog>
   );
 };
