@@ -7,14 +7,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useStyles } from './styles';
 import { Box, Icon, Typography } from '@mui/material';
 import { ColorModeContext } from 'src/components/App';
-import { getBorderColor } from 'src/utils/UI.helper';
+import { getBorderColor, getElementBackgroundColor } from 'src/utils/UI.helper';
 
 interface Props {
   groupName: string;
   element: IElement;
 }
 
-export const Element: FC<Props> = ({ groupName, element: { id, name } }) => {
+export const Element: FC<Props> = ({ groupName, element: { id, name, color } }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -29,12 +29,15 @@ export const Element: FC<Props> = ({ groupName, element: { id, name } }) => {
     event.dataTransfer.setData('id', id);
   }
 
-  const borderColor = useMemo(() => getBorderColor(mode),[mode]);
+  const borderColor = useMemo(() => getBorderColor(mode), [mode]);
+
+  //Adding opacity 0.5
+  const backgroundColor = useMemo(() => getElementBackgroundColor(color), [color]);
 
   return (
-    <Box sx={classes.root}>
+    <Box sx={{ ...classes.root }}>
       <Box
-        sx={{ ...classes.element, borderColor }}
+        sx={{ ...classes.element, borderColor, backgroundColor }}
         draggable
         onDragStart={handleDragStart}
       >

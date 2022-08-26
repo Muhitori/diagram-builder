@@ -20,7 +20,8 @@ export const NodeInfo: FC<Props> = ({ node }) => {
           Type: {node.type ? node.type : 'default'}
         </Typography>
         <Typography variant="h6">
-          Color: {node.style?.color ? node.style.color : '#FFF'}
+          Color:{' '}
+          {node.style?.backgroundColor ? node.style.backgroundColor : '#ffffffff'}
         </Typography>
         <Typography variant="h6">Position: </Typography>
         <Box ml={2}>

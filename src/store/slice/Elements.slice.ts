@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 interface AddElementPayload {
   groupName: string;
   name: string;
+  color: string;
 }
 
 interface DeleteElementPayload {
@@ -47,11 +48,11 @@ export const elementsSlice = createSlice({
     },
     addElement(state, action: PayloadAction<AddElementPayload>) {
       const {
-        payload: { groupName, name },
+        payload: { groupName, name, color },
       } = action;
 
       const id = uuid();
-      const elements = [...state[groupName].elements, { id, name }];
+      const elements = [...state[groupName].elements, { id, name, color }];
 
       return {
         ...state,

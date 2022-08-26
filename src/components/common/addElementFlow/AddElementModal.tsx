@@ -9,6 +9,7 @@ import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 interface AddElementFields {
   name: string;
+  color: string;
 }
 
 interface Props {
@@ -18,11 +19,13 @@ interface Props {
 }
 
 const initialValues = {
-  name: ''
+  name: '',
+  color: '#ffffff'
 };
 
 const fields: IField[] = [
-  { name: 'name', label: 'Element name', fullWidth: true }
+  { name: 'name', label: 'Element name', fullWidth: true },
+  { name: 'color', type: 'color', label: 'Color:' },
 ];
 
 export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
@@ -30,14 +33,16 @@ export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
   const formRef = useRef<FormikProps<AddElementFields>>(null);
 
   const handleAddElement = (data: AddElementFields) => {
-    const { name } = data;
+    console.log(data);
+    const { name, color } = data;
     const elementName = name.trim();
 
     if (elementName) {
-      dispatch(addElement({ groupName, name: elementName }));
+      dispatch(addElement({ groupName, name: elementName, color }));
+      snackbarGenerator.success(`${name} created.`);
       onClose();
     } else {
-      snackbarGenerator.info('Enter element name to create element.')
+      snackbarGenerator.info('Enter element name to create element.');
     }
   };
 

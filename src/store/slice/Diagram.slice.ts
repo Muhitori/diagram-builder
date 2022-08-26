@@ -10,6 +10,7 @@ import {
   applyEdgeChanges,
 } from 'react-flow-renderer';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
+import { getElementBackgroundColor } from 'src/utils/UI.helper';
 import { v4 as uuid } from 'uuid';
 import { RootState } from '..';
 
@@ -120,7 +121,7 @@ export const diagramSlice = createSlice({
       }
 
       const {
-        element: { name, content },
+        element: { name, content, color },
         position,
       } = payload;
 
@@ -129,11 +130,12 @@ export const diagramSlice = createSlice({
         label: name,
         content,
       };
+      const backgroundColor = getElementBackgroundColor(color);
 
-      const newNodes = [...state.nodes, { id, data, position }];
+      const newNode: Node = { id, data, style: { backgroundColor }, position };
 
       snackbarGenerator.success(`${name} added to board.`);
-      return { ...state, nodes: newNodes };
+      return { ...state, nodes: [...state.nodes, newNode] };
     });
     builder.addCase(createNodeAsync.rejected, () => {
       snackbarGenerator.error('Error while adding node.');
