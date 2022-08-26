@@ -13,6 +13,9 @@ import { store } from 'src/store';
 import { getDesignedTheme } from 'src/theme';
 import { IColorModeContext } from 'src/types/UI';
 import { Layout } from './layout/Layout';
+import { SnackbarGenerator } from './SnackbarGenerator';
+import { SnackbarProvider } from 'notistack';
+import { MAX_SNACK } from 'src/utils/UI.constants';
 
 export const ColorModeContext = createContext<IColorModeContext>({});
 
@@ -37,10 +40,13 @@ export const App = () => {
     <ColorModeContext.Provider value={colorMode}>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Layout>
-            <Home />
-          </Layout>
+          <SnackbarProvider maxSnack={MAX_SNACK}>
+            <SnackbarGenerator />
+            <CssBaseline />
+            <Layout>
+              <Home />
+            </Layout>
+          </SnackbarProvider>
         </ThemeProvider>
       </Provider>
     </ColorModeContext.Provider>

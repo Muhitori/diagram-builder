@@ -9,6 +9,7 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
 } from 'react-flow-renderer';
+import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { v4 as uuid } from 'uuid';
 import { RootState } from '..';
 
@@ -113,7 +114,10 @@ export const diagramSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createNodeAsync.fulfilled, (state, { payload }) => {
-      if (!payload.element) return;
+      if (!payload.element) {
+        snackbarGenerator.error('Error while adding element.');
+        return;
+      }
 
       const {
         element: { name, content },
@@ -128,7 +132,11 @@ export const diagramSlice = createSlice({
 
       const newNodes = [...state.nodes, { id, data, position }];
 
+      snackbarGenerator.success(`${name} added to board.`);
       return { ...state, nodes: newNodes };
+    });
+    builder.addCase(createNodeAsync.rejected, () => {
+      snackbarGenerator.error('Error while adding node.');
     });
     builder.addCase(onNodeClick.fulfilled, (state, { payload }) => {
       return { ...state, currentNodeId: payload };

@@ -5,6 +5,7 @@ import { Form } from '../form/Form';
 import { FormikProps } from 'formik';
 import { IField } from 'src/types/UI';
 import { Dialog } from '../dialog/Dialog';
+import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 interface AddElementFields {
   name: string;
@@ -35,6 +36,8 @@ export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
     if (elementName) {
       dispatch(addElement({ groupName, name: elementName }));
       onClose();
+    } else {
+      snackbarGenerator.info('Enter element name to create element.')
     }
   };
 
