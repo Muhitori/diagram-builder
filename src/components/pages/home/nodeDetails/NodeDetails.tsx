@@ -11,7 +11,7 @@ interface Props {
   node?: Node;
 }
 
-export const ElementDetails: FC<Props> = ({ node }) => {
+export const NodeDetails: FC<Props> = ({ node }) => {
   const dispatch = useDispatch();
 
   const closeElementDetailsHandler = useCallback(() => {

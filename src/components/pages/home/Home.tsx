@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { toolbarOpenedSelector } from 'src/store/selector/UI.selector';
 import { Diagram } from './Diagram';
-import { ElementDetails } from './elementDetails/ElementDetails';
+import { NodeDetails } from './nodeDetails/NodeDetails';
 import { Sidebar } from '../../common/sidebar/Sidebar';
 import { useStyles } from './styles';
 import { Toolbar } from './toolbar/Toolbar';
@@ -20,7 +20,7 @@ export const Home = () => {
         <Toolbar />
       </Sidebar>
       <Sidebar opened={!!currentNode} side="right">
-        <ElementDetails node={currentNode} />
+        <NodeDetails node={currentNode} />
       </Sidebar>
 
       <Diagram />

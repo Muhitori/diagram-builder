@@ -1,6 +1,7 @@
 import { DragEvent, useCallback, useRef, useState } from 'react';
 import ReactFlow, {
   Node,
+  Edge,
   Connection,
   Controls,
   EdgeChange,
@@ -17,6 +18,7 @@ import {
   onNodesChange,
   onNodeClick,
   deleteNode,
+  deleteEdge,
 } from 'src/store/slice/Diagram.slice';
 import debounce from 'lodash/debounce';
 
@@ -78,6 +80,13 @@ export const Diagram = () => {
     [dispatch]
   );
 
+  const edgeContextMenuHandler = useCallback(
+    (edge: Edge) => {
+      dispatch(deleteEdge(edge.id));
+    },
+    [dispatch]
+  );
+
   return (
     <ReactFlow
       ref={reactFlowWrapper}
@@ -90,11 +99,15 @@ export const Diagram = () => {
       onDrop={handleDrop}
       onInit={setReactFlowInstance}
       onNodeClick={(event, node) => nodeClickHandler(node)}
+      onNodeDragStop={(event, node) => {console.log(node)}}
       onNodeContextMenu={(event, node) => {
-          event.preventDefault();
-          nodeContextMenuHandler(node);
-        }
-      }
+        event.preventDefault();
+        nodeContextMenuHandler(node);
+      }}
+      onEdgeContextMenu={(event, edge) => {
+        event.preventDefault();
+        edgeContextMenuHandler(edge);
+      }}
       fitView
     >
       <Controls />

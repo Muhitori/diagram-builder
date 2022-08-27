@@ -59,7 +59,6 @@ const initialState: DiagramState = {
       data: { label: 'Input Node' },
       position: { x: 250, y: 25 },
     },
-
     {
       id: '2',
       data: { label: 'Default Node' },
