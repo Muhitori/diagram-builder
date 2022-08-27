@@ -1,6 +1,8 @@
 import { Typography, Box } from '@mui/material';
 import { FC } from 'react';
 import { Node } from 'react-flow-renderer'
+import { useSelector } from 'react-redux';
+import { nodeByIdSelector } from 'src/store/selector/Node.selector';
 import { roundCoords } from 'src/utils/math.helper';
 import { ConnectedNodes } from './ConnectedNodes';
 
@@ -9,19 +11,23 @@ interface Props {
 }
 
 export const NodeInfo: FC<Props> = ({ node }) => {
+  const parentNode = useSelector(nodeByIdSelector(node.parentNode));
+
   return (
     <>
       <Typography variant="h4">{node.data.label}</Typography>
       <Box ml={2}>
         {node.parentNode && (
-          <Typography variant="h6">Parent: {node.parentNode}</Typography>
+          <Typography variant="h6">Parent: {parentNode?.data.label}</Typography>
         )}
         <Typography variant="h6">
           Type: {node.type ? node.type : 'default'}
         </Typography>
         <Typography variant="h6">
           Color:{' '}
-          {node.style?.backgroundColor ? node.style.backgroundColor : '#ffffffff'}
+          {node.style?.backgroundColor
+            ? node.style.backgroundColor
+            : '#ffffffff'}
         </Typography>
         <Typography variant="h6">Position: </Typography>
         <Box ml={2}>

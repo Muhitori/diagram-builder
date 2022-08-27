@@ -10,8 +10,7 @@ import {
   applyEdgeChanges,
 } from 'react-flow-renderer';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
-import { getElementBackgroundColor } from 'src/utils/UI.helper';
-import { v4 as uuid } from 'uuid';
+import {  elementToNode, insertNewNodeAsChild } from 'src/utils/nodes.helper';
 import { RootState } from '..';
 
 interface AddNodePayload {
@@ -21,6 +20,7 @@ interface AddNodePayload {
     x: number;
     y: number;
   }
+  parentNodeId?: string;
 }
 
 interface DiagramState {
@@ -32,14 +32,14 @@ interface DiagramState {
 export const createNodeAsync = createAsyncThunk(
   'diagram/node-add',
   (payload: AddNodePayload, { getState }) => {
-    const { id, groupName, position } = payload;
+    const { id, groupName, position, parentNodeId } = payload;
     const globalState = getState() as RootState;
 
     const element = globalState.elements[groupName].elements.find(
       (el) => el.id === id
     );
 
-    return { element, position };
+    return { element, position, parentNodeId };
   }
 );
 
@@ -50,6 +50,10 @@ export const onNodeClick = createAsyncThunk(
   }
 );
 
+const initialStyle = {
+  backgroundColor: 'transparent',
+};
+
 const initialState: DiagramState = {
   currentNodeId: null,
   nodes: [
@@ -58,17 +62,20 @@ const initialState: DiagramState = {
       type: 'input',
       data: { label: 'Input Node' },
       position: { x: 250, y: 25 },
+      style: initialStyle,
     },
     {
       id: '2',
       data: { label: 'Default Node' },
       position: { x: 100, y: 125 },
+      style: initialStyle,
     },
     {
       id: '3',
       type: 'output',
       data: { label: 'Output Node' },
       position: { x: 250, y: 250 },
+      style: initialStyle,
     },
   ],
   edges: [
@@ -81,35 +88,43 @@ export const diagramSlice = createSlice({
   name: 'element',
   initialState,
   reducers: {
-    onNodesChange(state, action: PayloadAction<NodeChange[]>) {
-      const changes = action.payload;
+    onNodesChange(state, { payload }: PayloadAction<NodeChange[]>) {
+      const changes = payload;
       const nodes = applyNodeChanges(changes, state.nodes);
       return { ...state, nodes };
     },
-    onEdgesChange(state, action: PayloadAction<EdgeChange[]>) {
-      const changes = action.payload;
+    updateNodes(state, { payload }: PayloadAction<(Node | undefined)[]>) {
+      const filteredNodes: Node[] = payload.filter(node => Boolean(node)) as Node[];
+      const nodeIds = filteredNodes.map((node) => node.id);
+
+      const nodes = state.nodes.map((node) => {
+        if (nodeIds.includes(node.id)) {
+          return filteredNodes.find((n) => n.id === node.id) || node;
+        }
+        return node;
+      });
+      return { ...state, nodes };
+    },
+    onEdgesChange(state, { payload }: PayloadAction<EdgeChange[]>) {
+      const changes = payload;
       const edges = applyEdgeChanges(changes, state.edges);
       return { ...state, edges };
     },
-    onConnect(state, action: PayloadAction<Connection>) {
-      const connection = action.payload;
+    onConnect(state, { payload }: PayloadAction<Connection>) {
+      const connection = payload;
       const edges = addEdge(connection, state.edges);
       return { ...state, edges };
     },
-    deleteNode(state, action: PayloadAction<string>) {
-      const { payload: id } = action;
-
+    deleteNode(state, { payload: id }: PayloadAction<string>) {
       const newNodes = state.nodes.filter((node) => node.id !== id);
       return { ...state, nodes: newNodes };
     },
-    deleteEdge(state, action: PayloadAction<string>) {
-      const { payload: id } = action;
-
+    deleteEdge(state, { payload: id }: PayloadAction<string>) {
       const newEdges = state.edges.filter((edge) => edge.id !== id);
       return { ...state, edges: newEdges };
     },
-    setCurrentNodeId(state, action: PayloadAction<string | null>) {
-      return { ...state, currentNodeId: action.payload };
+    setCurrentNodeId(state, { payload }: PayloadAction<string | null>) {
+      return { ...state, currentNodeId: payload };
     },
   },
   extraReducers: (builder) => {
@@ -119,21 +134,14 @@ export const diagramSlice = createSlice({
         return;
       }
 
-      const {
-        element: { name, content, color },
-        position,
-      } = payload;
+      const { element, position, parentNodeId} = payload;
+      const newNode: Node = elementToNode(element, position);
 
-      const id = uuid();
-      const data = {
-        label: name,
-        content,
-      };
-      const backgroundColor = getElementBackgroundColor(color);
+      if (parentNodeId) {
+        const nodes = insertNewNodeAsChild(state.nodes, newNode, parentNodeId);  
+        return { ...state, nodes };
+      }
 
-      const newNode: Node = { id, data, style: { backgroundColor }, position };
-
-      snackbarGenerator.success(`${name} added to board.`);
       return { ...state, nodes: [...state.nodes, newNode] };
     });
     builder.addCase(createNodeAsync.rejected, () => {
@@ -141,7 +149,7 @@ export const diagramSlice = createSlice({
     });
     builder.addCase(onNodeClick.fulfilled, (state, { payload }) => {
       return { ...state, currentNodeId: payload };
-    })
+    });
   },
 });
 
@@ -153,4 +161,5 @@ export const {
   onEdgesChange,
   onConnect,
   setCurrentNodeId,
+  updateNodes,
 } = diagramSlice.actions;

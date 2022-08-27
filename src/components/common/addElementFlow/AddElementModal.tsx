@@ -33,7 +33,6 @@ export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
   const formRef = useRef<FormikProps<AddElementFields>>(null);
 
   const handleAddElement = (data: AddElementFields) => {
-    console.log(data);
     const { name, color } = data;
     const elementName = name.trim();
 

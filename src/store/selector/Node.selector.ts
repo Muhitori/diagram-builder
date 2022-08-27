@@ -1,3 +1,4 @@
+import { getConnectedNodes } from 'src/utils/nodes.helper';
 import { RootState } from '..';
 
 export const nodesSelector = (state: RootState) => state.diagram.nodes;
@@ -10,36 +11,9 @@ export const currentNodeSelector = (state: RootState) => {
 
 export const currentNodeEdgesSelector = (state: RootState) => {
   const diagramState = state.diagram;
+  const { nodes, edges, currentNodeId } = diagramState;
 
-  const nodes = diagramState.nodes;
-  const currentNodeId = diagramState.currentNodeId;
-
-  const getNodeNameById = (nodeId: string) => {
-    const connectedNode = nodes.find((node) => node.id === nodeId);
-    return connectedNode?.data.label;
-  }
-
-  const filteredEdges = diagramState.edges.filter(
-    (edge) => edge.source === currentNodeId || edge.target === currentNodeId
-  );
-
-  const sortedConnectedNodes = filteredEdges
-    .map((edge) => {
-      if (currentNodeId === edge.source) {
-        return {
-          key: 'output' + edge.target,
-          label: 'Output',
-          name: getNodeNameById(edge.target),
-        };
-      }
-
-      return {
-        key: 'input' + edge.source,
-        label: 'Input',
-        name: getNodeNameById(edge.source),
-      };
-    })
-    .sort((a, b) => (a.label > b.label ? 1 : -1));
-
-  return sortedConnectedNodes;
+  return getConnectedNodes(nodes, edges, currentNodeId);
 }
+
+export const nodeByIdSelector = (id: string | undefined) => (state: RootState) => state.diagram.nodes.find(node => node.id === id);
