@@ -21,7 +21,7 @@ export const getDesignedTheme = (mode: PaletteMode) => {
     primary: grey,
     divider: grey[700],
     background: {
-      default: grey[800],
+      default: grey[600],
       paper: grey[900],
     },
     text: {
