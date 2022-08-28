@@ -35,6 +35,7 @@ export const elementToNode = (element: IElement, position: XYPosition): Node => 
   };
 };
 
+
 export const getNodeById = (nodes: Node[], id: string) => {
   return nodes.find(node => node.id === id);
 }
@@ -43,6 +44,24 @@ const getSortedBy = (connectedNodes: ConnectedNode[], key: keyof ConnectedNode) 
   const sortedNodes = [...connectedNodes];
   sortedNodes.sort((a, b) => (a[key] > b[key] ? 1 : -1));
   return sortedNodes;
+}
+
+export const getOffset = (nodes: Node[], parentNodeId: string) => {
+  let x = 0;
+  let y = 0;
+  let parentId: string | undefined = parentNodeId;
+
+  while (parentId) {
+    const parentNode = getNodeById(nodes, parentId);
+
+    if (!parentNode) break;
+
+    x += parentNode.position.x;
+    y += parentNode.position.y;
+    parentId = parentNode.parentNode;
+  }
+
+  return { x, y };
 }
 
 export const getConnectedNodes = (

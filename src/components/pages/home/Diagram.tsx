@@ -25,6 +25,7 @@ import debounce from 'lodash/debounce';
 import {
   expandNodeByChild,
   getNodeByCoordinates,
+  getOffset,
 } from 'src/utils/nodes.helper';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
@@ -96,15 +97,17 @@ export const Diagram = () => {
       if (parentNode && (!node.parentNode || !isAlreadyParent)) {
         if (!parentNode.id) return;
 
+        const offset = getOffset(nodes, parentNode.id);
+
         const updatedNode: Node = {
           ...node,
           position: {
-            x: x - parentNode.position.x,
-            y: y - parentNode.position.y
+            x: x - offset.x,
+            y: y - offset.y,
           },
           positionAbsolute: {
             x: x,
-            y: y
+            y: y,
           },
           parentNode: parentNode.id,
           extent: 'parent',
