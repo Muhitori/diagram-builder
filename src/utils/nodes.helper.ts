@@ -82,15 +82,15 @@ export const getConnectedNodes = (
 };
 
 export const getNodeByCoordinates = (nodes: Node[], x: number, y: number) => {
-  const fitByX = ({ position, width }: Node) => {
+  const fitByX = ({ position, positionAbsolute, width }: Node) => {
     if (!width) return false;
-    const nodeX = position.x;
+    const nodeX = positionAbsolute?.x || position.x;
     return x > nodeX && x < nodeX + width;
   };
 
-  const fitByY = ({ position, height }: Node) => {
+  const fitByY = ({ position, positionAbsolute, height }: Node) => {
     if (!height) return false;
-    const nodeY = position.y;
+    const nodeY = positionAbsolute?.y || position.y;
     return y > nodeY && y < nodeY + height;
   };
 
@@ -104,20 +104,23 @@ export const getNodeByCoordinates = (nodes: Node[], x: number, y: number) => {
   }
 }
 
-export const getExpandedNode = (
-  parentNode: Node | undefined,
-  childNode: Node | undefined
+export const expandNode = (
+  node: Node | undefined,
+  widthToExpand: number | null | undefined,
+  heightToExpand: number | null | undefined
 ) => {
-  if (!parentNode || !childNode) return;
+  if (!node || !widthToExpand || !heightToExpand) return;
 
-  const { width, height } = parentNode;
-  const { width: childWidth, height: childHeight } = childNode;
+  const deltaWidth = 0;
+  const deltaHeight = 50;
 
-  const sizeExists = width && height && childWidth && childHeight;
+  const { width, height } = node;
+
+  const sizeExists = width && height;
   if (!sizeExists) return;
 
-  const newWidth = width + childWidth;
-  const newHeight = height + childHeight + 50;
+  const newWidth = width + widthToExpand + deltaWidth;
+  const newHeight = height + heightToExpand + deltaHeight;
 
   const style: CSSProperties = {
     width: newWidth + 'px',
@@ -125,28 +128,59 @@ export const getExpandedNode = (
   };
 
   return {
-    ...parentNode,
+    ...node,
     width: newWidth,
     height: newHeight,
     style: {
-      ...parentNode.style,
+      ...node.style,
       ...style,
     },
   };
 };
 
-export const insertNewNodeAsChild = (nodes: Node[], newNode: Node, parentNodeId: string | undefined) => {
-  const parentNode = nodes.find((n) => n.id === parentNodeId);
-  const expandedParentNode = getExpandedNode(parentNode, newNode);
+export const expandNodeByChild = (parentNode: Node | undefined, childNode: Node | undefined) => {
+  if (!parentNode || !childNode) return;
+  const { width, height } = childNode;
+  return expandNode(parentNode, width, height);
+}
 
-  const filteredNodes: Node[] = [newNode, expandedParentNode].filter(
-    (node) => Boolean(node)
-  ) as Node[];
-  const nodeIds = filteredNodes.map((node) => node.id);
+const getParentNode = (nodes: Node[], parentId: string | undefined) =>
+  nodes.find((n) => n.id === parentId);
+
+export const getNodesToUpdate = (
+  nodes: Node[],
+  newNode: Node,
+  parentNodeId: string | undefined
+) => {
+  const nodesToUpdate: (Node | undefined)[] = [newNode];
+  const parentNode = getParentNode(nodes, parentNodeId);
+
+  let expandedParentNode = expandNodeByChild(parentNode, newNode);
+  nodesToUpdate.push(expandedParentNode);
+
+  while (expandedParentNode && expandedParentNode.parentNode) {
+    const grandParentNode = getParentNode(nodes, expandedParentNode.parentNode);
+    expandedParentNode = expandNode(grandParentNode, 80, 40);
+    nodesToUpdate.push(expandedParentNode);
+  }
+
+  const existingNodes = nodesToUpdate.filter((node) => Boolean(node)) as Node[];
+
+  return { expandedParentNode, nodesToUpdate: existingNodes };
+};
+
+export const insertNewNodeAsChild = (nodes: Node[], newNode: Node, parentNodeId: string | undefined) => {
+  const { expandedParentNode, nodesToUpdate } = getNodesToUpdate(
+    nodes,
+    newNode,
+    parentNodeId
+  );
+
+  const nodeIds = nodesToUpdate.map((node) => node.id);
 
   const updatedNodes = nodes.map((node) => {
     if (nodeIds.includes(node.id)) {
-      return filteredNodes.find((n) => n.id === node.id) || node;
+      return nodesToUpdate.find((n) => n.id === node.id) || node;
     }
     return node;
   });

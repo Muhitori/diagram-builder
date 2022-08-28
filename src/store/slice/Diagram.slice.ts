@@ -62,9 +62,14 @@ export const diagramSlice = createSlice({
   initialState,
   reducers: {
     onNodesChange(state, { payload }: PayloadAction<NodeChange[]>) {
-      const changes = payload;
-      const nodes = applyNodeChanges(changes, state.nodes);
-      return { ...state, nodes };
+      try {
+        const changes = payload;
+        const nodes = applyNodeChanges(changes, state.nodes);
+        return { ...state, nodes };
+      } catch (error) {
+        snackbarGenerator.error('error');
+        return state;
+      }
     },
     updateNodes(state, { payload }: PayloadAction<(Node | undefined)[]>) {
       const filteredNodes: Node[] = payload.filter(node => Boolean(node)) as Node[];
@@ -89,21 +94,26 @@ export const diagramSlice = createSlice({
       return { ...state, edges };
     },
     deleteNode(state, { payload: id }: PayloadAction<string>) {
-      let newEdges = [...state.edges];
+      try {
+        let newEdges = [...state.edges];
 
-      const nodesWithoutChildren = state.nodes.filter(
-        (node) => {
-          //delete edge for each deleted child
-          if (node.parentNode === id) {
-            newEdges = deleteNodeEdges(newEdges, node.id);
-          }
-          return node.parentNode !== id
-        });
+        const nodesWithoutChildren = state.nodes.filter(
+          (node) => {
+            //delete edge for each deleted child
+            if (node.parentNode === id) {
+              newEdges = deleteNodeEdges(newEdges, node.id);
+            }
+            return node.parentNode !== id
+          });
       
-      const newNodes = nodesWithoutChildren.filter((node) => node.id !== id);
-      newEdges = deleteNodeEdges(newEdges, id);
+        const newNodes = nodesWithoutChildren.filter((node) => node.id !== id);
+        newEdges = deleteNodeEdges(newEdges, id);
 
-      return { ...state, edges: newEdges, nodes: newNodes };
+        return { ...state, edges: newEdges, nodes: newNodes };
+      } catch (error) {
+        snackbarGenerator.error('Error while deleting node. Try to delete its child first');
+        return state;
+      }
     },
     deleteEdge(state, { payload: id }: PayloadAction<string>) {
       const newEdges = state.edges.filter((edge) => edge.id !== id);
