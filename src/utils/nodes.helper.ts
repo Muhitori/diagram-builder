@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import { v4 as uuid } from 'uuid';
-import { Edge, Node, getRectOfNodes, XYPosition } from 'react-flow-renderer';
+import { Edge, Node, XYPosition } from 'react-flow-renderer';
 import { IElement } from 'src/types/Elements';
 import { ConnectedNode } from 'src/types/Nodes';
 import { getElementBackgroundColor } from './UI.helper';
@@ -179,7 +179,7 @@ export const getNodesToUpdate = (
 
   while (expandedParentNode && expandedParentNode.parentNode) {
     const grandParentNode = getParentNode(nodes, expandedParentNode.parentNode);
-    expandedParentNode = expandNode(grandParentNode, 80, 40);
+    expandedParentNode = expandNode(grandParentNode, 120, 40);
     nodesToUpdate.push(expandedParentNode);
   }
 
@@ -205,7 +205,7 @@ export const insertNewNodeAsChild = (nodes: Node[], newNode: Node, parentNodeId:
   });
 
   if (expandedParentNode) {
-    const { x, y } = getRectOfNodes([expandedParentNode]);
+    const { x, y } = getOffset(nodes, expandedParentNode.id);
 
     newNode.position.x -= x;
     newNode.position.y -= y;
