@@ -10,7 +10,8 @@ import {
   applyEdgeChanges,
 } from 'react-flow-renderer';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
-import {  elementToNode, insertNewNodeAsChild } from 'src/utils/nodes.helper';
+import { DEFAULT_EDGES, DEFAULT_NODES } from 'src/utils/diagram.constants';
+import {  deleteNodeEdges, elementToNode, insertNewNodeAsChild } from 'src/utils/nodes.helper';
 import { RootState } from '..';
 
 interface AddNodePayload {
@@ -50,38 +51,10 @@ export const onNodeClick = createAsyncThunk(
   }
 );
 
-const initialStyle = {
-  backgroundColor: 'transparent',
-};
-
 const initialState: DiagramState = {
   currentNodeId: null,
-  nodes: [
-    {
-      id: '1',
-      type: 'input',
-      data: { label: 'Input Node' },
-      position: { x: 250, y: 25 },
-      style: initialStyle,
-    },
-    {
-      id: '2',
-      data: { label: 'Default Node' },
-      position: { x: 100, y: 125 },
-      style: initialStyle,
-    },
-    {
-      id: '3',
-      type: 'output',
-      data: { label: 'Output Node' },
-      position: { x: 250, y: 250 },
-      style: initialStyle,
-    },
-  ],
-  edges: [
-    { id: 'e1-2', source: '1', target: '2' },
-    { id: 'e2-3', source: '2', target: '3', animated: true },
-  ],
+  nodes: DEFAULT_NODES,
+  edges: DEFAULT_EDGES,
 };
 
 export const diagramSlice = createSlice({
@@ -116,8 +89,21 @@ export const diagramSlice = createSlice({
       return { ...state, edges };
     },
     deleteNode(state, { payload: id }: PayloadAction<string>) {
-      const newNodes = state.nodes.filter((node) => node.id !== id);
-      return { ...state, nodes: newNodes };
+      let newEdges = [...state.edges];
+
+      const nodesWithoutChildren = state.nodes.filter(
+        (node) => {
+          //delete edge for each deleted child
+          if (node.parentNode === id) {
+            newEdges = deleteNodeEdges(newEdges, node.id);
+          }
+          return node.parentNode !== id
+        });
+      
+      const newNodes = nodesWithoutChildren.filter((node) => node.id !== id);
+      newEdges = deleteNodeEdges(newEdges, id);
+
+      return { ...state, edges: newEdges, nodes: newNodes };
     },
     deleteEdge(state, { payload: id }: PayloadAction<string>) {
       const newEdges = state.edges.filter((edge) => edge.id !== id);

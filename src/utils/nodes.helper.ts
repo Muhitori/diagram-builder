@@ -164,3 +164,9 @@ export const insertNewNodeAsChild = (nodes: Node[], newNode: Node, parentNodeId:
 
   return [...updatedNodes, { ...newNode, ...parentOptions }];
 }
+
+export const deleteNodeEdges = (edges: Edge[], nodeId: string) => {
+  return edges.filter(
+    (edge) => edge.source !== nodeId && edge.target !== nodeId
+  );
+}
