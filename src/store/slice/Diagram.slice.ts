@@ -94,26 +94,16 @@ export const diagramSlice = createSlice({
       return { ...state, edges };
     },
     deleteNode(state, { payload: id }: PayloadAction<string>) {
-      try {
-        let newEdges = [...state.edges];
+      const hasChildren = state.nodes.some(node => node.parentNode === id);
 
-        const nodesWithoutChildren = state.nodes.filter(
-          (node) => {
-            //delete edge for each deleted child
-            if (node.parentNode === id) {
-              newEdges = deleteNodeEdges(newEdges, node.id);
-            }
-            return node.parentNode !== id
-          });
-      
-        const newNodes = nodesWithoutChildren.filter((node) => node.id !== id);
-        newEdges = deleteNodeEdges(newEdges, id);
-
-        return { ...state, edges: newEdges, nodes: newNodes };
-      } catch (error) {
-        snackbarGenerator.error('Error while deleting node. Try to delete its child first');
+      if (hasChildren) {
+        snackbarGenerator.info('To delete node delete its child first');
         return state;
       }
+  
+      const nodes = state.nodes.filter((node) => node.id !== id);
+      const edges = deleteNodeEdges(state.edges, id);
+      return { ...state, edges, nodes };
     },
     deleteEdge(state, { payload: id }: PayloadAction<string>) {
       const newEdges = state.edges.filter((edge) => edge.id !== id);
