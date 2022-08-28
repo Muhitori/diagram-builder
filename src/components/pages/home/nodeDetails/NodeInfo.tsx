@@ -10,6 +10,28 @@ interface Props {
   node: Node;
 }
 
+interface PositionArticleProps {
+  label: string;
+  x: number;
+  y: number;
+}
+
+const PositionArticle: FC<PositionArticleProps> = ({ label, x, y}) => {
+  return (
+    <>
+      <Typography variant="h6">{label}:</Typography>
+      <Box ml={2}>
+        <Typography variant="body2">
+          x: {roundCoords(x)}
+        </Typography>
+        <Typography variant="body2">
+          y: {roundCoords(y)}
+        </Typography>
+      </Box>
+    </>
+  );
+};
+
 export const NodeInfo: FC<Props> = ({ node }) => {
   const parentNode = useSelector(nodeByIdSelector(node.parentNode));
 
@@ -17,8 +39,8 @@ export const NodeInfo: FC<Props> = ({ node }) => {
     <>
       <Typography variant="h4">{node.data.label}</Typography>
       <Box ml={2}>
-        {node.parentNode && (
-          <Typography variant="h6">Parent: {parentNode?.data.label}</Typography>
+        {node.parentNode && parentNode && (
+          <Typography variant="h6">Parent: {parentNode.data.label}</Typography>
         )}
         <Typography variant="h6">
           Type: {node.type ? node.type : 'default'}
@@ -29,15 +51,18 @@ export const NodeInfo: FC<Props> = ({ node }) => {
             ? node.style.backgroundColor
             : '#ffffffff'}
         </Typography>
-        <Typography variant="h6">Position: </Typography>
-        <Box ml={2}>
-          <Typography variant="body2">
-            x: {roundCoords(node.position.x)}
-          </Typography>
-          <Typography variant="body2">
-            y: {roundCoords(node.position.y)}
-          </Typography>
-        </Box>
+        <PositionArticle
+          label="Position"
+          x={node.position.x}
+          y={node.position.y}
+        />
+        {node.positionAbsolute && (
+          <PositionArticle
+            label="Position absolute"
+            x={node.positionAbsolute.x}
+            y={node.positionAbsolute.y}
+          />
+        )}
         <ConnectedNodes />
       </Box>
     </>

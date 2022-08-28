@@ -93,6 +93,10 @@ export const Diagram = () => {
             x: x - parentNode.position.x,
             y: y - parentNode.position.y
           },
+          positionAbsolute: {
+            x: x,
+            y: y
+          },
           parentNode: parentNode?.id,
           extent: 'parent',
         };

@@ -31,6 +31,7 @@ export const elementToNode = (element: IElement, position: XYPosition): Node => 
     height,
     style: { backgroundColor, ...styledSize },
     position,
+    positionAbsolute: position
   };
 };
 
