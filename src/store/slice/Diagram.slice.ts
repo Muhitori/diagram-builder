@@ -11,7 +11,13 @@ import {
 } from 'react-flow-renderer';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { DEFAULT_EDGES, DEFAULT_NODES } from 'src/utils/diagram.constants';
-import {  deleteNodeEdges, elementToNode, getNodeById, insertNewNodeAsChild } from 'src/utils/nodes.helper';
+import {
+  deleteNodeEdges,
+  elementToNode,
+  getNodeById,
+  insertNewNodeAsChild,
+  updateNodesHelper,
+} from 'src/utils/nodes.helper';
 import { RootState } from '..';
 
 interface AddNodePayload {
@@ -72,15 +78,7 @@ export const diagramSlice = createSlice({
       }
     },
     updateNodes(state, { payload }: PayloadAction<(Node | undefined)[]>) {
-      const filteredNodes: Node[] = payload.filter(node => Boolean(node)) as Node[];
-      const nodeIds = filteredNodes.map((node) => node.id);
-
-      const nodes = state.nodes.map((node) => {
-        if (nodeIds.includes(node.id)) {
-          return filteredNodes.find((n) => n.id === node.id) || node;
-        }
-        return node;
-      });
+      const nodes = updateNodesHelper(state.nodes, payload);
       return { ...state, nodes };
     },
     onEdgesChange(state, { payload }: PayloadAction<EdgeChange[]>) {

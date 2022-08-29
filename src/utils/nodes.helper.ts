@@ -46,10 +46,10 @@ const getSortedBy = (connectedNodes: ConnectedNode[], key: keyof ConnectedNode) 
   return sortedNodes;
 }
 
-export const getOffset = (nodes: Node[], parentNodeId: string) => {
+export const getOffset = (nodes: Node[], parentNodeId: string  | undefined) => {
   let x = 0;
   let y = 0;
-  let parentId: string | undefined = parentNodeId;
+  let parentId = parentNodeId;
 
   while (parentId) {
     const parentNode = getNodeById(nodes, parentId);
@@ -188,6 +188,21 @@ export const getNodesToUpdate = (
   return { expandedParentNode, nodesToUpdate: existingNodes };
 };
 
+export const updateNodesHelper = (nodes: Node[], nodesToUpdate: (Node | undefined)[]) => {
+  const filteredNodes: Node[] = nodesToUpdate.filter((node) =>
+    Boolean(node)
+  ) as Node[];
+  const nodeIds = filteredNodes.map((node) => node.id);
+
+  const updatedNodes = nodes.map((node) => {
+    if (nodeIds.includes(node.id)) {
+      return filteredNodes.find((n) => n.id === node.id) || node;
+    }
+    return node;
+  });
+  return updatedNodes;
+}
+
 export const insertNewNodeAsChild = (nodes: Node[], newNode: Node, parentNodeId: string | undefined) => {
   const { expandedParentNode, nodesToUpdate } = getNodesToUpdate(
     nodes,
@@ -195,17 +210,10 @@ export const insertNewNodeAsChild = (nodes: Node[], newNode: Node, parentNodeId:
     parentNodeId
   );
 
-  const nodeIds = nodesToUpdate.map((node) => node.id);
-
-  const updatedNodes = nodes.map((node) => {
-    if (nodeIds.includes(node.id)) {
-      return nodesToUpdate.find((n) => n.id === node.id) || node;
-    }
-    return node;
-  });
+  const updatedNodes = updateNodesHelper(nodes, nodesToUpdate);
 
   if (expandedParentNode) {
-    const { x, y } = getOffset(nodes, expandedParentNode.id);
+    const { x, y } = getOffset(nodes, parentNodeId);
 
     newNode.position.x -= x;
     newNode.position.y -= y;
