@@ -11,7 +11,7 @@ import {
 } from 'react-flow-renderer';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { DEFAULT_EDGES, DEFAULT_NODES } from 'src/utils/diagram.constants';
-import {  deleteNodeEdges, elementToNode, insertNewNodeAsChild } from 'src/utils/nodes.helper';
+import {  deleteNodeEdges, elementToNode, getNodeById, insertNewNodeAsChild } from 'src/utils/nodes.helper';
 import { RootState } from '..';
 
 interface AddNodePayload {
@@ -124,10 +124,17 @@ export const diagramSlice = createSlice({
       const newNode: Node = elementToNode(element, position);
 
       if (parentNodeId) {
-        const nodes = insertNewNodeAsChild(state.nodes, newNode, parentNodeId);  
+        const parentNode = getNodeById(state.nodes, parentNodeId);
+        const nodes = insertNewNodeAsChild(state.nodes, newNode, parentNodeId);
+
+        snackbarGenerator.success(
+          `Node ${element.name} added as child of ${parentNode?.data.label}.`
+        );
+
         return { ...state, nodes };
       }
 
+      snackbarGenerator.success(`Node ${element.name} added to board.`);
       return { ...state, nodes: [...state.nodes, newNode] };
     });
     builder.addCase(createNodeAsync.rejected, () => {

@@ -219,6 +219,17 @@ export const insertNewNodeAsChild = (nodes: Node[], newNode: Node, parentNodeId:
   return [...updatedNodes, { ...newNode, ...parentOptions }];
 }
 
+export const getParent = (nodes: Node[], nodeId: string, x: number, y: number) => {
+  let otherNodes = nodes.filter((node) => node.id !== nodeId);
+  let parent = nodes.find((node) => node.id === nodeId);
+
+  while (parent) {
+    otherNodes = otherNodes.filter((node) => node.parentNode !== parent);
+    parent = nodes.find((node) => node.parentNode === parent?.id);
+  }
+  return getNodeByCoordinates(otherNodes, x, y);
+}
+
 export const deleteNodeEdges = (edges: Edge[], nodeId: string) => {
   return edges.filter(
     (edge) => edge.source !== nodeId && edge.target !== nodeId

@@ -26,6 +26,7 @@ import {
   expandNodeByChild,
   getNodeByCoordinates,
   getOffset,
+  getParent,
 } from 'src/utils/nodes.helper';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
@@ -71,7 +72,6 @@ export const Diagram = () => {
           parentNodeId: parentNode?.id,
         })
       );
-      snackbarGenerator.success(`Node added to board.`);
     },
     [dispatch, reactFlowInstance, reactFlowWrapper, nodes]
   );
@@ -86,17 +86,12 @@ export const Diagram = () => {
         y: event.clientY - bounds.top,
       });
     
-      let otherNodes = nodes.filter((n) => n.id !== node.id);
-      const parent = nodes.find((n) => n.id === node.id);
-      otherNodes = otherNodes.filter((n) => n.parentNode !== parent?.id);
+      const parentNode = getParent(nodes, node.id, x, y);
+      if (!parentNode) return;
 
-      const parentNode = getNodeByCoordinates(otherNodes, x, y);
+      const isAlreadyParent = node.parentNode === parentNode.id;
 
-      const isAlreadyParent = node.parentNode === parentNode?.id;
-
-      if (parentNode && (!node.parentNode || !isAlreadyParent)) {
-        if (!parentNode.id) return;
-
+      if (!node.parentNode && !isAlreadyParent) {
         const offset = getOffset(nodes, parentNode.id);
 
         const updatedNode: Node = {
@@ -114,6 +109,7 @@ export const Diagram = () => {
         };
         const expandedParentNode = expandNodeByChild(parentNode, updatedNode);
         dispatch(updateNodes([expandedParentNode, updatedNode]));
+        snackbarGenerator.success(`Node ${node.data.label} updated as child of ${parentNode.data.label}.`);
       }
     },
     [dispatch, reactFlowInstance, reactFlowWrapper, nodes]

@@ -46,6 +46,8 @@
     "default-param-last": 0,
     "no-case-declarations": 0,
     "react/require-default-props": 0,
-    "class-methods-use-this": 0
+    "class-methods-use-this": 0,
+    "no-loop-func": 0,
+    "@typescript-eslint/no-loop-func": "warn"
   }
 }
