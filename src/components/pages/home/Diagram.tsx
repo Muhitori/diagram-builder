@@ -23,8 +23,8 @@ import {
 } from 'src/store/slice/Diagram.slice';
 import debounce from 'lodash/debounce';
 import {
-  expandNodeByChild,
   getNodeByCoordinates,
+  getNodesToUpdate,
   getOffset,
   getParent,
 } from 'src/utils/nodes.helper';
@@ -107,8 +107,8 @@ export const Diagram = () => {
           parentNode: parentNode.id,
           extent: 'parent',
         };
-        const expandedParentNode = expandNodeByChild(parentNode, updatedNode);
-        dispatch(updateNodes([expandedParentNode, updatedNode]));
+        const { nodesToUpdate } = getNodesToUpdate(nodes, updatedNode, parentNode.id);
+        dispatch(updateNodes(nodesToUpdate));
         snackbarGenerator.success(`Node ${node.data.label} updated as child of ${parentNode.data.label}.`);
       }
     },

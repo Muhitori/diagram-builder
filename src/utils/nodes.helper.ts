@@ -224,9 +224,10 @@ export const getParent = (nodes: Node[], nodeId: string, x: number, y: number) =
   let parent = nodes.find((node) => node.id === nodeId);
 
   while (parent) {
-    otherNodes = otherNodes.filter((node) => node.parentNode !== parent);
+    otherNodes = otherNodes.filter((node) => node.parentNode !== parent?.id);
     parent = nodes.find((node) => node.parentNode === parent?.id);
   }
+
   return getNodeByCoordinates(otherNodes, x, y);
 }
 
