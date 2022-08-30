@@ -107,8 +107,11 @@ export const Diagram = () => {
           parentNode: parentNode.id,
           extent: 'parent',
         };
-        const { nodesToUpdate } = getNodesToUpdate(nodes, updatedNode, parentNode.id);
+
+        //update current node and all his parents (parents size will be increased)
+        const nodesToUpdate = getNodesToUpdate(nodes, updatedNode, parentNode.id);
         dispatch(updateNodes(nodesToUpdate));
+        
         snackbarGenerator.success(`Node ${node.data.label} updated as child of ${parentNode.data.label}.`);
       }
     },

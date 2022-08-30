@@ -183,11 +183,10 @@ export const getNodesToUpdate = (
     nodesToUpdate.push(expandedParentNode);
   }
 
-  const existingNodes = nodesToUpdate.filter((node) => Boolean(node)) as Node[];
-
-  return { expandedParentNode, nodesToUpdate: existingNodes };
+  return nodesToUpdate.filter((node) => Boolean(node)) as Node[];
 };
 
+// Returns nodes state with new nodes merged in
 export const updateNodesHelper = (nodes: Node[], nodesToUpdate: (Node | undefined)[]) => {
   const filteredNodes: Node[] = nodesToUpdate.filter((node) =>
     Boolean(node)
@@ -203,28 +202,43 @@ export const updateNodesHelper = (nodes: Node[], nodesToUpdate: (Node | undefine
   return updatedNodes;
 }
 
-export const insertNewNodeAsChild = (nodes: Node[], newNode: Node, parentNodeId: string | undefined) => {
-  const { expandedParentNode, nodesToUpdate } = getNodesToUpdate(
-    nodes,
-    newNode,
-    parentNodeId
-  );
+export const getNodesWithNewChild = (nodes: Node[], node: Node, parentNodeId: string | undefined) => {
+  if (!parentNodeId) return [...nodes, node];
 
-  const updatedNodes = updateNodesHelper(nodes, nodesToUpdate);
+  const parents = getNodesToUpdate(nodes, node, parentNodeId);
 
-  if (expandedParentNode) {
-    const { x, y } = getOffset(nodes, parentNodeId);
+  const {
+    position: { x, y },
+  } = node;
+  const { x: offsetX, y: offsetY } = getOffset(nodes, parentNodeId);
 
-    newNode.position.x -= x;
-    newNode.position.y -= y;
-  }
+  //Each parent - new coordinate system, so we need to subtract parents positions
+  const position = {
+    x: x - offsetX,
+    y: y - offsetY
+  };
+
+  const positionAbsolute = {
+    x: x,
+    y: y,
+  };
 
   const parentOptions = {
     parentNode: parentNodeId,
     extent: 'parent' as const,
   };
 
-  return [...updatedNodes, { ...newNode, ...parentOptions }];
+  //update all parent nodes (parent nodes size are increased)
+  const updatedParents = updateNodesHelper(nodes, parents);
+
+  const newNode: Node = {
+    ...node,
+    ...parentOptions,
+    position,
+    positionAbsolute,
+  };
+
+  return [...updatedParents, newNode];
 }
 
 export const getParent = (nodes: Node[], nodeId: string, x: number, y: number) => {

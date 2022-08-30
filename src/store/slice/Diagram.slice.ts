@@ -15,7 +15,7 @@ import {
   deleteNodeEdges,
   elementToNode,
   getNodeById,
-  insertNewNodeAsChild,
+  getNodesWithNewChild,
   updateNodesHelper,
 } from 'src/utils/nodes.helper';
 import { RootState } from '..';
@@ -123,7 +123,7 @@ export const diagramSlice = createSlice({
 
       if (parentNodeId) {
         const parentNode = getNodeById(state.nodes, parentNodeId);
-        const nodes = insertNewNodeAsChild(state.nodes, newNode, parentNodeId);
+        const nodes = getNodesWithNewChild(state.nodes, newNode, parentNodeId);
 
         snackbarGenerator.success(
           `Node ${element.name} added as child of ${parentNode?.data.label}.`
