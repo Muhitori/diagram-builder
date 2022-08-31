@@ -50,13 +50,6 @@ export const createNodeAsync = createAsyncThunk(
   }
 );
 
-export const onNodeClick = createAsyncThunk(
-  'diagram/node-click',
-  (node: Node) => {
-    return node.id;
-  }
-);
-
 const initialState: DiagramState = {
   currentNodeId: null,
   nodes: DEFAULT_NODES,
@@ -137,9 +130,6 @@ export const diagramSlice = createSlice({
     });
     builder.addCase(createNodeAsync.rejected, () => {
       snackbarGenerator.error('Error while adding node.');
-    });
-    builder.addCase(onNodeClick.fulfilled, (state, { payload }) => {
-      return { ...state, currentNodeId: payload };
     });
   },
 });

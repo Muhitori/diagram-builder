@@ -1,5 +1,10 @@
 import { SxProps, Theme } from '@mui/material';
 
+export interface Bars {
+  toolbar: boolean;
+  nodeBar: boolean;
+}
+
 export interface IColorModeContext {
   mode?: string;
   toggleColorMode?: () => void;

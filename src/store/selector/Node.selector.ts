@@ -3,6 +3,7 @@ import { RootState } from '..';
 
 export const nodesSelector = (state: RootState) => state.diagram.nodes;
 export const edgesSelector = (state: RootState) => state.diagram.edges;
+
 export const currentNodeSelector = (state: RootState) => {
   const diagramState = state.diagram;
   const id = diagramState.currentNodeId;

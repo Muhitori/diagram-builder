@@ -1,7 +1,7 @@
 import { AppBar, Button, Switch, Typography, Grid } from '@mui/material';
 import { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toolbarOpenedSelector } from 'src/store/selector/UI.selector';
+import { barOpenedSelector } from 'src/store/selector/UI.selector';
 import { ColorModeContext } from '../App';
 import { useStyles } from './styles';
 import { toggleBar } from 'src/store/slice';
@@ -11,7 +11,7 @@ export const Header = () => {
   const dispatch = useDispatch();
 
   const { mode, toggleColorMode } = useContext(ColorModeContext);
-  const toolbarOpened = useSelector(toolbarOpenedSelector);
+  const toolbarOpened = useSelector(barOpenedSelector('toolbar'));
 
   const label = mode === 'dark' ? 'light' : 'dark';
 

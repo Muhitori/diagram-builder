@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
-
-interface Bars {
-  toolbar: boolean;
-  elementBar: boolean;
-}
+import { Bars } from 'src/types/UI';
 
 interface UIState {
   bars: Bars;
@@ -12,7 +8,7 @@ interface UIState {
 const initialState: UIState = {
   bars: {
     toolbar: false,
-    elementBar: false,
+    nodeBar: false,
   },
 };
 

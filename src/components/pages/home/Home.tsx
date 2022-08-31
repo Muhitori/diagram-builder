@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { toolbarOpenedSelector } from 'src/store/selector/UI.selector';
+import { barOpenedSelector } from 'src/store/selector/UI.selector';
 import { Diagram } from './diagram/Diagram';
 import { NodeDetails } from './nodeDetails/NodeDetails';
 import { Sidebar } from '../../common/sidebar/Sidebar';
@@ -11,7 +11,7 @@ import { currentNodeSelector } from 'src/store/selector/Node.selector';
 export const Home = () => {
   const classes = useStyles();
   
-  const toolbarOpened = useSelector(toolbarOpenedSelector);
+  const toolbarOpened = useSelector(barOpenedSelector('toolbar'));
   const currentNode = useSelector(currentNodeSelector);
 
   return (

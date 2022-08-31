@@ -17,8 +17,6 @@ import {
   onConnect,
   onEdgesChange,
   onNodesChange,
-  onNodeClick,
-  deleteNode,
   deleteEdge,
   updateNodes,
 } from 'src/store/slice/Diagram.slice';
@@ -134,18 +132,6 @@ export const Diagram = () => {
     [dispatch]
   );
 
-  const nodeClickHandler = useCallback(
-    (node: Node) => dispatch(onNodeClick(node)),
-    [dispatch]
-  );
-
-  const nodeContextMenuHandler = useCallback(
-    (id: string) => {
-      dispatch(deleteNode(id));
-    },
-    [dispatch]
-  );
-
   const edgeContextMenuHandler = useCallback(
     (edge: Edge) => {
       dispatch(deleteEdge(edge.id));
@@ -158,11 +144,10 @@ export const Diagram = () => {
       default: (props: NodeProps) => (
         <DefaultNode
           {...props}
-          nodeContextMenuHandler={nodeContextMenuHandler}
         />
       ),
     }),
-    [nodeContextMenuHandler]
+    []
   );
 
   return (
@@ -177,12 +162,8 @@ export const Diagram = () => {
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       onInit={setReactFlowInstance}
-      onNodeClick={(event, node) => nodeClickHandler(node)}
       onNodeDragStop={nodeDragStopHandler}
-      onNodeContextMenu={(event, node) => {
-        event.preventDefault();
-        nodeContextMenuHandler(node.id);
-      }}
+      onNodeContextMenu={(event) => event.preventDefault()}
       onEdgeContextMenu={(event, edge) => {
         event.preventDefault();
         edgeContextMenuHandler(edge);
