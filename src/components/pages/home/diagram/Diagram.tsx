@@ -29,7 +29,11 @@ import {
   getParent,
 } from 'src/utils/nodes.helper';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
+import { DefaultNode } from './nodes';
 
+const nodeTypes = {
+  default: DefaultNode,
+};
 
 export const Diagram = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -157,6 +161,7 @@ export const Diagram = () => {
       ref={reactFlowWrapper}
       nodes={nodes}
       edges={edges}
+      nodeTypes={nodeTypes}
       onNodesChange={nodesChangeHandler}
       onEdgesChange={edgesChangeHandler}
       onConnect={connectHandler}

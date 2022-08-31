@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { toolbarOpenedSelector } from 'src/store/selector/UI.selector';
-import { Diagram } from './Diagram';
+import { Diagram } from './diagram/Diagram';
 import { NodeDetails } from './nodeDetails/NodeDetails';
 import { Sidebar } from '../../common/sidebar/Sidebar';
 import { useStyles } from './styles';
