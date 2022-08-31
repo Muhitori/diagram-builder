@@ -1,4 +1,4 @@
-import { DragEvent, useCallback, useRef, useState, MouseEvent } from 'react';
+import { DragEvent, useCallback, useRef, useState, MouseEvent, useMemo } from 'react';
 import ReactFlow, {
   Node,
   Edge,
@@ -7,6 +7,7 @@ import ReactFlow, {
   EdgeChange,
   NodeChange,
   ReactFlowInstance,
+  NodeProps,
 } from 'react-flow-renderer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'src/store';
@@ -30,10 +31,6 @@ import {
 } from 'src/utils/nodes.helper';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { DefaultNode } from './nodes';
-
-const nodeTypes = {
-  default: DefaultNode,
-};
 
 export const Diagram = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -143,8 +140,8 @@ export const Diagram = () => {
   );
 
   const nodeContextMenuHandler = useCallback(
-    (node: Node) => {
-      dispatch(deleteNode(node.id));
+    (id: string) => {
+      dispatch(deleteNode(id));
     },
     [dispatch]
   );
@@ -154,6 +151,18 @@ export const Diagram = () => {
       dispatch(deleteEdge(edge.id));
     },
     [dispatch]
+  );
+
+  const nodeTypes = useMemo(
+    () => ({
+      default: (props: NodeProps) => (
+        <DefaultNode
+          {...props}
+          nodeContextMenuHandler={nodeContextMenuHandler}
+        />
+      ),
+    }),
+    [nodeContextMenuHandler]
   );
 
   return (
@@ -172,7 +181,7 @@ export const Diagram = () => {
       onNodeDragStop={nodeDragStopHandler}
       onNodeContextMenu={(event, node) => {
         event.preventDefault();
-        nodeContextMenuHandler(node);
+        nodeContextMenuHandler(node.id);
       }}
       onEdgeContextMenu={(event, edge) => {
         event.preventDefault();

@@ -1,10 +1,22 @@
 import { Typography } from '@mui/material';
 import { FC } from 'react'
-import { Handle, NodeProps, Position } from 'react-flow-renderer'
+import { Handle, NodeProps, Position } from 'react-flow-renderer';
 
-export const DefaultNode: FC<NodeProps> = ({ isConnectable, data }) => {
+
+interface CustomProps {
+  nodeContextMenuHandler: (id: string) => void
+}
+
+type Props = NodeProps & CustomProps;
+  
+export const DefaultNode: FC<Props> = (props) => {
+  const { id, isConnectable, data, nodeContextMenuHandler } = props;
+
   return (
-    <>
+    <div onContextMenu={(event) => {
+      event.preventDefault();
+      nodeContextMenuHandler(id);
+    }}>
       <Handle
         type="target"
         position={Position.Left}
@@ -18,6 +30,6 @@ export const DefaultNode: FC<NodeProps> = ({ isConnectable, data }) => {
         style={{ background: '#555' }}
         isConnectable={isConnectable}
       />
-    </>
+    </div>
   );
 };
