@@ -2,10 +2,13 @@ import { FC } from 'react';
 import MoveableComponent, { OnDrag, OnResize, OnRotate, OnScale } from 'react-moveable';
 
 interface Props {
-  node: HTMLElement;
+  node: HTMLElement | null;
 }
 
 export const Moveable: FC<Props> = ({ node }) => {
+
+  if (!node) return null;
+
   return (
     <MoveableComponent
       target={node}
@@ -32,7 +35,6 @@ export const Moveable: FC<Props> = ({ node }) => {
       }}
       /* rotatable */
       rotatable={true}
-      throttleRotate={0}
       onRotate={({ target, transform }: OnRotate) => {
         target.style.transform = transform;
       }}

@@ -32,6 +32,7 @@ import { DefaultNode } from './nodes';
 
 export const Diagram = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
   const reactFlowWrapper = useRef<HTMLDivElement | null>(null);
 
