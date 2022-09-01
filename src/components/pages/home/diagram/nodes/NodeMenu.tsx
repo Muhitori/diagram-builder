@@ -1,5 +1,5 @@
 import { MenuItem, Menu, Box } from '@mui/material';
-import { FC, useMemo, useState } from 'react';
+import { FC, MouseEvent, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentNodeSelector } from 'src/store/selector/Node.selector';
 import { setCurrentNodeId, deleteNode } from 'src/store/slice';
@@ -35,17 +35,20 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
     setContextMenu(null);
   };
 
-  const handleNodeSelect = () => {
+  const handleNodeSelect = (event: MouseEvent) => {
+    event.preventDefault();
     dispatch(setCurrentNodeId(nodeId));
     handleMenuClose();
   };
 
-  const handleNodeDeselect = () => {
+  const handleNodeDeselect = (event: MouseEvent) => {
+    event.preventDefault();
     dispatch(setCurrentNodeId(null));
     handleMenuClose();
   };
 
-  const handleNodeDelete = () => {
+  const handleNodeDelete = (event: MouseEvent) => {
+    event.preventDefault();
     dispatch(deleteNode(nodeId));
     handleMenuClose();
   };
