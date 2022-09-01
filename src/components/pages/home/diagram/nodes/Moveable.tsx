@@ -1,43 +1,34 @@
-import { FC } from 'react';
-import MoveableComponent, { OnDrag, OnResize, OnRotate, OnScale } from 'react-moveable';
+import { FC, useRef } from 'react';
+import MoveableComponent, { OnResize } from 'react-moveable';
 
 interface Props {
   node: HTMLElement | null;
+  id: string;
 }
 
 export const Moveable: FC<Props> = ({ node }) => {
+  const moveableRef = useRef<MoveableComponent | null>(null);
 
   if (!node) return null;
 
   return (
     <MoveableComponent
+      ref={moveableRef}
       target={node}
       container={null}
-      origin={true}
+      origin={false}
       edge={false}
-      draggable={true}
-      throttleDrag={0}
-      onDrag={({ target, left, top }: OnDrag) => {
-        target.style.left = `${left}px`;
-        target.style.top = `${top}px`;
-      }}
-      keepRatio={true}
       resizable={true}
-      throttleResize={0}
       onResize={({ target, width, height }: OnResize) => {
         target.style.width = `${width}px`;
         target.style.height = `${height}px`;
       }}
-      scalable={true}
-      throttleScale={0}
-      onScale={({ target, transform }: OnScale) => {
-        target.style.transform = transform;
-      }}
-      /* rotatable */
-      rotatable={true}
-      onRotate={({ target, transform }: OnRotate) => {
-        target.style.transform = transform;
-      }}
+      // rotatable={true}
+      // rotateAroundControls={true}
+      // throttleRotate={1}
+      // onRotate={({ target, transform }: OnRotate) => {
+      //   target.style.transform = transform;
+      // }}
     />
   );
 };

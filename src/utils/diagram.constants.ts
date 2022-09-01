@@ -7,7 +7,7 @@ const initialStyle = {
 export const DEFAULT_NODES: Node[] = [
   {
     id: '1',
-    type: 'input',
+    // type: 'input',
     data: { label: 'Input Node' },
     position: { x: 250, y: 25 },
     style: initialStyle,
@@ -20,7 +20,7 @@ export const DEFAULT_NODES: Node[] = [
   },
   {
     id: '3',
-    type: 'output',
+    // type: 'output',
     data: { label: 'Output Node' },
     position: { x: 250, y: 250 },
     style: initialStyle,
