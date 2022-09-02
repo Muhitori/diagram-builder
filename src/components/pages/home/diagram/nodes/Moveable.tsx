@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import MoveableComponent, { OnResize, OnRotate } from 'react-moveable';
 
 interface Props {
@@ -6,8 +6,16 @@ interface Props {
   id: string;
 }
 
-export const Moveable: FC<Props> = ({ node }) => {
+export const Moveable: FC<Props> = ({ node, id }) => {
   const moveableRef = useRef<MoveableComponent | null>(null);
+
+  const nodeElem = document.querySelector<HTMLElement>(
+    `.react-flow__node[data-id="${id}"]`
+  );
+  
+  useEffect(() => {
+    moveableRef.current?.updateRect();
+  }, [nodeElem?.style.width, nodeElem?.style.height]);
 
   if (!node) return null;
 
@@ -23,13 +31,19 @@ export const Moveable: FC<Props> = ({ node }) => {
       onResize={({ target, width, height }: OnResize) => {
         target.style.width = `${width}px`;
         target.style.height = `${height}px`;
+
+        if (nodeElem) {
+          nodeElem.style.width = `${width}px`;
+          nodeElem.style.height = `${height}px`;
+        }
       }}
-      // rotatable={true}
-      // rotateAroundControls={true}
-      // throttleRotate={5}
-      // onRotate={({ target, transform }: OnRotate) => {
-      //   target.style.transform = transform;
-      // }}
+      rotatable={true}
+      rotateAroundControls={true}
+      throttleRotate={5}
+      rotationTarget={node}
+      onRotate={({ target, transform }: OnRotate) => {
+        target.style.transform = transform;
+      }}
     />
   );
 };
