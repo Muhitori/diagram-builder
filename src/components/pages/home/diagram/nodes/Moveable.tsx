@@ -1,4 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
+import { useStoreApi, useUpdateNodeInternals } from 'react-flow-renderer';
 import MoveableComponent, { OnResize, OnRotate } from 'react-moveable';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export const Moveable: FC<Props> = ({ node, id }) => {
+  const updateNodeInternals = useUpdateNodeInternals();
   const moveableRef = useRef<MoveableComponent | null>(null);
 
   const nodeElem = document.querySelector<HTMLElement>(
@@ -32,10 +34,12 @@ export const Moveable: FC<Props> = ({ node, id }) => {
         target.style.width = `${width}px`;
         target.style.height = `${height}px`;
 
+        updateNodeInternals(id);
         if (nodeElem) {
           nodeElem.style.width = `${width}px`;
           nodeElem.style.height = `${height}px`;
         }
+        updateNodeInternals(id);
       }}
       rotatable={true}
       rotateAroundControls={true}
@@ -43,6 +47,7 @@ export const Moveable: FC<Props> = ({ node, id }) => {
       rotationTarget={node}
       onRotate={({ target, transform }: OnRotate) => {
         target.style.transform = transform;
+        updateNodeInternals(id);
       }}
     />
   );
