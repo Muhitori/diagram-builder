@@ -18,3 +18,7 @@ export const currentNodeEdgesSelector = (state: RootState) => {
 }
 
 export const nodeByIdSelector = (id: string | undefined) => (state: RootState) => state.diagram.nodes.find(node => node.id === id);
+export const nodeEdgesSelector = (id: string | undefined) => (state: RootState) => {
+  const diagramState = state.diagram;
+  return diagramState.edges.filter(edge => edge.source === id || edge.target === id);
+}

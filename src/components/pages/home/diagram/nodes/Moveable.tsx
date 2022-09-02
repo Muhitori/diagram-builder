@@ -24,12 +24,12 @@ export const Moveable: FC<Props> = ({ node }) => {
         target.style.width = `${width}px`;
         target.style.height = `${height}px`;
       }}
-      rotatable={true}
-      rotateAroundControls={true}
-      throttleRotate={5}
-      onRotate={({ target, transform }: OnRotate) => {
-        target.style.transform = transform;
-      }}
+      // rotatable={true}
+      // rotateAroundControls={true}
+      // throttleRotate={5}
+      // onRotate={({ target, transform }: OnRotate) => {
+      //   target.style.transform = transform;
+      // }}
     />
   );
 };

@@ -18,6 +18,7 @@ import {
   getNodesWithNewChild,
   updateNodesHelper,
 } from 'src/utils/nodes.helper';
+import unionBy from 'lodash/unionBy';
 import { RootState } from '..';
 
 interface AddNodePayload {
@@ -60,6 +61,9 @@ export const diagramSlice = createSlice({
   name: 'diagram',
   initialState,
   reducers: {
+    setCurrentNodeId(state, { payload }: PayloadAction<string | null>) {
+      return { ...state, currentNodeId: payload };
+    },
     onNodesChange(state, { payload }: PayloadAction<NodeChange[]>) {
       try {
         const changes = payload;
@@ -74,6 +78,12 @@ export const diagramSlice = createSlice({
       const nodes = updateNodesHelper(state.nodes, payload);
       return { ...state, nodes };
     },
+    updateEdges(state, { payload }: PayloadAction<(Edge | undefined)[]>) {
+      const edges = payload.filter(edge => Boolean(edge)) as Edge[];
+      const newEdges = unionBy(state.edges, edges, 'id');
+      console.log(newEdges);
+      return { ...state, edges: newEdges };
+    },
     onEdgesChange(state, { payload }: PayloadAction<EdgeChange[]>) {
       const changes = payload;
       const edges = applyEdgeChanges(changes, state.edges);
@@ -85,13 +95,13 @@ export const diagramSlice = createSlice({
       return { ...state, edges };
     },
     deleteNode(state, { payload: id }: PayloadAction<string>) {
-      const hasChildren = state.nodes.some(node => node.parentNode === id);
+      const hasChildren = state.nodes.some((node) => node.parentNode === id);
 
       if (hasChildren) {
         snackbarGenerator.info('To delete node delete its child first');
         return state;
       }
-  
+
       const nodes = state.nodes.filter((node) => node.id !== id);
       const edges = deleteNodeEdges(state.edges, id);
       return { ...state, edges, nodes };
@@ -99,9 +109,6 @@ export const diagramSlice = createSlice({
     deleteEdge(state, { payload: id }: PayloadAction<string>) {
       const newEdges = state.edges.filter((edge) => edge.id !== id);
       return { ...state, edges: newEdges };
-    },
-    setCurrentNodeId(state, { payload }: PayloadAction<string | null>) {
-      return { ...state, currentNodeId: payload };
     },
   },
   extraReducers: (builder) => {
@@ -111,7 +118,7 @@ export const diagramSlice = createSlice({
         return;
       }
 
-      const { element, position, parentNodeId} = payload;
+      const { element, position, parentNodeId } = payload;
       const newNode: Node = elementToNode(element, position);
 
       if (parentNodeId) {
@@ -143,4 +150,5 @@ export const {
   onConnect,
   setCurrentNodeId,
   updateNodes,
+  updateEdges,
 } = diagramSlice.actions;

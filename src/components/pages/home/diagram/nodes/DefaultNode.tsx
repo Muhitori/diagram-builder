@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import { FC, useState, useEffect, useRef } from 'react';
 import { Handle, NodeProps, Position } from 'react-flow-renderer';
 import { Moveable } from './Moveable';
@@ -13,12 +12,12 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
 
   useEffect(() => {
     if (selected && !moveable) {
-      // const node = document.querySelector<HTMLElement>(
-      //   `.react-flow__node[data-id="${id}"]`
-      // );
+      const node = document.querySelector<HTMLElement>(
+        `.react-flow__node[data-id="${id}"]`
+      );
 
-      if (nodeRef.current) {
-        setMoveable(nodeRef.current);
+      if (node) {
+        setMoveable(node);
       }
     }
 
@@ -32,11 +31,13 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
       {moveable && <Moveable node={moveable} id={id} />}
       <Box
         ref={nodeRef}
-        width="100%"
-        height="fit-content"
-        border="1px solid black"
-        color={grey[900]}
-        p={2}
+        // width="100%"
+        // height="100%"
+        // border="1px solid black"
+        // color={grey[900]}
+        // display='flex'
+        // alignItems='flex-start'
+        // justifyContent='center'
       >
         <Handle
           id={uuid()}

@@ -1,4 +1,4 @@
-.react-flow__node {
+/* .react-flow__node {
   background-color: transparent;
   color: transparent;
   border: none;
@@ -31,7 +31,7 @@
 
 .react-flow__node-default.selectable:hover {
   box-shadow: none;
-}
+} */
 
 /* .react-flow__attribution {
   display: none;

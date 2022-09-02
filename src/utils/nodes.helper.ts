@@ -199,6 +199,7 @@ export const updateNodesHelper = (nodes: Node[], nodesToUpdate: (Node | undefine
     }
     return node;
   });
+
   return updatedNodes;
 }
 
