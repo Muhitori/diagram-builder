@@ -30,6 +30,8 @@ import {
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { DefaultNode } from './nodes';
 
+import './diagram.style.css';
+
 export const Diagram = () => {
   const dispatch = useDispatch<AppDispatch>();
 

@@ -1,0 +1,38 @@
+.react-flow__node {
+  background-color: transparent;
+  color: transparent;
+  border: none;
+
+  pointer-events: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.selected {
+  background-color: transparent;
+  color: transparent;
+  border: none;
+  box-shadow: none;
+
+  pointer-events: none;
+}
+
+.react-flow__node-default {
+  background-color: transparent;
+  color: transparent;
+  border: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.react-flow__node-default.selectable.selected {
+  box-shadow: none;
+}
+
+.react-flow__node-default.selectable:hover {
+  box-shadow: none;
+}
+
+/* .react-flow__attribution {
+  display: none;
+} */

@@ -57,7 +57,7 @@ const initialState: DiagramState = {
 };
 
 export const diagramSlice = createSlice({
-  name: 'element',
+  name: 'diagram',
   initialState,
   reducers: {
     onNodesChange(state, { payload }: PayloadAction<NodeChange[]>) {
