@@ -1,3 +1,4 @@
+import { getRectOfNodes } from 'react-flow-renderer';
 import { getConnectedNodes } from 'src/utils/nodes.helper';
 import { RootState } from '..';
 
@@ -21,4 +22,28 @@ export const nodeByIdSelector = (id: string | undefined) => (state: RootState) =
 export const nodeEdgesSelector = (id: string | undefined) => (state: RootState) => {
   const diagramState = state.diagram;
   return diagramState.edges.filter(edge => edge.source === id || edge.target === id);
+}
+
+export const nodeSizesSelector = (id: string | undefined) => (state: RootState) => {
+  const diagramState = state.diagram;
+  const nodes = diagramState.nodes;
+
+  const node = nodes.find(n => n.id === id);
+  const parent = nodes.find(n => n.id === node?.parentNode);
+  const children = nodes.filter(n => n.parentNode === id);
+
+  const childRect = getRectOfNodes(children);
+
+  return {
+    width: node?.width,
+    height: node?.height,
+    parent: {
+      width: parent?.width,
+      height: parent?.height,
+    },
+    children: {
+      width: childRect.width,
+      height: childRect.height,
+    },
+  };
 }

@@ -6,17 +6,16 @@ import { NodeMenu } from './NodeMenu';
 import { v4 as uuid } from 'uuid';
 import { grey } from '@mui/material/colors';
 import { ColorModeContext } from 'src/components/App';
+import { useSelector } from 'react-redux';
+import { nodeSizesSelector } from 'src/store/selector/Node.selector';
 
 
 export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }) => {
+  const { width, height } = useSelector(nodeSizesSelector(id));
   const { mode } = useContext(ColorModeContext);
 
   const nodeRef = useRef<HTMLElement | null>(null);
   const [visibleNode, setVisibleNode] = useState<HTMLElement | null>(null);
-
-  const node = document.querySelector<HTMLElement>(
-    `.react-flow__node[data-id="${id}"]`
-  );
 
   useEffect(() => {
     if (selected && !visibleNode) {
@@ -30,6 +29,13 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
     }
   }, [selected]);
 
+  useEffect(() => {
+    if (nodeRef.current && width && height) {
+      nodeRef.current.style.width = width + 'px';
+      nodeRef.current.style.height = height + 'px';
+    }
+  }, [width, height]);
+
   const color = useMemo(
     () => (mode === 'light' ? grey[900] : grey[50]),
     [mode]
@@ -40,8 +46,8 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
       {visibleNode && <Moveable node={visibleNode} id={id} />}
       <Box
         ref={nodeRef}
-        width={node?.style.width || '100%'}
-        height={node?.style.height || '100%'}
+        width={'100%'}
+        height={'100%'}
         border={`1px solid ${color}`}
         borderRadius="3px"
         color={color}
