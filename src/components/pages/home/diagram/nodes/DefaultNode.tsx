@@ -11,7 +11,7 @@ import { nodeSizesSelector } from 'src/store/selector/Node.selector';
 
 
 export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }) => {
-  const { width, height } = useSelector(nodeSizesSelector(id));
+  const { width, height, children } = useSelector(nodeSizesSelector(id));
   const { mode } = useContext(ColorModeContext);
 
   const nodeRef = useRef<HTMLElement | null>(null);
@@ -29,10 +29,12 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
     }
   }, [selected]);
 
+  //fires on adding children to node (width & height are changed)
   useEffect(() => {
     if (nodeRef.current && width && height) {
       nodeRef.current.style.width = width + 'px';
       nodeRef.current.style.height = height + 'px';
+      nodeRef.current.style.transform = 'rotate(0deg)';
     }
   }, [width, height]);
 
@@ -43,7 +45,13 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
 
   return (
     <>
-      {visibleNode && <Moveable node={visibleNode} id={id} />}
+      {visibleNode && (
+        <Moveable
+          node={visibleNode}
+          id={id}
+          hasChildren={children.width > 0 && children.height > 0}
+        />
+      )}
       <Box
         ref={nodeRef}
         width={'100%'}

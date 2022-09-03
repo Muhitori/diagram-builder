@@ -7,19 +7,20 @@ import { nodeSizesSelector } from 'src/store/selector/Node.selector';
 interface Props {
   node: HTMLElement | null;
   id: string;
+  hasChildren: boolean;
 }
 
 const RESIZE_DELTA = 10;
 
-export const Moveable: FC<Props> = ({ node, id }) => {
+export const Moveable: FC<Props> = ({ node, id, hasChildren }) => {
   const moveableRef = useRef<MoveableComponent | null>(null);
-  const {parent, children} = useSelector(nodeSizesSelector(id));
+  const { parent, children } = useSelector(nodeSizesSelector(id));
   const updateNodeInternals = useUpdateNodeInternals();
 
   const nodeElem = document.querySelector<HTMLElement>(
     `.react-flow__node[data-id="${id}"]`
   );
-  
+
   useEffect(() => {
     moveableRef.current?.updateRect();
   }, [nodeElem?.style.width, nodeElem?.style.height]);
@@ -43,12 +44,11 @@ export const Moveable: FC<Props> = ({ node, id }) => {
             width < parent.width - RESIZE_DELTA &&
             height < parent.height - RESIZE_DELTA;
         }
-        
+
         const fitChildren =
           width > children.width + RESIZE_DELTA &&
           height > children.height + RESIZE_DELTA;
-        
-      
+
         if (fitParent && fitChildren) {
           target.style.width = `${width}px`;
           target.style.height = `${height}px`;
@@ -60,7 +60,7 @@ export const Moveable: FC<Props> = ({ node, id }) => {
           updateNodeInternals(id);
         }
       }}
-      rotatable={true}
+      rotatable={!hasChildren}
       rotateAroundControls={true}
       throttleRotate={5}
       rotationTarget={node}

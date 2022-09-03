@@ -32,15 +32,18 @@ export const nodeSizesSelector = (id: string | undefined) => (state: RootState) 
   const parent = nodes.find(n => n.id === node?.parentNode);
   const children = nodes.filter(n => n.parentNode === id);
 
+  const childrenIds = children.map(n => n.id);
   const childRect = getRectOfNodes(children);
 
   return {
     width: node?.width,
     height: node?.height,
+    parentId: node?.parentNode,
     parent: {
       width: parent?.width,
       height: parent?.height,
     },
+    childrenIds,
     children: {
       width: childRect.width,
       height: childRect.height,
