@@ -8,11 +8,12 @@ interface Props {
   node: HTMLElement | null;
   id: string;
   hasChildren: boolean;
+  hideMoveable: () => void;
 }
 
 const RESIZE_DELTA = 10;
 
-export const Moveable: FC<Props> = ({ node, id, hasChildren }) => {
+export const Moveable: FC<Props> = ({ node, id, hasChildren, hideMoveable }) => {
   const moveableRef = useRef<MoveableComponent | null>(null);
   const { parent, children } = useSelector(nodeSizesSelector(id));
   const updateNodeInternals = useUpdateNodeInternals();
@@ -60,6 +61,7 @@ export const Moveable: FC<Props> = ({ node, id, hasChildren }) => {
           updateNodeInternals(id);
         }
       }}
+      onResizeEnd={hideMoveable}
       rotatable={!hasChildren}
       rotateAroundControls={true}
       throttleRotate={5}
@@ -68,6 +70,7 @@ export const Moveable: FC<Props> = ({ node, id, hasChildren }) => {
         target.style.transform = transform;
         updateNodeInternals(id);
       }}
+      onRotateEnd={hideMoveable}
     />
   );
 };

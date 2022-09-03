@@ -21,14 +21,11 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    
-    const mouseX = event.clientX + 2;
-    const mouseY = event.clientY - 6;
 
-    setContextMenu(
-      contextMenu === null
-        ? { mouseX, mouseY } : null
-    );
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+
+    setContextMenu(contextMenu === null ? { mouseX, mouseY } : null);
   };
 
   const handleMenuClose = () => {
@@ -79,6 +76,7 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
             ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
             : undefined
         }
+        onClick={(event) => event.stopPropagation()}
       >
         {nodeBarOption}
         <MenuItem onClick={handleNodeDelete}>Delete node</MenuItem>

@@ -1,14 +1,39 @@
 import { Box, Typography } from '@mui/material';
-import { FC, useState, useEffect, useRef, useContext, useMemo } from 'react';
+import {
+  FC,
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useMemo,
+  useCallback,
+  CSSProperties,
+} from 'react';
 import { Handle, NodeProps, Position } from 'react-flow-renderer';
 import { Moveable } from './Moveable';
 import { NodeMenu } from './NodeMenu';
 import { v4 as uuid } from 'uuid';
-import { grey } from '@mui/material/colors';
+import { green, grey, red } from '@mui/material/colors';
 import { ColorModeContext } from 'src/components/App';
 import { useSelector } from 'react-redux';
 import { nodeSizesSelector } from 'src/store/selector/Node.selector';
 
+const handleStyles = {
+  width: '7px',
+  height: '7px',
+};
+
+const sourceHandleStyles: CSSProperties = {
+  background: green[300],
+  marginBottom: '-4px',
+  ...handleStyles,
+};
+
+const targetHandleStyles: CSSProperties = {
+  background: red[300],
+  marginTop: '-4px',
+  ...handleStyles,
+};
 
 export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }) => {
   const { width, height, children } = useSelector(nodeSizesSelector(id));
@@ -18,12 +43,6 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
   const [visibleNode, setVisibleNode] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (selected && !visibleNode) {
-      if (nodeRef.current) {
-        setVisibleNode(nodeRef.current);
-      }
-    }
-
     if (!selected) {
       setVisibleNode(null);
     }
@@ -43,12 +62,23 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
     [mode]
   );
 
+  const showMoveable = useCallback(() => {
+    if (nodeRef.current) {
+      setVisibleNode(nodeRef.current);
+    }
+  }, [nodeRef.current]);
+
+  const hideMoveable = useCallback(() => {
+    setVisibleNode(null);
+  }, [setVisibleNode]);
+
   return (
     <>
       {visibleNode && (
         <Moveable
           node={visibleNode}
           id={id}
+          hideMoveable={hideMoveable}
           hasChildren={children.width > 0 && children.height > 0}
         />
       )}
@@ -62,20 +92,22 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
         display="flex"
         alignItems="flex-start"
         justifyContent="center"
+        onClick={showMoveable}
+        p={1}
       >
         <Handle
           id={uuid()}
           type="target"
           position={Position.Top}
-          style={{ background: '#555' }}
-          isConnectable={isConnectable}
+          style={targetHandleStyles}
+          // isConnectable={isConnectable}
         />
         <Typography variant="body2">{data.label}</Typography>
         <Handle
           id={uuid()}
           type="source"
           position={Position.Bottom}
-          style={{ background: '#555' }}
+          style={sourceHandleStyles}
           isConnectable={isConnectable}
         />
         <NodeMenu nodeId={id} />
