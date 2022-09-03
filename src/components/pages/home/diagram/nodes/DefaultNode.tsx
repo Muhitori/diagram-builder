@@ -12,7 +12,6 @@ import {
 import { Handle, NodeProps, Position } from 'react-flow-renderer';
 import { Moveable } from './Moveable';
 import { NodeMenu } from './NodeMenu';
-import { v4 as uuid } from 'uuid';
 import { green, grey, red } from '@mui/material/colors';
 import { ColorModeContext } from 'src/components/App';
 import { useSelector } from 'react-redux';
@@ -25,13 +24,13 @@ const handleStyles = {
 
 const sourceHandleStyles: CSSProperties = {
   background: green[300],
-  marginBottom: '-4px',
+  marginBottom: '-2px',
   ...handleStyles,
 };
 
 const targetHandleStyles: CSSProperties = {
   background: red[300],
-  marginTop: '-4px',
+  marginTop: '-2px',
   ...handleStyles,
 };
 
@@ -94,17 +93,22 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
         justifyContent="center"
         onClick={showMoveable}
         p={1}
+        sx={{
+          ':hover': {
+            boxShadow: `0px 0px 3px ${color}`,
+          },
+        }}
       >
         <Handle
-          id={uuid()}
+          id={'1'}
           type="target"
           position={Position.Top}
           style={targetHandleStyles}
-          // isConnectable={isConnectable}
+          isConnectable={isConnectable}
         />
         <Typography variant="body2">{data.label}</Typography>
         <Handle
-          id={uuid()}
+          id={'2'}
           type="source"
           position={Position.Bottom}
           style={sourceHandleStyles}

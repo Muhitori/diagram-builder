@@ -9,6 +9,7 @@ export const elementToNode = (element: IElement, position: XYPosition): Node => 
   const { name, content, color } = element;
 
   const id = uuid();
+  const type = 'custom-default';
   const data = {
     label: name,
     content,
@@ -26,6 +27,7 @@ export const elementToNode = (element: IElement, position: XYPosition): Node => 
 
   return {
     id,
+    type,
     data,
     width,
     height,

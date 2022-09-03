@@ -7,7 +7,6 @@ import ReactFlow, {
   EdgeChange,
   NodeChange,
   ReactFlowInstance,
-  NodeProps,
 } from 'react-flow-renderer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'src/store';
@@ -144,11 +143,7 @@ export const Diagram = () => {
 
   const nodeTypes = useMemo(
     () => ({
-      default: (props: NodeProps) => (
-        <DefaultNode
-          {...props}
-        />
-      ),
+      'custom-default': DefaultNode
     }),
     []
   );
