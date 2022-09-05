@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useUpdateNodeInternals } from 'react-flow-renderer';
 import MoveableComponent, { OnResize, OnRotate } from 'react-moveable';
 import { useSelector } from 'react-redux';
@@ -23,6 +23,12 @@ export const Moveable: FC<Props> = ({ node, id, hasChildren, hideMoveable }) => 
   );
 
   if (!node || !nodeElem) return null;
+
+  //fires on adding children to node (width & height are changed)
+  //also when node is resized
+  useEffect(() => {
+    moveableRef.current?.updateRect();
+  }, [nodeElem.style.width, nodeElem.style.height]);
 
   return (
     <MoveableComponent
@@ -54,7 +60,6 @@ export const Moveable: FC<Props> = ({ node, id, hasChildren, hideMoveable }) => 
           nodeElem.style.height = `${height}px`;
 
           updateNodeInternals(id);
-          moveableRef.current?.updateRect();
         }
       }}
       onResizeEnd={hideMoveable}
