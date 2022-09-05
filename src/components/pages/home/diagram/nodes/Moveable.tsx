@@ -22,7 +22,7 @@ export const Moveable: FC<Props> = ({ node, id, hasChildren, hideMoveable }) => 
     `.react-flow__node[data-id="${id}"]`
   );
 
-  if (!node) return null;
+  if (!node || !nodeElem) return null;
 
   return (
     <MoveableComponent
@@ -50,10 +50,9 @@ export const Moveable: FC<Props> = ({ node, id, hasChildren, hideMoveable }) => 
           target.style.width = `${width}px`;
           target.style.height = `${height}px`;
 
-          if (nodeElem) {
-            nodeElem.style.width = `${width}px`;
-            nodeElem.style.height = `${height}px`;
-          }
+          nodeElem.style.width = `${width}px`;
+          nodeElem.style.height = `${height}px`;
+
           updateNodeInternals(id);
           moveableRef.current?.updateRect();
         }
