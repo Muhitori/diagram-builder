@@ -27,6 +27,9 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
   const handleMenuOpen = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
 
+    //close node info when context menu opened
+    dispatch(setCurrentNodeId(null));
+
     const mouseX = event.clientX;
     const mouseY = event.clientY;
 
