@@ -1,7 +1,7 @@
 import { Box, Icon } from '@mui/material';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ElementGroup } from 'src/components/common/elementGroup/ElementGroup';
+import { ElementGroup } from 'src/components/pages/home/toolbar/elementGroup/ElementGroup';
 import { elementGroupsSelector } from 'src/store/selector/Element.selector';
 import { toggleBar } from 'src/store/slice';
 import { ToolbarControls } from './ToolbarControls';
