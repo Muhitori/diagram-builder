@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react';
+import { BrowserRouter as Router} from 'react-router-dom';
 import { Header } from './Header';
 
 interface Props {
@@ -8,8 +9,10 @@ interface Props {
 export const Layout: FC<Props> = ({ children }) => {
   return (
     <>
-      <Header />
-      {children}
+      <Router>
+        <Header />
+        {children}
+      </Router>
     </>
   );
 };

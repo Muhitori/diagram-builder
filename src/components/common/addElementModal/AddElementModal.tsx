@@ -6,6 +6,7 @@ import { FormikProps } from 'formik';
 import { IField } from 'src/types/UI';
 import { Dialog } from '../dialog/Dialog';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface AddElementFields {
   name: string;
@@ -13,8 +14,8 @@ interface AddElementFields {
 }
 
 interface Props {
-  open: boolean;
-  onClose: () => void;
+  // open: boolean;
+  // onClose: () => void;
   groupName: string;
 }
 
@@ -28,9 +29,18 @@ const fields: IField[] = [
   { name: 'color', type: 'color', label: 'Color:' },
 ];
 
-export const AddElementModal: FC<Props> = ({ groupName, open, onClose }) => {
+export const AddElementModal: FC<Props> = ({ groupName }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const dispatch = useDispatch();
   const formRef = useRef<FormikProps<AddElementFields>>(null);
+
+  const open = location.pathname === `/element-add-modal`;
+
+  const onClose = () => {
+    navigate('');
+  }
 
   const handleAddElement = (data: AddElementFields) => {
     const { name, color } = data;
