@@ -1,20 +1,19 @@
 import { Icon } from '@mui/material'
-import ClearIcon from '@mui/icons-material/Clear';
-import { setCurrentNodeId } from 'src/store/slice';
+import { setCurrentNodeId, toggleBar } from 'src/store/slice';
 import { FC, useCallback } from 'react';
-import { useDispatch} from 'react-redux';
-import { Node } from 'react-flow-renderer';
+import { useDispatch, useSelector} from 'react-redux';
 import { NodeInfo } from './NodeInfo';
 import { NodeNotFound } from './NodeNotFound';
+import { currentNodeSelector } from 'src/store/selector/Node.selector';
 
-interface Props {
-  node?: Node;
-}
+import ClearIcon from '@mui/icons-material/Clear';
 
-export const NodeDetails: FC<Props> = ({ node }) => {
+export const NodeDetails: FC = () => {
   const dispatch = useDispatch();
+  const node = useSelector(currentNodeSelector);
 
   const closeElementDetailsHandler = useCallback(() => {
+    dispatch(toggleBar('nodeBar'));
     dispatch(setCurrentNodeId(null));
   }, [dispatch]);
 

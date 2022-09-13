@@ -1,8 +1,10 @@
-import { MenuItem, Menu, Box, Typography } from '@mui/material';
+import { MenuItem, Menu, Box, ListItemIcon } from '@mui/material';
 import { FC, MouseEvent, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentNodeSelector } from 'src/store/selector/Node.selector';
-import { setCurrentNodeId, deleteNode } from 'src/store/slice';
+import { setCurrentNodeId, deleteNode, toggleBar } from 'src/store/slice';
+import { barOpenedSelector } from 'src/store/selector/UI.selector';
+import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -15,6 +17,7 @@ interface Props {
 
 export const NodeMenu: FC<Props> = ({ nodeId }) => {
   const dispatch = useDispatch();
+  const nodeInfoOpened = useSelector(barOpenedSelector('nodeBar'));
   const currentNode = useSelector(currentNodeSelector);
 
   const [contextMenu, setContextMenu] = useState<{
@@ -27,9 +30,10 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
   const handleMenuOpen = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
 
-    //close node info when context menu opened
-    dispatch(setCurrentNodeId(null));
-
+    if (nodeInfoOpened) {
+      dispatch(setCurrentNodeId(nodeId));
+    }
+      
     const mouseX = event.clientX;
     const mouseY = event.clientY;
 
@@ -40,14 +44,16 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
     setContextMenu(null);
   };
 
-  const handleNodeSelect = (event: MouseEvent) => {
+  const handleNodeInfoOpen = (event: MouseEvent) => {
     event.preventDefault();
+    dispatch(toggleBar('nodeBar'));
     dispatch(setCurrentNodeId(nodeId));
     handleMenuClose();
   };
 
-  const handleNodeDeselect = (event: MouseEvent) => {
+  const handleNodeInfoClose = (event: MouseEvent) => {
     event.preventDefault();
+    dispatch(toggleBar('nodeBar'));
     dispatch(setCurrentNodeId(null));
     handleMenuClose();
   };
@@ -60,20 +66,24 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
 
   const handleNodeSettings = (event: MouseEvent) => {
     event.preventDefault();
-    console.log('node settings modal opened');
+    snackbarGenerator.info('Work in progress');
     handleMenuClose();
   };
 
   const nodeBarOption = useMemo(() => {
     return currentNode ? (
-      <MenuItem onClick={handleNodeDeselect}>
-        <VisibilityOffIcon />
-        <Typography sx={{ ml: 1 }}>Close node info</Typography>
+      <MenuItem onClick={handleNodeInfoClose}>
+        <ListItemIcon>
+          <VisibilityOffIcon />
+        </ListItemIcon>
+        Close node info
       </MenuItem>
     ) : (
-      <MenuItem onClick={handleNodeSelect}>
-        <VisibilityIcon />
-        <Typography sx={{ ml: 1 }}>Show node info</Typography>
+      <MenuItem onClick={handleNodeInfoOpen}>
+        <ListItemIcon>
+          <VisibilityIcon />
+        </ListItemIcon>
+        Show node info
       </MenuItem>
     );
   }, [currentNode]);
@@ -100,12 +110,16 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
       >
         {nodeBarOption}
         <MenuItem onClick={handleNodeSettings}>
-          <SettingsIcon />
-          <Typography sx={{ ml: 1 }}>Node settings</Typography>
+          <ListItemIcon>
+            <SettingsIcon />
+          </ListItemIcon>
+          Node settings
         </MenuItem>
         <MenuItem onClick={handleNodeDelete}>
-          <DeleteIcon />
-          <Typography sx={{ ml: 1 }}>Delete node</Typography>
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          Delete node
         </MenuItem>
       </Menu>
     </Box>

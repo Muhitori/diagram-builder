@@ -1,10 +1,12 @@
-import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteElement } from 'src/store/slice/Elements.slice';
+import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 import MenuIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 interface Props {
   id: string;
@@ -25,6 +27,10 @@ export const ElementMenu: FC<Props> = ({ id, groupName }) => {
     setAnchorEl(null);
   };
 
+  const handleGroupSettings = () => {
+    snackbarGenerator.info('Work in progress');
+  };
+
   const deleteElementHandler = () => {
     dispatch(deleteElement({ groupName, id }));
     handleClose();
@@ -36,9 +42,17 @@ export const ElementMenu: FC<Props> = ({ id, groupName }) => {
         <MenuIcon />
       </IconButton>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        <MenuItem onClick={handleGroupSettings}>
+          <ListItemIcon>
+            <SettingsIcon />
+          </ListItemIcon>
+          Element settings
+        </MenuItem>
         <MenuItem onClick={deleteElementHandler}>
-          <DeleteIcon />
-          <Typography sx={{ ml: 1 }}>Delete Element</Typography>
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          Delete Element
         </MenuItem>
       </Menu>
     </div>

@@ -1,12 +1,14 @@
-import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteGroup } from 'src/store/slice/Elements.slice';
+import { useNavigate } from 'react-router-dom';
+import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 import MenuIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 interface Props {
   groupName: string;
@@ -32,6 +34,10 @@ export const ElementGroupMenu: FC<Props> = ({ groupName }) => {
     handleClose();
   }
 
+  const handleGroupSettings = () => {
+    snackbarGenerator.info('Work in progress');
+  }
+
   const deleteGroupHandler = () => {
     dispatch(deleteGroup(groupName));
     handleClose();
@@ -44,12 +50,22 @@ export const ElementGroupMenu: FC<Props> = ({ groupName }) => {
       </IconButton>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={openElementCreationModal}>
-          <AddIcon />
-          <Typography sx={{ ml: 1 }}>Add element</Typography>
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+          Add element
+        </MenuItem>
+        <MenuItem onClick={handleGroupSettings}>
+          <ListItemIcon>
+            <SettingsIcon />
+          </ListItemIcon>
+          Group settings
         </MenuItem>
         <MenuItem onClick={deleteGroupHandler}>
-          <DeleteIcon />
-          <Typography sx={{ ml: 1 }}>Delete group</Typography>
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          Delete group
         </MenuItem>
       </Menu>
     </div>

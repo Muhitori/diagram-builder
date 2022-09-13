@@ -6,21 +6,20 @@ import { NodeDetails } from './nodeDetails/NodeDetails';
 import { Sidebar } from '../../common/sidebar/Sidebar';
 import { useStyles } from './styles';
 import { Toolbar } from './toolbar/Toolbar';
-import { currentNodeSelector } from 'src/store/selector/Node.selector';
 
 export const Home = () => {
   const classes = useStyles();
   
   const toolbarOpened = useSelector(barOpenedSelector('toolbar'));
-  const currentNode = useSelector(currentNodeSelector);
+  const nodeInfoOpened = useSelector(barOpenedSelector('nodeBar'));
 
   return (
     <Grid container sx={classes.root}>
       <Sidebar opened={toolbarOpened} side="left">
         <Toolbar />
       </Sidebar>
-      <Sidebar opened={!!currentNode} side="right">
-        <NodeDetails node={currentNode} />
+      <Sidebar opened={nodeInfoOpened} side="right">
+        <NodeDetails />
       </Sidebar>
 
       <Diagram />
