@@ -1,10 +1,8 @@
-import { PaletteMode, ThemeOptions } from '@mui/material';
+import { PaletteMode, PaletteOptions } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
-const themeOptions: ThemeOptions = {};
-
 export const getDesignedTheme = (mode: PaletteMode) => {
-  const lightThemeOptions = {
+  const lightThemeOptions: PaletteOptions = {
     primary: grey,
     divider: grey[200],
     background: {
@@ -17,7 +15,7 @@ export const getDesignedTheme = (mode: PaletteMode) => {
     },
   };
 
-  const darkThemeOptions = {
+  const darkThemeOptions: PaletteOptions = {
     primary: grey,
     divider: grey[700],
     background: {
@@ -25,7 +23,7 @@ export const getDesignedTheme = (mode: PaletteMode) => {
       paper: grey[900],
     },
     text: {
-      primary: '#fff',
+      primary: grey[50],
       secondary: grey[300],
     },
   };
@@ -33,10 +31,8 @@ export const getDesignedTheme = (mode: PaletteMode) => {
   const tokens = mode === 'light' ? lightThemeOptions : darkThemeOptions;
 
   return {
-    ...themeOptions,
     palette: {
       mode,
-      ...themeOptions.palette,
       ...tokens,
     },
   };
