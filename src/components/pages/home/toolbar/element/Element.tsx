@@ -1,13 +1,11 @@
 import { DragEvent, FC, useContext, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import { deleteElement } from 'src/store/slice';
 import { IElement } from 'src/types/Elements';
 
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useStyles } from './styles';
-import { Box, Icon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ColorModeContext } from 'src/components/App';
 import { getBorderColor, getElementBackgroundColor } from 'src/utils/UI.helper';
+import { ElementMenu } from './ElementMenu';
 
 interface Props {
   groupName: string;
@@ -15,14 +13,9 @@ interface Props {
 }
 
 export const Element: FC<Props> = ({ groupName, element: { id, name, color } }) => {
-  const dispatch = useDispatch();
   const classes = useStyles();
 
   const { mode } = useContext(ColorModeContext);
-
-  const deleteElementHandler = () => {
-    dispatch(deleteElement({ groupName, id }));
-  };
 
   const handleDragStart = (event: DragEvent) => {
     event.dataTransfer.setData('groupName', groupName);
@@ -44,9 +37,7 @@ export const Element: FC<Props> = ({ groupName, element: { id, name, color } }) 
         <Typography variant="body2">{name}</Typography>
       </Box>
 
-      <Icon onClick={deleteElementHandler}>
-        <DeleteIcon />
-      </Icon>
+      <ElementMenu id={id} groupName={groupName} />
     </Box>
   );
 };

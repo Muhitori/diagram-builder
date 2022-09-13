@@ -1,21 +1,19 @@
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteGroup } from 'src/store/slice/Elements.slice';
+import { deleteElement } from 'src/store/slice/Elements.slice';
 
 import MenuIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
 
 interface Props {
+  id: string;
   groupName: string;
 }
 
-export const ElementGroupMenu: FC<Props> = ({ groupName }) => {
+export const ElementMenu: FC<Props> = ({ id, groupName }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -27,13 +25,8 @@ export const ElementGroupMenu: FC<Props> = ({ groupName }) => {
     setAnchorEl(null);
   };
 
-  const openElementCreationModal = () => {
-    navigate(`/element-add-modal`);
-    handleClose();
-  }
-
-  const deleteGroupHandler = () => {
-    dispatch(deleteGroup(groupName));
+  const deleteElementHandler = () => {
+    dispatch(deleteElement({ groupName, id }));
     handleClose();
   };
 
@@ -43,13 +36,9 @@ export const ElementGroupMenu: FC<Props> = ({ groupName }) => {
         <MenuIcon />
       </IconButton>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={openElementCreationModal}>
-          <AddIcon />
-          <Typography sx={{ ml: 1 }}>Add element</Typography>
-        </MenuItem>
-        <MenuItem onClick={deleteGroupHandler}>
+        <MenuItem onClick={deleteElementHandler}>
           <DeleteIcon />
-          <Typography sx={{ ml: 1 }}>Delete group</Typography>
+          <Typography sx={{ ml: 1 }}>Delete Element</Typography>
         </MenuItem>
       </Menu>
     </div>
