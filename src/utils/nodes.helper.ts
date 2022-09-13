@@ -10,12 +10,14 @@ export const elementToNode = (element: IElement, position: XYPosition): Node => 
 
   const id = uuid();
   const type = 'custom-default';
+
+  const backgroundColor = getElementBackgroundColor(color);
+
   const data = {
     label: name,
     content,
+    backgroundColor,
   };
-
-  const backgroundColor = getElementBackgroundColor(color);
 
   const width = 150;
   const height = 40;
@@ -31,7 +33,7 @@ export const elementToNode = (element: IElement, position: XYPosition): Node => 
     data,
     width,
     height,
-    style: { backgroundColor, ...styledSize },
+    style: { ...styledSize },
     position,
     positionAbsolute: position
   };

@@ -94,6 +94,7 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
         onClick={showMoveable}
         p={1}
         sx={{
+          backgroundColor: data.backgroundColor,
           ':hover': {
             boxShadow: `0px 0px 3px ${color}`,
           },
