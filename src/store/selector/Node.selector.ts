@@ -1,5 +1,5 @@
 import { getRectOfNodes } from 'react-flow-renderer';
-import { getConnectedNodes } from 'src/utils/nodes.helper';
+import { getConnectedNodes } from 'src/utils/helpers/nodes.helper';
 import { RootState } from '..';
 
 export const nodesSelector = (state: RootState) => state.diagram.nodes;

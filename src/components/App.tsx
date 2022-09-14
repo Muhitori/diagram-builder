@@ -15,7 +15,7 @@ import { IColorModeContext } from 'src/types/UI';
 import { Layout } from './layout/Layout';
 import { SnackbarGenerator } from './SnackbarGenerator';
 import { SnackbarProvider } from 'notistack';
-import { MAX_SNACK } from 'src/utils/UI.constants';
+import { MAX_SNACK } from 'src/utils/constants/UI.constants';
 
 export const ColorModeContext = createContext<IColorModeContext>({});
 

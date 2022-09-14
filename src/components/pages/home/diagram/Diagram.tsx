@@ -25,7 +25,7 @@ import {
   getNodesToUpdate,
   getOffset,
   getParent,
-} from 'src/utils/nodes.helper';
+} from 'src/utils/helpers/nodes.helper';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { DefaultNode } from './nodes';
 

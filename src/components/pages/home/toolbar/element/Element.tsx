@@ -4,7 +4,7 @@ import { IElement } from 'src/types/Elements';
 import { useStyles } from './styles';
 import { Box, Typography } from '@mui/material';
 import { ColorModeContext } from 'src/components/App';
-import { getBorderColor, getElementBackgroundColor } from 'src/utils/UI.helper';
+import { getBorderColor, getElementBackgroundColor } from 'src/utils/helpers/UI.helper';
 import { ElementMenu } from './ElementMenu';
 
 interface Props {

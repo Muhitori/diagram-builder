@@ -10,14 +10,14 @@ import {
   applyEdgeChanges,
 } from 'react-flow-renderer';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
-import { DEFAULT_EDGES, DEFAULT_NODES } from 'src/utils/diagram.constants';
+import { DEFAULT_EDGES, DEFAULT_NODES } from 'src/utils/constants/diagram.constants';
 import {
   deleteNodeEdges,
   elementToNode,
   getNodeById,
   getNodesWithNewChild,
   updateNodesHelper,
-} from 'src/utils/nodes.helper';
+} from 'src/utils/helpers/nodes.helper';
 import unionBy from 'lodash/unionBy';
 import { RootState } from '..';
 

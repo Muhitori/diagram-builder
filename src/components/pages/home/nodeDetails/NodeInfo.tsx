@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Node } from 'react-flow-renderer'
 import { useSelector } from 'react-redux';
 import { nodeByIdSelector } from 'src/store/selector/Node.selector';
-import { roundCoords } from 'src/utils/math.helper';
+import { roundCoords } from 'src/utils/helpers/math.helper';
 import { ConnectedNodes } from './ConnectedNodes';
 
 interface Props {

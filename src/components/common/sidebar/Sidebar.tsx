@@ -1,7 +1,7 @@
 import { Box, Paper, Slide } from '@mui/material';
 import { FC, MutableRefObject, ReactElement, useContext, useMemo } from 'react';
 import { ColorModeContext } from 'src/components/App';
-import { SIDEBAR_ELEVATION } from 'src/utils/UI.constants';
+import { SIDEBAR_ELEVATION } from 'src/utils/constants/UI.constants';
 
 interface Props {
   opened: boolean;

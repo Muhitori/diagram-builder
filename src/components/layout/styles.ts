@@ -1,4 +1,4 @@
-import { HEADER_HEIGHT } from 'src/utils/UI.constants'
+import { HEADER_HEIGHT } from 'src/utils/constants/UI.constants'
 
 export const useStyles = () => ({
   header: {
