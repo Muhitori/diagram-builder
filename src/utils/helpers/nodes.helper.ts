@@ -246,7 +246,7 @@ export const getNodesWithNewChild = (nodes: Node[], node: Node, parentNodeId: st
   return [...updatedParents, newNode];
 }
 
-export const getParent = (nodes: Node[], nodeId: string, x: number, y: number) => {
+export const getNotSiblingNode = (nodes: Node[], nodeId: string, x: number, y: number) => {
   let otherNodes = nodes.filter((node) => node.id !== nodeId);
   let parent = nodes.find((node) => node.id === nodeId);
 

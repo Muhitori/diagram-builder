@@ -24,7 +24,7 @@ import {
   getNodeByCoordinates,
   getNodesToUpdate,
   getOffset,
-  getParent,
+  getNotSiblingNode,
 } from 'src/utils/helpers/nodes.helper';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { DefaultNode } from './nodes';
@@ -86,7 +86,7 @@ export const Diagram = () => {
         y: event.clientY - bounds.top,
       });
     
-      const parentNode = getParent(nodes, node.id, x, y);
+      const parentNode = getNotSiblingNode(nodes, node.id, x, y);
       if (!parentNode) return;
 
       const isAlreadyParent = node.parentNode === parentNode.id;
