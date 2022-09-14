@@ -1,11 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IElementGroup } from 'src/types/Elements';
+import { ElementFields } from 'src/types/Forms';
 import { v4 as uuid } from 'uuid';
 
 interface AddElementPayload {
   groupName: string;
   name: string;
   color: string;
+}
+
+
+interface SetGeneralOptionsPayload {
+  generalOptions: Partial<ElementFields>;
+  groupName: string;
 }
 
 interface DeleteElementPayload {
@@ -20,6 +27,7 @@ interface ElementsState {
 const initialState: ElementsState = {
   'Group Sample': {
     name: 'Group Sample',
+    generalOptions: {},
     elements: [
       { id: 'elementSample1', name: 'Element Sample 1' },
     ],
@@ -37,7 +45,29 @@ export const elementsSlice = createSlice({
         ...state,
         [name]: {
           name,
+          generalOptions: {},
           elements: [],
+        },
+      };
+    },
+    setGroupGeneralOptions(
+      state,
+      action: PayloadAction<SetGeneralOptionsPayload>
+    ) {
+      const { groupName, generalOptions } = action.payload;
+      const elements = state[groupName].elements.map(element => ({
+        ...generalOptions,
+        ...element,
+        //use general options name as prefix for element name
+        name: generalOptions.name + element.name
+      }));
+
+      return {
+        ...state,
+        [groupName]: {
+          ...state[groupName],
+          generalOptions,
+          elements,
         },
       };
     },

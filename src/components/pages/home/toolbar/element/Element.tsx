@@ -37,7 +37,7 @@ export const Element: FC<Props> = ({ groupName, element: { id, name, color } }) 
         <Typography variant="body2">{name}</Typography>
       </Box>
 
-      <ElementMenu id={id} groupName={groupName} />
+      <ElementMenu id={id} groupName={groupName} name={name} color={color} />
     </Box>
   );
 };

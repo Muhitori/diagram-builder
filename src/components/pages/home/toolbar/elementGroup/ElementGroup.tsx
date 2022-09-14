@@ -4,7 +4,6 @@ import { IElementGroup } from 'src/types/Elements';
 import { Element } from 'src/components/pages/home/toolbar/element/Element';
 import { useStyles } from './styles';
 import { ElementGroupMenu } from './ElementGroupMenu';
-import { ElementModal } from 'src/components/common/elementModal/elementModal';
 
 interface Props {
   group: IElementGroup;
@@ -26,7 +25,6 @@ export const ElementGroup: FC<Props> = ({ group: { name, elements } }) => {
             <Element key={element.id} groupName={name} element={element} />
           ))}
       </Box>
-      <ElementModal groupName={name} />
     </Box>
   );
 };

@@ -1,23 +1,27 @@
 import { MenuItem, Menu, Box, ListItemIcon } from '@mui/material';
-import { FC, MouseEvent, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentNodeSelector } from 'src/store/selector/Node.selector';
-import { setCurrentNodeId, deleteNode, toggleBar } from 'src/store/slice';
-import { barOpenedSelector } from 'src/store/selector/UI.selector';
+import { setCurrentNodeId, deleteNode, toggleBar, setElementModalData } from 'src/store/slice';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
+import { EDIT_NODE_ROUTE } from 'src/utils/constants/route.constants';
+import { barOpenedSelector } from 'src/store/selector/UI.selector';
 
 interface Props {
   nodeId: string;
 }
 
 export const NodeMenu: FC<Props> = ({ nodeId }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const nodeInfoOpened = useSelector(barOpenedSelector('nodeBar'));
+
+  const isNodeBarOpened = useSelector(barOpenedSelector('nodeBar'));
   const currentNode = useSelector(currentNodeSelector);
 
   const [contextMenu, setContextMenu] = useState<{
@@ -28,11 +32,7 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
   const open = Boolean(contextMenu);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-
-    if (nodeInfoOpened) {
-      dispatch(setCurrentNodeId(nodeId));
-    }
+    dispatch(setCurrentNodeId(nodeId));
       
     const mouseX = event.clientX;
     const mouseY = event.clientY;
@@ -44,34 +44,44 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
     setContextMenu(null);
   };
 
-  const handleNodeInfoOpen = (event: MouseEvent) => {
-    event.preventDefault();
+  const handleNodeInfoOpen = () => {
     dispatch(toggleBar('nodeBar'));
-    dispatch(setCurrentNodeId(nodeId));
+
     handleMenuClose();
   };
 
-  const handleNodeInfoClose = (event: MouseEvent) => {
-    event.preventDefault();
+  const handleNodeInfoClose = () => {
     dispatch(toggleBar('nodeBar'));
     dispatch(setCurrentNodeId(null));
+
     handleMenuClose();
   };
 
-  const handleNodeDelete = (event: MouseEvent) => {
-    event.preventDefault();
+  const handleNodeDelete = () => {
     dispatch(deleteNode(nodeId));
+
     handleMenuClose();
   };
 
-  const handleNodeSettings = (event: MouseEvent) => {
-    event.preventDefault();
-    snackbarGenerator.info('Work in progress');
+  const handleNodeSettings = () => {
+    if (!currentNode?.data) {
+      snackbarGenerator.error('Please select node to edit.');
+      return;
+    }
+
+    const name = currentNode.data.label;
+    const colorWithAlpha = currentNode.data.backgroundColor;
+    console.log(colorWithAlpha);
+    const color = colorWithAlpha.substring(0, colorWithAlpha.length - 2);
+
+    navigate(`${EDIT_NODE_ROUTE}?nodeName=${name}`);
+    dispatch(setElementModalData({ name, color }));
+
     handleMenuClose();
   };
 
   const nodeBarOption = useMemo(() => {
-    return currentNode ? (
+    return isNodeBarOpened ? (
       <MenuItem onClick={handleNodeInfoClose}>
         <ListItemIcon>
           <VisibilityOffIcon />

@@ -7,13 +7,19 @@ import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import MenuIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useNavigate } from 'react-router-dom';
+import { EDIT_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
+import { setElementModalData } from 'src/store/slice';
 
 interface Props {
   id: string;
   groupName: string;
+  name: string;
+  color: string | undefined;
 }
 
-export const ElementMenu: FC<Props> = ({ id, groupName }) => {
+export const ElementMenu: FC<Props> = ({ id, groupName, name, color }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -27,8 +33,10 @@ export const ElementMenu: FC<Props> = ({ id, groupName }) => {
     setAnchorEl(null);
   };
 
-  const handleGroupSettings = () => {
-    snackbarGenerator.info('Work in progress');
+  const handleElementSettings = () => {
+    navigate(`${EDIT_ELEMENT_ROUTE}?elementName=${name}`);
+    dispatch(setElementModalData({ name, color }));
+    handleClose();
   };
 
   const deleteElementHandler = () => {
@@ -42,7 +50,7 @@ export const ElementMenu: FC<Props> = ({ id, groupName }) => {
         <MenuIcon />
       </IconButton>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={handleGroupSettings}>
+        <MenuItem onClick={handleElementSettings}>
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>

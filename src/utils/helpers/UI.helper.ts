@@ -5,5 +5,5 @@ export const getBorderColor = (themeMode: string | undefined) =>
 
 export const getElementBackgroundColor = (color: string | undefined) => {
   //opacity 0.5
-  return color ? color + '88' : 'transparent';
+  return color ? color + '88' : '#ffffff88';
 };

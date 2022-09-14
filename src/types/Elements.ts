@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { ElementFields } from './Forms';
 
 export interface IElement {
   id: string;
@@ -9,5 +10,6 @@ export interface IElement {
 
 export interface IElementGroup {
   name: string;
+  generalOptions: Partial<ElementFields>,
   elements: IElement[];
 }

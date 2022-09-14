@@ -1,9 +1,5 @@
 import { Node, Edge } from 'react-flow-renderer';
 
-const initialStyle = {
-  backgroundColor: 'transparent',
-};
-
 const size = {
   width: 120,
   height: 40
@@ -13,25 +9,22 @@ export const DEFAULT_NODES: Node[] = [
   {
     id: '1',
     type: 'custom-default',
-    data: { label: 'Input Node' },
+    data: { label: 'Input Node', backgroundColor: '#ffffff88' },
     position: { x: 250, y: 25 },
-    style: initialStyle,
     ...size,
   },
   {
     id: '2',
     type: 'custom-default',
-    data: { label: 'Default Node' },
+    data: { label: 'Default Node', backgroundColor: '#ffffff88' },
     position: { x: 100, y: 125 },
-    style: initialStyle,
     ...size,
   },
   {
     id: '3',
     type: 'custom-default',
-    data: { label: 'Output Node' },
+    data: { label: 'Output Node', backgroundColor: '#ffffff88' },
     position: { x: 250, y: 250 },
-    style: initialStyle,
     ...size,
   },
 ];
