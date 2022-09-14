@@ -7,6 +7,7 @@ import { IField } from 'src/types/UI';
 import { Dialog } from '../dialog/Dialog';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ADD_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
 
 interface AddElementFields {
   name: string;
@@ -36,7 +37,7 @@ export const AddElementModal: FC<Props> = ({ groupName }) => {
   const dispatch = useDispatch();
   const formRef = useRef<FormikProps<AddElementFields>>(null);
 
-  const open = location.pathname === `/element-add-modal`;
+  const open = location.pathname === ADD_ELEMENT_ROUTE;
 
   const onClose = () => {
     navigate('');

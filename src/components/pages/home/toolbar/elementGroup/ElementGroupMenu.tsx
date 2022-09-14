@@ -9,6 +9,7 @@ import MenuIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { ADD_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
 
 interface Props {
   groupName: string;
@@ -30,7 +31,7 @@ export const ElementGroupMenu: FC<Props> = ({ groupName }) => {
   };
 
   const openElementCreationModal = () => {
-    navigate(`/element-add-modal`);
+    navigate(ADD_ELEMENT_ROUTE);
     handleClose();
   }
 
