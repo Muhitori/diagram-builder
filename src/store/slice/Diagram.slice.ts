@@ -20,6 +20,8 @@ import {
 } from 'src/utils/helpers/nodes.helper';
 import unionBy from 'lodash/unionBy';
 import { RootState } from '..';
+import { ElementFields } from 'src/types/Forms';
+import { getElementBackgroundColor } from 'src/utils/helpers/UI.helper';
 
 interface AddNodePayload {
   groupName: string;
@@ -30,6 +32,8 @@ interface AddNodePayload {
   }
   parentNodeId?: string;
 }
+
+type UpdateNodeDataPayload = { id: string } & ElementFields;
 
 interface DiagramState {
   currentNodeId: string | null;
@@ -74,12 +78,30 @@ export const diagramSlice = createSlice({
         return state;
       }
     },
+    updateNodeData(state, { payload }: PayloadAction<UpdateNodeDataPayload>) {
+      const { id, name, color } = payload;
+      const nodes = state.nodes.map(node => { 
+        if (node.id === id) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              label: name,
+              backgroundColor: getElementBackgroundColor(color),
+            },
+          };
+        }
+        return node;
+      });
+
+      return { ...state, nodes };
+    },
     updateNodes(state, { payload }: PayloadAction<(Node | undefined)[]>) {
       const nodes = updateNodesHelper(state.nodes, payload);
       return { ...state, nodes };
     },
     updateEdges(state, { payload }: PayloadAction<(Edge | undefined)[]>) {
-      const edges = payload.filter(edge => Boolean(edge)) as Edge[];
+      const edges = payload.filter((edge) => Boolean(edge)) as Edge[];
       const newEdges = unionBy(state.edges, edges, 'id');
       console.log(newEdges);
       return { ...state, edges: newEdges };
@@ -151,4 +173,5 @@ export const {
   setCurrentNodeId,
   updateNodes,
   updateEdges,
+  updateNodeData,
 } = diagramSlice.actions;

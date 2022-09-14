@@ -1,6 +1,6 @@
 import { FC, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addElement, setElementModalData, setGroupGeneralOptions, updateElement } from 'src/store/slice';
+import { addElement, setElementModalData, setGroupGeneralOptions, updateElement, updateNodeData } from 'src/store/slice';
 import { Form } from '../form/Form';
 import { FormikProps } from 'formik';
 import { Dialog } from '../dialog/Dialog';
@@ -122,7 +122,21 @@ export const ElementModal: FC = () => {
   };
   
   const handleEditNode = (data: ElementFields) => {
-    snackbarGenerator.info('edit node');
+    const { name, color } = data;
+    const newName = name.trim();
+
+    const nodeName = search.get('nodeName');
+    const id = search.get('id');
+
+    if (!id) {
+      snackbarGenerator.error('Something went wrong.');
+      return;
+    }
+
+    dispatch(updateNodeData({ id, name: newName, color }));
+    snackbarGenerator.success(`${nodeName || 'Node'} updated.`);
+    
+    onClose();
   };
 
   const handleFormSubmit = (data: ElementFields) => {

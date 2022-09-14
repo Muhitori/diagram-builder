@@ -70,11 +70,11 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
     }
 
     const name = currentNode.data.label;
+    
     const colorWithAlpha = currentNode.data.backgroundColor;
-    console.log(colorWithAlpha);
     const color = colorWithAlpha.substring(0, colorWithAlpha.length - 2);
 
-    navigate(`${EDIT_NODE_ROUTE}?nodeName=${name}`);
+    navigate(`${EDIT_NODE_ROUTE}?nodeName=${name}&id=${nodeId}`);
     dispatch(setElementModalData({ name, color }));
 
     handleMenuClose();

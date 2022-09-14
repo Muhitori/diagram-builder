@@ -1,6 +1,6 @@
 import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteElement } from 'src/store/slice/Elements.slice';
 
 import MenuIcon from '@mui/icons-material/MoreVert';
@@ -9,7 +9,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
 import { EDIT_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
 import { setElementModalData } from 'src/store/slice';
-import { elementSelector } from 'src/store/selector/Element.selector';
 
 interface Props {
   id: string;
