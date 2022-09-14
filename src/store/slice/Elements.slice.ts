@@ -9,6 +9,13 @@ interface AddElementPayload {
   color: string;
 }
 
+interface UpdateElementPayload {
+  groupName: string;
+  id: string;
+  name: string;
+  color: string;
+}
+
 
 interface SetGeneralOptionsPayload {
   generalOptions: Partial<ElementFields>;
@@ -85,6 +92,26 @@ export const elementsSlice = createSlice({
         },
       };
     },
+    updateElement(state, action: PayloadAction<UpdateElementPayload>) {
+      const {
+        payload: { groupName, id, name, color },
+      } = action;
+
+      const elements = state[groupName].elements.map(element => {
+        if (element.id === id) {
+          return { ...element, name, color };
+        }
+        return element;
+      });
+
+      return {
+        ...state,
+        [groupName]: {
+          ...state[groupName],
+          elements,
+        },
+      };
+    },
     deleteElement(state, action: PayloadAction<DeleteElementPayload>) {
       const {
         payload: { groupName, id },
@@ -106,5 +133,11 @@ export const elementsSlice = createSlice({
 });
 
 export const { reducer: elementsReducer } = elementsSlice;
-export const { addGroup, setGroupGeneralOptions, deleteGroup, addElement, deleteElement } =
-  elementsSlice.actions;
+export const {
+  addGroup,
+  setGroupGeneralOptions,
+  deleteGroup,
+  addElement,
+  deleteElement,
+  updateElement,
+} = elementsSlice.actions;
