@@ -20,6 +20,7 @@ interface Props {
   onSubmit: () => void;
   onClose: () => void;
   size?: Breakpoint;
+  submitButtonName?: string;
 }
 
 export const Dialog: FC<Props> = ({
@@ -29,15 +30,10 @@ export const Dialog: FC<Props> = ({
   onSubmit,
   onClose,
   size,
+  submitButtonName,
 }) => {
-
   return (
-    <MuiDialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth={size || 'sm'}
-    >
+    <MuiDialog open={open} onClose={onClose} fullWidth maxWidth={size || 'sm'}>
       <DialogTitle
         component="div"
         sx={{ display: 'flex', justifyContent: 'space-between' }}
@@ -62,7 +58,7 @@ export const Dialog: FC<Props> = ({
             Cancel
           </Button>
           <Button onClick={onSubmit} variant="contained" color="success">
-            Create
+            {submitButtonName || 'OK'}
           </Button>
         </Box>
       </DialogActions>

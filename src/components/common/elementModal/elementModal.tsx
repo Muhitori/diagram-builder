@@ -8,11 +8,7 @@ import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ADD_ELEMENT_ROUTE, EDIT_ELEMENT_ROUTE, EDIT_GROUP_ROUTE, EDIT_NODE_ROUTE } from 'src/utils/constants/route.constants';
 import { elementModalDataSelector } from 'src/store/selector/UI.selector';
-
-interface ElementFields {
-  name: string;
-  color: string;
-}
+import { ElementFields } from 'src/types/Forms';
 
 const routes = [
   ADD_ELEMENT_ROUTE,
@@ -50,7 +46,15 @@ export const ElementModal: FC = () => {
       { name: 'name', label: 'Element name', fullWidth: true },
       { name: 'color', type: 'color', label: 'Color:' },
     ];
-  }, [location.pathname])
+  }, [location.pathname]);
+
+  const submitButtonName = useMemo(() => {
+    if (location.pathname === ADD_ELEMENT_ROUTE) {
+      return 'Create';
+    }
+
+    return 'Edit';
+  }, [location.pathname]);
 
   const open = useMemo(() => {
     return routes.includes(location.pathname)
@@ -135,7 +139,7 @@ export const ElementModal: FC = () => {
 
     dispatch(updateNodeData({ id, name: newName, color }));
     snackbarGenerator.success(`${nodeName || 'Node'} updated.`);
-    
+
     onClose();
   };
 
@@ -191,6 +195,7 @@ export const ElementModal: FC = () => {
       onClose={onClose}
       onSubmit={handleDialogSubmit}
       size="sm"
+      submitButtonName={submitButtonName}
     >
       <Form
         formRef={formRef}
