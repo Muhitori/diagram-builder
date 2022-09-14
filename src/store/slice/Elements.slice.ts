@@ -55,19 +55,12 @@ export const elementsSlice = createSlice({
       action: PayloadAction<SetGeneralOptionsPayload>
     ) {
       const { groupName, generalOptions } = action.payload;
-      const elements = state[groupName].elements.map(element => ({
-        ...generalOptions,
-        ...element,
-        //use general options name as prefix for element name
-        name: generalOptions.name + element.name
-      }));
 
       return {
         ...state,
         [groupName]: {
           ...state[groupName],
           generalOptions,
-          elements,
         },
       };
     },
@@ -113,5 +106,5 @@ export const elementsSlice = createSlice({
 });
 
 export const { reducer: elementsReducer } = elementsSlice;
-export const { addGroup, deleteGroup, addElement, deleteElement } =
+export const { addGroup, setGroupGeneralOptions, deleteGroup, addElement, deleteElement } =
   elementsSlice.actions;

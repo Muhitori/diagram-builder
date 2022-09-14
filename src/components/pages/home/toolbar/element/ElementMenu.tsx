@@ -2,7 +2,6 @@ import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteElement } from 'src/store/slice/Elements.slice';
-import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 import MenuIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';

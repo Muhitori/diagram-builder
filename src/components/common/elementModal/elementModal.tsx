@@ -1,9 +1,8 @@
 import { FC, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addElement, setElementModalData } from 'src/store/slice';
+import { addElement, setElementModalData, setGroupGeneralOptions } from 'src/store/slice';
 import { Form } from '../form/Form';
 import { FormikProps } from 'formik';
-import { IField } from 'src/types/UI';
 import { Dialog } from '../dialog/Dialog';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -79,7 +78,25 @@ export const ElementModal: FC = () => {
   };
 
   const handleEditGroup = (data: ElementFields) => {
-    snackbarGenerator.info('edit group');
+    const { name, color } = data;
+    const elementPrefix = name.trim();
+    const groupName = search.get('groupName');
+
+    if (groupName) {
+      dispatch(
+        setGroupGeneralOptions({
+          groupName,
+          generalOptions: {
+            name: elementPrefix,
+            color,
+          },
+        })
+      );
+      snackbarGenerator.success(`${groupName} updated.`);
+      onClose();
+    } else {
+      snackbarGenerator.error('Error while group updating.');
+    }
   }
 
   const handleEditElement = (data: ElementFields) => {

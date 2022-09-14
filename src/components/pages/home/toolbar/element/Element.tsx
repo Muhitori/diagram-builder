@@ -6,14 +6,17 @@ import { Box, Typography } from '@mui/material';
 import { ColorModeContext } from 'src/components/App';
 import { getBorderColor, getElementBackgroundColor } from 'src/utils/helpers/UI.helper';
 import { ElementMenu } from './ElementMenu';
+import { ElementFields } from 'src/types/Forms';
 
 interface Props {
   groupName: string;
   element: IElement;
+  generalOptions: Partial<ElementFields>;
 }
 
-export const Element: FC<Props> = ({ groupName, element: { id, name, color } }) => {
+export const Element: FC<Props> = ({ groupName, generalOptions, element: { id, name, color } }) => {
   const classes = useStyles();
+  const { name: prefix, color: groupColor } = generalOptions;
 
   const { mode } = useContext(ColorModeContext);
 
@@ -25,7 +28,12 @@ export const Element: FC<Props> = ({ groupName, element: { id, name, color } }) 
   const borderColor = useMemo(() => getBorderColor(mode), [mode]);
 
   //Adding opacity 0.5
-  const backgroundColor = useMemo(() => getElementBackgroundColor(color), [color]);
+  const backgroundColor = useMemo(() => {
+    const elementColor = color || groupColor;
+    return getElementBackgroundColor(elementColor);
+  }, [color, groupColor]);
+
+  const elementName = useMemo(() => prefix ? `${prefix}-${name}` : name, [prefix, name]);
 
   return (
     <Box sx={{ ...classes.root }}>
@@ -34,7 +42,7 @@ export const Element: FC<Props> = ({ groupName, element: { id, name, color } }) 
         draggable
         onDragStart={handleDragStart}
       >
-        <Typography variant="body2">{name}</Typography>
+        <Typography variant="body2">{elementName}</Typography>
       </Box>
 
       <ElementMenu id={id} groupName={groupName} name={name} color={color} />

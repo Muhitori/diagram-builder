@@ -9,7 +9,7 @@ interface Props {
   group: IElementGroup;
 }
 
-export const ElementGroup: FC<Props> = ({ group: { name, elements } }) => {
+export const ElementGroup: FC<Props> = ({ group: { name, generalOptions, elements } }) => {
   const classes = useStyles();
 
   return (
@@ -22,7 +22,12 @@ export const ElementGroup: FC<Props> = ({ group: { name, elements } }) => {
       <Box sx={classes.elements}>
         {!!elements.length &&
           elements.map((element) => (
-            <Element key={element.id} groupName={name} element={element} />
+            <Element
+              key={element.id}
+              groupName={name}
+              generalOptions={generalOptions}
+              element={element}
+            />
           ))}
       </Box>
     </Box>
