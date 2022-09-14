@@ -7,22 +7,21 @@ import { IField } from 'src/types/UI';
 import { Dialog } from '../dialog/Dialog';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ADD_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
+import { ADD_ELEMENT_ROUTE, EDIT_ELEMENT_ROUTE, EDIT_GROUP_ROUTE, EDIT_NODE_ROUTE } from 'src/utils/constants/route.constants';
 
-interface AddElementFields {
+interface ElementFields {
   name: string;
   color: string;
 }
 
 interface Props {
-  // open: boolean;
-  // onClose: () => void;
   groupName: string;
+  values?: ElementFields;
 }
 
 const initialValues = {
   name: '',
-  color: '#ffffff'
+  color: 'transparent'
 };
 
 const fields: IField[] = [
@@ -30,20 +29,27 @@ const fields: IField[] = [
   { name: 'color', type: 'color', label: 'Color:' },
 ];
 
-export const AddElementModal: FC<Props> = ({ groupName }) => {
+const routes = [
+  ADD_ELEMENT_ROUTE,
+  EDIT_ELEMENT_ROUTE,
+  EDIT_GROUP_ROUTE,
+  EDIT_NODE_ROUTE,
+];
+
+export const ElementModal: FC<Props> = ({ groupName, values }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const dispatch = useDispatch();
-  const formRef = useRef<FormikProps<AddElementFields>>(null);
+  const formRef = useRef<FormikProps<ElementFields>>(null);
 
-  const open = location.pathname === ADD_ELEMENT_ROUTE;
+  const open = routes.includes(location.pathname);
 
   const onClose = () => {
     navigate('');
   }
 
-  const handleAddElement = (data: AddElementFields) => {
+  const handleAddElement = (data: ElementFields) => {
     const { name, color } = data;
     const elementName = name.trim();
 
@@ -72,7 +78,7 @@ export const AddElementModal: FC<Props> = ({ groupName }) => {
     >
       <Form
         formRef={formRef}
-        initialValues={initialValues}
+        initialValues={values || initialValues}
         onSubmit={handleAddElement}
         fields={fields}
       />
