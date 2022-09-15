@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { ElementFields } from 'src/types/Forms';
+import { ElementFormData } from 'src/types/Forms';
 import { Bars } from 'src/types/UI';
 
 interface UIState {
   bars: Bars;
-  elementModalData: ElementFields
+  elementModalData: ElementFormData;
 }
 
 const initialElementData = {
@@ -37,7 +37,10 @@ export const uiSlice = createSlice({
         bars,
       };
     },
-    setElementModalData(state, action: PayloadAction<Partial<ElementFields> | null>) {
+    setElementModalData(
+      state,
+      action: PayloadAction<Partial<ElementFormData> | null>
+    ) {
       const data = action.payload;
 
       return {

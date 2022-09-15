@@ -1,14 +1,14 @@
 import { FC, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addElement, setElementModalData, setGroupGeneralOptions, updateElement, updateNodeData } from 'src/store/slice';
-import { Form } from '../form/Form';
+import { Form } from '../../form/Form';
 import { FormikProps } from 'formik';
-import { Dialog } from '../dialog/Dialog';
+import { Dialog } from '../../dialog/Dialog';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ADD_ELEMENT_ROUTE, EDIT_ELEMENT_ROUTE, EDIT_GROUP_ROUTE, EDIT_NODE_ROUTE } from 'src/utils/constants/route.constants';
 import { elementModalDataSelector } from 'src/store/selector/UI.selector';
-import { ElementFields } from 'src/types/Forms';
+import { ElementFormData } from 'src/types/Forms';
 
 const routes = [
   ADD_ELEMENT_ROUTE,
@@ -23,7 +23,7 @@ export const ElementModal: FC = () => {
   const search = new URLSearchParams(location.search);
 
   const dispatch = useDispatch();
-  const formRef = useRef<FormikProps<ElementFields>>(null);
+  const formRef = useRef<FormikProps<ElementFormData>>(null);
 
   const initialValues = useSelector(elementModalDataSelector);
 
@@ -67,7 +67,7 @@ export const ElementModal: FC = () => {
     dispatch(setElementModalData(null));
   }
 
-  const handleAddElement = (data: ElementFields) => {
+  const handleAddElement = (data: ElementFormData) => {
     const { name, color } = data;
     const elementName = name.trim();
     const groupName = search.get('groupName');
@@ -81,7 +81,7 @@ export const ElementModal: FC = () => {
     }
   };
 
-  const handleEditGroup = (data: ElementFields) => {
+  const handleEditGroup = (data: ElementFormData) => {
     const { name, color } = data;
     const elementPrefix = name.trim();
     const groupName = search.get('groupName');
@@ -101,9 +101,9 @@ export const ElementModal: FC = () => {
     } else {
       snackbarGenerator.error('Error while group updating.');
     }
-  }
+  };
 
-  const handleEditElement = (data: ElementFields) => {
+  const handleEditElement = (data: ElementFormData) => {
     const { name, color } = data;
     const newName = name.trim();
 
@@ -125,7 +125,7 @@ export const ElementModal: FC = () => {
     }
   };
   
-  const handleEditNode = (data: ElementFields) => {
+  const handleEditNode = (data: ElementFormData) => {
     const { name, color } = data;
     const newName = name.trim();
 
@@ -143,7 +143,7 @@ export const ElementModal: FC = () => {
     onClose();
   };
 
-  const handleFormSubmit = (data: ElementFields) => {
+  const handleFormSubmit = (data: ElementFormData) => {
     if (location.pathname === ADD_ELEMENT_ROUTE) {
       handleAddElement(data);
     }
@@ -159,7 +159,7 @@ export const ElementModal: FC = () => {
     if (location.pathname === EDIT_NODE_ROUTE) {
       handleEditNode(data);
     }
-  }
+  };
 
   const handleDialogSubmit = () => {
     if (formRef.current) {

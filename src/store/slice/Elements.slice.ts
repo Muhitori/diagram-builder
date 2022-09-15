@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IElementGroup } from 'src/types/Elements';
-import { ElementFields } from 'src/types/Forms';
+import { ElementFormData } from 'src/types/Forms';
 import { v4 as uuid } from 'uuid';
 
 interface AddElementPayload {
@@ -18,7 +18,7 @@ interface UpdateElementPayload {
 
 
 interface SetGeneralOptionsPayload {
-  generalOptions: Partial<ElementFields>;
+  generalOptions: Partial<ElementFormData>;
   groupName: string;
 }
 
