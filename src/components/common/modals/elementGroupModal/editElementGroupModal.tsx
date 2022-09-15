@@ -9,11 +9,6 @@ import { EDIT_GROUP_ROUTE } from 'src/utils/constants/route.constants';
 import { Dialog } from '../../dialog/Dialog';
 import { Form } from '../../form/Form';
 
-interface Props {
-  groupName: string;
-  values: GroupFormData;
-}
-
 const fields = [
   { name: 'name', label: 'Element prefix', fullWidth: true },
   { name: 'color', type: 'color', label: 'Color:' },
@@ -24,10 +19,7 @@ const initialValues = {
   color: '#ffffff',
 };
 
-export const EditElementGroupModal: FC<Props> = ({
-  groupName,
-  values,
-}) => {
+export const EditElementGroupModal: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formRef = useRef<FormikProps<GroupFormData>>(null);

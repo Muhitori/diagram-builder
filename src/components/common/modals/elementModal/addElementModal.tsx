@@ -9,10 +9,6 @@ import { ElementFormData } from 'src/types/Forms';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {ADD_ELEMENT_ROUTE,} from 'src/utils/constants/route.constants';
 
-interface Props {
-  groupName: string;
-}
-
 const fields = [
   { name: 'name', label: 'Element name', fullWidth: true },
   { name: 'color', type: 'color', label: 'Color:' },
@@ -23,7 +19,7 @@ const initialValues = {
   color: '#ffffff',
 };
 
-export const AddElementModal: FC<Props> = ({groupName}) => {
+export const AddElementModal: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 

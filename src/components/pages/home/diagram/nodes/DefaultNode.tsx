@@ -16,7 +16,6 @@ import { green, grey, red } from '@mui/material/colors';
 import { ColorModeContext } from 'src/components/App';
 import { useSelector } from 'react-redux';
 import { nodeSizesSelector } from 'src/store/selector/Node.selector';
-import { EditNodeModal } from 'src/components/common/modals/nodeModal/editNodeModal';
 
 const handleStyles = {
   width: '7px',
@@ -118,7 +117,6 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
         />
         <NodeMenu nodeId={id} />
       </Box>
-      {/* <EditNodeModal /> */}
     </>
   );
 };

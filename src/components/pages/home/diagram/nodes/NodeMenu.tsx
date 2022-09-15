@@ -2,7 +2,7 @@ import { MenuItem, Menu, Box, ListItemIcon } from '@mui/material';
 import { FC, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentNodeSelector } from 'src/store/selector/Node.selector';
-import { setCurrentNodeId, deleteNode, toggleBar } from 'src/store/slice';
+import { setCurrentNodeId, deleteNode, toggleBar, setModalData } from 'src/store/slice';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -68,7 +68,14 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
       snackbarGenerator.error('Please select node to edit.');
       return;
     }
-    navigate(EDIT_NODE_ROUTE);
+
+    const name = currentNode.data.label;
+
+    const colorWithAlpha = currentNode.data.backgroundColor;
+    const color = colorWithAlpha.substring(0, colorWithAlpha.length - 2);
+
+    navigate(`${EDIT_NODE_ROUTE}?nodeName=${name}&id=${nodeId}`);
+    dispatch(setModalData({ name: 'node', data: { name, color } }));
 
     handleMenuClose();
   };

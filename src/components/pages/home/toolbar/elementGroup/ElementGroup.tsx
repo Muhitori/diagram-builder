@@ -33,8 +33,8 @@ export const ElementGroup: FC<Props> = ({ group: { name, generalOptions, element
           ))}
       </Box>
 
-      <AddElementModal groupName={name} />
-      <EditElementGroupModal groupName={name} values={generalOptions} />
+      {/* <AddElementModal groupName={name} />
+      <EditElementGroupModal groupName={name} values={generalOptions} /> */}
     </Box>
   );
 };

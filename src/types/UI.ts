@@ -1,8 +1,15 @@
 import { SxProps, Theme } from '@mui/material';
+import { ElementFormData, GroupFormData, NodeFormData } from './Forms';
 
 export interface Bars {
   toolbar: boolean;
   nodeBar: boolean;
+}
+
+export interface Modals {
+  group: GroupFormData;
+  element: ElementFormData;
+  node: NodeFormData;
 }
 
 export interface IColorModeContext {

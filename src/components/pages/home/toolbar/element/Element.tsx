@@ -46,14 +46,14 @@ export const Element: FC<Props> = ({ groupName, generalOptions, element: { id, n
         <Typography variant="body2">{elementName}</Typography>
       </Box>
 
-      <ElementMenu id={id} groupName={groupName} />
+      {/* <ElementMenu id={id} groupName={groupName} />
       <EditElementModal
         key={id}
         groupName={groupName}
         elementId={id}
         elementName={name}
         values={{ name, color }}
-      />
+      /> */}
     </Box>
   );
 };
