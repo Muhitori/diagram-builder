@@ -118,7 +118,7 @@ export const DefaultNode: FC<NodeProps> = ({ id, isConnectable, data, selected }
         />
         <NodeMenu nodeId={id} />
       </Box>
-      <EditNodeModal />
+      {/* <EditNodeModal /> */}
     </>
   );
 };
