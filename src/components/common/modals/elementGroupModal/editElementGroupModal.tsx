@@ -1,19 +1,17 @@
 import { FormikProps } from 'formik';
-import { FC, useRef } from 'react';
+import { FC, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { setGroupGeneralOptions } from 'src/store/slice';
 import { GroupFormData, NodeFormData } from 'src/types/Forms';
+import { EDIT_GROUP_ROUTE } from 'src/utils/constants/route.constants';
 import { Dialog } from '../../dialog/Dialog';
 import { Form } from '../../form/Form';
 
 interface Props {
   groupName: string;
-  title: string;
-  open: boolean;
-  onClose: () => void;
-  submitButtonName: string;
-  values?: GroupFormData;
+  values: GroupFormData;
 }
 
 const fields = [
@@ -26,18 +24,27 @@ const initialValues = {
   color: '#ffffff',
 };
 
-export const ElementGroupModal: FC<Props> = ({
+export const EditElementGroupModal: FC<Props> = ({
   groupName,
-  title,
-  open,
-  onClose,
-  submitButtonName,
   values,
 }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const formRef = useRef<FormikProps<GroupFormData>>(null);
 
-  const handleDialogSubmit = () => {};
+  const open = useMemo(() => {
+    return location.pathname === EDIT_GROUP_ROUTE;
+  }, [location.pathname]);
+
+  const onClose = () => {
+    navigate('');
+  };
+
+  const handleDialogSubmit = () => {
+    if (formRef.current) {
+      formRef.current.submitForm();
+    }
+  };
 
   const handleFormSubmit = (data: NodeFormData) => {
     const { name: prefix, color } = data;
@@ -62,12 +69,12 @@ export const ElementGroupModal: FC<Props> = ({
 
   return (
     <Dialog
-      title={title}
+      title={`Edit group "${groupName}"`}
       open={open}
       onClose={onClose}
       onSubmit={handleDialogSubmit}
       size="sm"
-      submitButtonName={submitButtonName}
+      submitButtonName={'Edit'}
     >
       <Form
         formRef={formRef}

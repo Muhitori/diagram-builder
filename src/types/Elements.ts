@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ElementFormData } from './Forms';
+import { GroupFormData } from './Forms';
 
 export interface IElement {
   id: string;
@@ -10,6 +10,6 @@ export interface IElement {
 
 export interface IElementGroup {
   name: string;
-  generalOptions: Partial<ElementFormData>;
+  generalOptions: GroupFormData;
   elements: IElement[];
 }

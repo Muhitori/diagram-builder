@@ -18,7 +18,7 @@ interface UpdateElementPayload {
 
 
 interface SetGeneralOptionsPayload {
-  generalOptions: Partial<GroupFormData>;
+  generalOptions: GroupFormData;
   groupName: string;
 }
 
@@ -31,13 +31,16 @@ interface ElementsState {
   [id: string]: IElementGroup;
 }
 
+const initialGeneralOptions = {
+  name: '',
+  color: undefined,
+};
+
 const initialState: ElementsState = {
   'Group Sample': {
     name: 'Group Sample',
-    generalOptions: {},
-    elements: [
-      { id: 'elementSample1', name: 'Element Sample 1' },
-    ],
+    generalOptions: initialGeneralOptions,
+    elements: [{ id: 'elementSample1', name: 'Element Sample 1' }],
   },
 };
 
@@ -52,7 +55,7 @@ export const elementsSlice = createSlice({
         ...state,
         [name]: {
           name,
-          generalOptions: {},
+          generalOptions: initialGeneralOptions,
           elements: [],
         },
       };

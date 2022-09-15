@@ -1,6 +1,6 @@
 import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteGroup } from 'src/store/slice/Elements.slice';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,8 +8,7 @@ import MenuIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { ADD_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
-import { groupSelector } from 'src/store/selector/Element.selector';
+import { ADD_ELEMENT_ROUTE, EDIT_GROUP_ROUTE } from 'src/utils/constants/route.constants';
 
 interface Props {
   groupName: string;
@@ -18,8 +17,6 @@ interface Props {
 export const ElementGroupMenu: FC<Props> = ({ groupName }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const group = useSelector(groupSelector(groupName));
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -38,7 +35,7 @@ export const ElementGroupMenu: FC<Props> = ({ groupName }) => {
   }
 
   const handleGroupSettings = () => {
-    // dispatch(setElementModalData(group.generalOptions));
+    navigate(`${EDIT_GROUP_ROUTE}`);
     handleClose();
   }
 

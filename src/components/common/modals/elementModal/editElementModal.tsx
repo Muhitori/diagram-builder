@@ -46,8 +46,6 @@ export const EditElementModal: FC<Props> = ({
     navigate('');
   };
 
-  const title = useMemo(() => `Edit element "${elementName}"`, [location.pathname, elementName]);
-
   const handleEditElement = (data: ElementFormData) => {
     const { name, color } = data;
     const newName = name.trim();
@@ -76,7 +74,7 @@ export const EditElementModal: FC<Props> = ({
 
   return (
     <Dialog
-      title={title}
+      title={`Edit element "${elementName}"`}
       open={open}
       onClose={onClose}
       onSubmit={handleDialogSubmit}

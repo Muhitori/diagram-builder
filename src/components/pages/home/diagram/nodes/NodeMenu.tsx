@@ -10,12 +10,15 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { barOpenedSelector } from 'src/store/selector/UI.selector';
+import { useNavigate } from 'react-router-dom';
+import { EDIT_NODE_ROUTE } from 'src/utils/constants/route.constants';
 
 interface Props {
   nodeId: string;
 }
 
 export const NodeMenu: FC<Props> = ({ nodeId }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const isNodeBarOpened = useSelector(barOpenedSelector('nodeBar'));
@@ -65,13 +68,7 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
       snackbarGenerator.error('Please select node to edit.');
       return;
     }
-
-    const name = currentNode.data.label;
-    
-    const colorWithAlpha = currentNode.data.backgroundColor;
-    const color = colorWithAlpha.substring(0, colorWithAlpha.length - 2);
-
-    // dispatch(setElementModalData({ name, color }));
+    navigate(EDIT_NODE_ROUTE);
 
     handleMenuClose();
   };

@@ -23,7 +23,7 @@ const initialValues = {
   color: '#ffffff',
 };
 
-export const ElementModal: FC<Props> = ({groupName}) => {
+export const AddElementModal: FC<Props> = ({groupName}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,8 +37,6 @@ export const ElementModal: FC<Props> = ({groupName}) => {
   const onClose = () => {
     navigate('');
   };
-
-  const title = useMemo(() => `Create element for "${groupName}"`, [location.pathname, groupName]);
 
   const handleAddElement = (data: ElementFormData) => {
     const { name, color } = data;
@@ -61,7 +59,7 @@ export const ElementModal: FC<Props> = ({groupName}) => {
 
   return (
     <Dialog
-      title={title}
+      title={`Create element for "${groupName}"`}
       open={open}
       onClose={onClose}
       onSubmit={handleDialogSubmit}
