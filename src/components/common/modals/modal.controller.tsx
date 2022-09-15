@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom'
-import { ADD_ELEMENT_ROUTE, EDIT_ELEMENT_ROUTE, EDIT_GROUP_ROUTE } from 'src/utils/constants/route.constants';
+import { ADD_ELEMENT_ROUTE, EDIT_ELEMENT_ROUTE, EDIT_GROUP_ROUTE, EDIT_NODE_ROUTE } from 'src/utils/constants/route.constants';
 
 import { EditElementGroupModal } from './elementGroupModal/editElementGroupModal';
 import { AddElementModal } from './elementModal/addElementModal';
@@ -20,7 +20,10 @@ export const ModalController = () => {
   if (location.pathname === EDIT_GROUP_ROUTE) {
       return <EditElementGroupModal />;
   }
+
+  if (location.pathname === EDIT_NODE_ROUTE) {
+    return <EditNodeModal />;
+  }
   
-  //EDIT_NODE_ROUTE
-  return <EditNodeModal />
+  return null;
 }

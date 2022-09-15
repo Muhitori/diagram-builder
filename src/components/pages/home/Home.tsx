@@ -6,6 +6,7 @@ import { NodeDetails } from './nodeDetails/NodeDetails';
 import { Sidebar } from '../../common/sidebar/Sidebar';
 import { useStyles } from './styles';
 import { Toolbar } from './toolbar/Toolbar';
+import { ModalController } from 'src/components/common/modals/modal.controller';
 
 export const Home = () => {
   const classes = useStyles();
@@ -23,6 +24,7 @@ export const Home = () => {
       </Sidebar>
 
       <Diagram />
+      <ModalController />
     </Grid>
   );
 }

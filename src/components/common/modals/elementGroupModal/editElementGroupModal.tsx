@@ -1,8 +1,9 @@
 import { FormikProps } from 'formik';
 import { FC, useMemo, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
+import { modalDataSelector } from 'src/store/selector/UI.selector';
 import { setGroupGeneralOptions } from 'src/store/slice';
 import { GroupFormData, NodeFormData } from 'src/types/Forms';
 import { EDIT_GROUP_ROUTE } from 'src/utils/constants/route.constants';
@@ -20,9 +21,15 @@ const initialValues = {
 };
 
 export const EditElementGroupModal: FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const formRef = useRef<FormikProps<GroupFormData>>(null);
+
+  const search = new URLSearchParams(location.search);
+  const groupName = search.get('groupName');
+
+  const values = useSelector(modalDataSelector('group'));
 
   const open = useMemo(() => {
     return location.pathname === EDIT_GROUP_ROUTE;

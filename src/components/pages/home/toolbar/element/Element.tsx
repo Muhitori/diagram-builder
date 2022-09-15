@@ -5,9 +5,8 @@ import { useStyles } from './styles';
 import { Box, Typography } from '@mui/material';
 import { ColorModeContext } from 'src/components/App';
 import { getBorderColor, getElementBackgroundColor } from 'src/utils/helpers/UI.helper';
-import { ElementMenu } from './ElementMenu';
 import { ElementFormData } from 'src/types/Forms';
-import { EditElementModal } from 'src/components/common/modals/elementModal/editElementModal';
+import { ElementMenu } from './ElementMenu';
 
 interface Props {
   groupName: string;
@@ -45,15 +44,7 @@ export const Element: FC<Props> = ({ groupName, generalOptions, element: { id, n
       >
         <Typography variant="body2">{elementName}</Typography>
       </Box>
-
-      {/* <ElementMenu id={id} groupName={groupName} />
-      <EditElementModal
-        key={id}
-        groupName={groupName}
-        elementId={id}
-        elementName={name}
-        values={{ name, color }}
-      /> */}
+      <ElementMenu id={id} groupName={groupName} name={name} color={color} />
     </Box>
   );
 };

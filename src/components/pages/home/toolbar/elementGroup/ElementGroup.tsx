@@ -4,8 +4,6 @@ import { IElementGroup } from 'src/types/Elements';
 import { Element } from 'src/components/pages/home/toolbar/element/Element';
 import { useStyles } from './styles';
 import { ElementGroupMenu } from './ElementGroupMenu';
-import { AddElementModal } from 'src/components/common/modals/elementModal/addElementModal';
-import { EditElementGroupModal } from 'src/components/common/modals/elementGroupModal/editElementGroupModal';
 
 interface Props {
   group: IElementGroup;
@@ -32,9 +30,6 @@ export const ElementGroup: FC<Props> = ({ group: { name, generalOptions, element
             />
           ))}
       </Box>
-
-      {/* <AddElementModal groupName={name} />
-      <EditElementGroupModal groupName={name} values={generalOptions} /> */}
     </Box>
   );
 };

@@ -22,9 +22,12 @@ const initialValues = {
 export const AddElementModal: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const dispatch = useDispatch();
+
   const formRef = useRef<FormikProps<ElementFormData>>(null);
+
+  const search = new URLSearchParams(location.search);
+  const groupName = search.get('groupName');
 
   const open = useMemo(() => {
     return location.pathname === ADD_ELEMENT_ROUTE;

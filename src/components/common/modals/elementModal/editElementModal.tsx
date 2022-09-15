@@ -1,5 +1,5 @@
 import { FC, useMemo, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateElement } from 'src/store/slice';
 import { Form } from '../../form/Form';
 import { FormikProps } from 'formik';
@@ -8,23 +8,26 @@ import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { ElementFormData } from 'src/types/Forms';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { EDIT_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
+import { modalDataSelector } from 'src/store/selector/UI.selector';
 
 const fields = [
   { name: 'name', label: 'Element name', fullWidth: true },
   { name: 'color', type: 'color', label: 'Color:' },
 ];
 
-const initialValues = {
-  name: '',
-  color: '#ffffff',
-};
-
 export const EditElementModal: FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const dispatch = useDispatch();
   const formRef = useRef<FormikProps<ElementFormData>>(null);
+
+  const values = useSelector(modalDataSelector('element'));
+
+  const search = new URLSearchParams(location.search);
+  const groupName = search.get('groupName');
+  const elementId = search.get('elementId');
+  const elementName = search.get('elementName');
 
   const open = useMemo(() => {
     return location.pathname === EDIT_ELEMENT_ROUTE;
@@ -71,7 +74,7 @@ export const EditElementModal: FC = () => {
     >
       <Form
         formRef={formRef}
-        initialValues={values || initialValues}
+        initialValues={values}
         onSubmit={handleEditElement}
         fields={fields}
       />

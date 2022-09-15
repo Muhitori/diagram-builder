@@ -8,13 +8,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
 import { EDIT_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
+import { setModalData } from 'src/store/slice/UI.slice';
 
 interface Props {
   id: string;
   groupName: string;
+  name: string;
+  color: string | undefined;
 }
 
-export const ElementMenu: FC<Props> = ({ id, groupName }) => {
+export const ElementMenu: FC<Props> = ({ id, groupName, name, color }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -30,7 +33,10 @@ export const ElementMenu: FC<Props> = ({ id, groupName }) => {
   };
 
   const handleElementSettings = () => {
-    navigate(`${EDIT_ELEMENT_ROUTE}`);
+    navigate(
+      `${EDIT_ELEMENT_ROUTE}?elementName=${name}&groupName=${groupName}&elementId=${id}`
+    );
+    dispatch(setModalData({ name: 'element', data: { name, color } }));
     handleClose();
   };
 

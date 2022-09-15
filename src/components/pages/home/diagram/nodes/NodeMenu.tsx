@@ -74,7 +74,7 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
     const colorWithAlpha = currentNode.data.backgroundColor;
     const color = colorWithAlpha.substring(0, colorWithAlpha.length - 2);
 
-    navigate(`${EDIT_NODE_ROUTE}?nodeName=${name}&id=${nodeId}`);
+    navigate(`${EDIT_NODE_ROUTE}?nodeName=${name}&nodeId=${nodeId}`);
     dispatch(setModalData({ name: 'node', data: { name, color } }));
 
     handleMenuClose();
