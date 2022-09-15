@@ -1,10 +1,10 @@
 import { Box, Typography } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { IElementGroup } from 'src/types/Elements';
 import { Element } from 'src/components/pages/home/toolbar/element/Element';
 import { useStyles } from './styles';
 import { ElementGroupMenu } from './ElementGroupMenu';
-import { ElementModal } from 'src/components/common/modals/elementModal/elementModal';
+import { ElementModal } from 'src/components/common/modals/elementModal/addElementModal';
 
 interface Props {
   group: IElementGroup;

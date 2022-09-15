@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { ADD_ELEMENT_ROUTE, EDIT_GROUP_ROUTE } from 'src/utils/constants/route.constants';
+import { ADD_ELEMENT_ROUTE } from 'src/utils/constants/route.constants';
 import { groupSelector } from 'src/store/selector/Element.selector';
 
 interface Props {

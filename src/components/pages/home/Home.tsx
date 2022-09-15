@@ -6,7 +6,6 @@ import { NodeDetails } from './nodeDetails/NodeDetails';
 import { Sidebar } from '../../common/sidebar/Sidebar';
 import { useStyles } from './styles';
 import { Toolbar } from './toolbar/Toolbar';
-import { ElementModal } from 'src/components/common/modals/elementModal/elementModal';
 
 export const Home = () => {
   const classes = useStyles();

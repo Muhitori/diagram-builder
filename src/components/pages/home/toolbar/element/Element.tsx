@@ -7,7 +7,7 @@ import { ColorModeContext } from 'src/components/App';
 import { getBorderColor, getElementBackgroundColor } from 'src/utils/helpers/UI.helper';
 import { ElementMenu } from './ElementMenu';
 import { ElementFormData } from 'src/types/Forms';
-import { ElementModal } from 'src/components/common/modals/elementModal/elementModal';
+import { EditElementModal } from 'src/components/common/modals/elementModal/editElementModal';
 
 interface Props {
   groupName: string;
@@ -47,7 +47,13 @@ export const Element: FC<Props> = ({ groupName, generalOptions, element: { id, n
       </Box>
 
       <ElementMenu id={id} groupName={groupName} />
-      <ElementModal groupName={groupName} elementId={id} elementName={name} values={{name, color}} />
+      <EditElementModal
+        key={id}
+        groupName={groupName}
+        elementId={id}
+        elementName={name}
+        values={{ name, color }}
+      />
     </Box>
   );
 };
