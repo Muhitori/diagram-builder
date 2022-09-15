@@ -1,52 +1,63 @@
 import { FC, useMemo, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addElement, setElementModalData, setGroupGeneralOptions, updateElement, updateNodeData } from 'src/store/slice';
+import { useDispatch } from 'react-redux';
+import { addElement, updateElement} from 'src/store/slice';
 import { Form } from '../../form/Form';
 import { FormikProps } from 'formik';
 import { Dialog } from '../../dialog/Dialog';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { ADD_ELEMENT_ROUTE, EDIT_ELEMENT_ROUTE, EDIT_GROUP_ROUTE, EDIT_NODE_ROUTE } from 'src/utils/constants/route.constants';
-import { elementModalDataSelector } from 'src/store/selector/UI.selector';
 import { ElementFormData } from 'src/types/Forms';
-
-const routes = [
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
   ADD_ELEMENT_ROUTE,
   EDIT_ELEMENT_ROUTE,
-  EDIT_GROUP_ROUTE,
-  EDIT_NODE_ROUTE,
+} from 'src/utils/constants/route.constants';
+
+interface Props {
+  groupName: string;
+  elementName?: string;
+  elementId?: string;
+  values?: ElementFormData;
+}
+
+const fields = [
+  { name: 'name', label: 'Element name', fullWidth: true },
+  { name: 'color', type: 'color', label: 'Color:' },
 ];
 
-export const ElementModal: FC = () => {
+const initialValues = {
+  name: '',
+  color: '#ffffff',
+};
+
+const routes = [ADD_ELEMENT_ROUTE, EDIT_ELEMENT_ROUTE];
+
+export const ElementModal: FC<Props> = ({
+  groupName,
+  elementName,
+  elementId,
+  values,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const search = new URLSearchParams(location.search);
 
   const dispatch = useDispatch();
   const formRef = useRef<FormikProps<ElementFormData>>(null);
 
-  const initialValues = useSelector(elementModalDataSelector);
-
-  const fields = useMemo(() => {
-    if (location.pathname === EDIT_GROUP_ROUTE) {
-      return [
-        { name: 'name', label: 'Element prefix', fullWidth: true },
-        { name: 'color', type: 'color', label: 'Color:' },
-      ];
-    }
-
-    if (location.pathname === EDIT_NODE_ROUTE) {
-      return [
-        { name: 'name', label: 'Node name', fullWidth: true },
-        { name: 'color', type: 'color', label: 'Color:' },
-      ];
-    }
-
-    return [
-      { name: 'name', label: 'Element name', fullWidth: true },
-      { name: 'color', type: 'color', label: 'Color:' },
-    ];
+  const open = useMemo(() => {
+    return routes.includes(location.pathname);
   }, [location.pathname]);
+
+  const onClose = () => {
+    navigate('');
+  };
+
+  const title = useMemo(() => {
+    if (location.pathname === ADD_ELEMENT_ROUTE) {
+      return `Create element for "${groupName}"`;
+    }
+
+    return `Edit element "${elementName}"`;
+  }, [location.pathname, groupName, elementName]);
 
   const submitButtonName = useMemo(() => {
     if (location.pathname === ADD_ELEMENT_ROUTE) {
@@ -56,24 +67,12 @@ export const ElementModal: FC = () => {
     return 'Edit';
   }, [location.pathname]);
 
-  const open = useMemo(() => {
-    return routes.includes(location.pathname)
-  }, [location.pathname]);
-
-  const onClose = () => {
-    navigate('');
-
-    //reset data
-    dispatch(setElementModalData(null));
-  }
-
   const handleAddElement = (data: ElementFormData) => {
     const { name, color } = data;
-    const elementName = name.trim();
-    const groupName = search.get('groupName');
+    const newName = name.trim();
 
-    if (groupName && elementName) {
-      dispatch(addElement({ groupName, name: elementName, color }));
+    if (groupName && newName) {
+      dispatch(addElement({ groupName, name: newName, color }));
       snackbarGenerator.success(`${name} created.`);
       onClose();
     } else {
@@ -81,66 +80,22 @@ export const ElementModal: FC = () => {
     }
   };
 
-  const handleEditGroup = (data: ElementFormData) => {
-    const { name, color } = data;
-    const elementPrefix = name.trim();
-    const groupName = search.get('groupName');
-
-    if (groupName) {
-      dispatch(
-        setGroupGeneralOptions({
-          groupName,
-          generalOptions: {
-            name: elementPrefix,
-            color,
-          },
-        })
-      );
-      snackbarGenerator.success(`${groupName} updated.`);
-      onClose();
-    } else {
-      snackbarGenerator.error('Error while group updating.');
-    }
-  };
-
   const handleEditElement = (data: ElementFormData) => {
     const { name, color } = data;
     const newName = name.trim();
 
-    const elementName = search.get('elementName');
-    const groupName = search.get('groupName');
-    const id = search.get('id');
-
-    if (!id) {
+    if (!elementId) {
       snackbarGenerator.error('Something went wrong.');
       return;
     }
 
     if (groupName && newName) {
-      dispatch(updateElement({ groupName, id, name: newName, color }));
+      dispatch(updateElement({ groupName, id: elementId, name: newName, color }));
       snackbarGenerator.success(`${elementName} updated.`);
       onClose();
     } else {
       snackbarGenerator.error('Enter element name to update element.');
     }
-  };
-  
-  const handleEditNode = (data: ElementFormData) => {
-    const { name, color } = data;
-    const newName = name.trim();
-
-    const nodeName = search.get('nodeName');
-    const id = search.get('id');
-
-    if (!id) {
-      snackbarGenerator.error('Something went wrong.');
-      return;
-    }
-
-    dispatch(updateNodeData({ id, name: newName, color }));
-    snackbarGenerator.success(`${nodeName || 'Node'} updated.`);
-
-    onClose();
   };
 
   const handleFormSubmit = (data: ElementFormData) => {
@@ -148,16 +103,8 @@ export const ElementModal: FC = () => {
       handleAddElement(data);
     }
 
-    if (location.pathname === EDIT_GROUP_ROUTE) {
-      handleEditGroup(data);
-    }
-
     if (location.pathname === EDIT_ELEMENT_ROUTE) {
       handleEditElement(data);
-    }
-
-    if (location.pathname === EDIT_NODE_ROUTE) {
-      handleEditNode(data);
     }
   };
 
@@ -166,27 +113,6 @@ export const ElementModal: FC = () => {
       formRef.current.submitForm();
     }
   };
-
-  const title = useMemo(() => {
-    if (location.pathname === ADD_ELEMENT_ROUTE) {
-      const groupName = search.get('groupName');
-      return `Create element for "${groupName}"`;
-    }
-
-    if (location.pathname === EDIT_GROUP_ROUTE) {
-      const groupName = search.get('groupName');
-      return `Edit group "${groupName}"`;
-    }
-
-    if (location.pathname === EDIT_ELEMENT_ROUTE) {
-      const elementName = search.get('elementName');
-      return `Edit element "${elementName}"`;
-    }
-
-    //EDIT_NODE_ROUTE
-    const nodeName = search.get('nodeName');
-    return `Edit node "${nodeName}"`;
-  }, [location.pathname]);
 
   return (
     <Dialog
@@ -199,7 +125,7 @@ export const ElementModal: FC = () => {
     >
       <Form
         formRef={formRef}
-        initialValues={initialValues}
+        initialValues={values || initialValues}
         onSubmit={handleFormSubmit}
         fields={fields}
       />

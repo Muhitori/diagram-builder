@@ -1,23 +1,16 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { ElementFormData } from 'src/types/Forms';
 import { Bars } from 'src/types/UI';
 
 interface UIState {
   bars: Bars;
-  elementModalData: ElementFormData;
 }
 
-const initialElementData = {
-  name: '',
-  color: '#ffffff',
-};
 
 const initialState: UIState = {
   bars: {
     toolbar: false,
     nodeBar: false,
   },
-  elementModalData: initialElementData,
 };
 
 export const uiSlice = createSlice({
@@ -37,22 +30,8 @@ export const uiSlice = createSlice({
         bars,
       };
     },
-    setElementModalData(
-      state,
-      action: PayloadAction<Partial<ElementFormData> | null>
-    ) {
-      const data = action.payload;
-
-      return {
-        ...state,
-        elementModalData: {
-          ...initialElementData,
-          ...data,
-        },
-      };
-    },
   },
 });
 
 export const { reducer: uiReducer } = uiSlice;
-export const { toggleBar, setElementModalData } = uiSlice.actions;
+export const { toggleBar } = uiSlice.actions;

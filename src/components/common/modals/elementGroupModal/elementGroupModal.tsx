@@ -3,7 +3,7 @@ import { FC, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { setGroupGeneralOptions } from 'src/store/slice';
-import { ElementFormData, NodeFormData } from 'src/types/Forms';
+import { GroupFormData, NodeFormData } from 'src/types/Forms';
 import { Dialog } from '../../dialog/Dialog';
 import { Form } from '../../form/Form';
 
@@ -13,11 +13,11 @@ interface Props {
   open: boolean;
   onClose: () => void;
   submitButtonName: string;
-  values?: NodeFormData;
+  values?: GroupFormData;
 }
 
 const fields = [
-  { name: 'name', label: 'Node name', fullWidth: true },
+  { name: 'name', label: 'Element prefix', fullWidth: true },
   { name: 'color', type: 'color', label: 'Color:' },
 ];
 
@@ -35,7 +35,7 @@ export const ElementGroupModal: FC<Props> = ({
   values,
 }) => {
   const dispatch = useDispatch();
-  const formRef = useRef<FormikProps<ElementFormData>>(null);
+  const formRef = useRef<FormikProps<GroupFormData>>(null);
 
   const handleDialogSubmit = () => {};
 

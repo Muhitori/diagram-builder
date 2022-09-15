@@ -2,15 +2,13 @@ import { MenuItem, Menu, Box, ListItemIcon } from '@mui/material';
 import { FC, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentNodeSelector } from 'src/store/selector/Node.selector';
-import { setCurrentNodeId, deleteNode, toggleBar, setElementModalData } from 'src/store/slice';
+import { setCurrentNodeId, deleteNode, toggleBar } from 'src/store/slice';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useNavigate } from 'react-router-dom';
-import { EDIT_NODE_ROUTE } from 'src/utils/constants/route.constants';
 import { barOpenedSelector } from 'src/store/selector/UI.selector';
 
 interface Props {
@@ -18,7 +16,6 @@ interface Props {
 }
 
 export const NodeMenu: FC<Props> = ({ nodeId }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const isNodeBarOpened = useSelector(barOpenedSelector('nodeBar'));
@@ -74,8 +71,7 @@ export const NodeMenu: FC<Props> = ({ nodeId }) => {
     const colorWithAlpha = currentNode.data.backgroundColor;
     const color = colorWithAlpha.substring(0, colorWithAlpha.length - 2);
 
-    navigate(`${EDIT_NODE_ROUTE}?nodeName=${name}&id=${nodeId}`);
-    dispatch(setElementModalData({ name, color }));
+    // dispatch(setElementModalData({ name, color }));
 
     handleMenuClose();
   };

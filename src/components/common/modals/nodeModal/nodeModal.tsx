@@ -3,7 +3,7 @@ import { FC, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { updateNodeData } from 'src/store/slice';
-import { ElementFormData, NodeFormData } from 'src/types/Forms';
+import { NodeFormData } from 'src/types/Forms';
 import { Dialog } from '../../dialog/Dialog';
 import { Form } from '../../form/Form';
 
@@ -37,7 +37,7 @@ export const NodeModal: FC<Props> = ({
   values,
 }) => {
   const dispatch = useDispatch();
-  const formRef = useRef<FormikProps<ElementFormData>>(null);
+  const formRef = useRef<FormikProps<NodeFormData>>(null);
 
   const handleDialogSubmit = () => {};
 

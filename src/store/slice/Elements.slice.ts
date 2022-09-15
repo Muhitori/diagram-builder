@@ -1,24 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IElementGroup } from 'src/types/Elements';
-import { ElementFormData } from 'src/types/Forms';
+import { GroupFormData } from 'src/types/Forms';
 import { v4 as uuid } from 'uuid';
 
 interface AddElementPayload {
   groupName: string;
   name: string;
-  color: string;
+  color: string | undefined;
 }
 
 interface UpdateElementPayload {
   groupName: string;
   id: string;
   name: string;
-  color: string;
+  color: string | undefined;
 }
 
 
 interface SetGeneralOptionsPayload {
-  generalOptions: Partial<ElementFormData>;
+  generalOptions: Partial<GroupFormData>;
   groupName: string;
 }
 

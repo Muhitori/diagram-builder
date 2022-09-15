@@ -24,7 +24,6 @@ export const Home = () => {
       </Sidebar>
 
       <Diagram />
-      <ElementModal />
     </Grid>
   );
 }

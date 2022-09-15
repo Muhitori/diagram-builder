@@ -20,7 +20,7 @@ import {
 } from 'src/utils/helpers/nodes.helper';
 import unionBy from 'lodash/unionBy';
 import { RootState } from '..';
-import { ElementFormData } from 'src/types/Forms';
+import { NodeFormData } from 'src/types/Forms';
 import { getElementBackgroundColor } from 'src/utils/helpers/UI.helper';
 
 interface AddNodePayload {
@@ -33,7 +33,7 @@ interface AddNodePayload {
   parentNodeId?: string;
 }
 
-type UpdateNodeDataPayload = { id: string } & ElementFormData;
+type UpdateNodeDataPayload = { id: string } & NodeFormData;
 
 interface DiagramState {
   currentNodeId: string | null;

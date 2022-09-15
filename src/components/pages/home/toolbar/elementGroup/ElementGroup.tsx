@@ -1,9 +1,10 @@
 import { Box, Typography } from '@mui/material';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { IElementGroup } from 'src/types/Elements';
 import { Element } from 'src/components/pages/home/toolbar/element/Element';
 import { useStyles } from './styles';
 import { ElementGroupMenu } from './ElementGroupMenu';
+import { ElementModal } from 'src/components/common/modals/elementModal/elementModal';
 
 interface Props {
   group: IElementGroup;
@@ -30,6 +31,8 @@ export const ElementGroup: FC<Props> = ({ group: { name, generalOptions, element
             />
           ))}
       </Box>
+
+      <ElementModal groupName={name} />
     </Box>
   );
 };
