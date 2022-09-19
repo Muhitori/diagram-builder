@@ -47,11 +47,12 @@ export const createNodeAsync = createAsyncThunk(
     const { id, groupName, position, parentNodeId } = payload;
     const globalState = getState() as RootState;
 
+    const generalOptions = globalState.elements[groupName].generalOptions;
     const element = globalState.elements[groupName].elements.find(
       (el) => el.id === id
     );
 
-    return { element, position, parentNodeId };
+    return { generalOptions, element, position, parentNodeId };
   }
 );
 
@@ -140,8 +141,8 @@ export const diagramSlice = createSlice({
         return;
       }
 
-      const { element, position, parentNodeId } = payload;
-      const newNode: Node = elementToNode(element, position);
+      const { generalOptions, element, position, parentNodeId } = payload;
+      const newNode: Node = elementToNode(element, position, generalOptions);
 
       if (parentNodeId) {
         const parentNode = getNodeById(state.nodes, parentNodeId);

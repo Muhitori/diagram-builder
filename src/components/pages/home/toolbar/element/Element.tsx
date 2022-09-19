@@ -5,18 +5,18 @@ import { useStyles } from './styles';
 import { Box, Typography } from '@mui/material';
 import { ColorModeContext } from 'src/components/App';
 import { getBorderColor, getElementBackgroundColor } from 'src/utils/helpers/UI.helper';
-import { ElementFormData } from 'src/types/Forms';
+import { GroupFormData } from 'src/types/Forms';
 import { ElementMenu } from './ElementMenu';
 
 interface Props {
   groupName: string;
   element: IElement;
-  generalOptions: Partial<ElementFormData>;
+  generalOptions: GroupFormData;
 }
 
 export const Element: FC<Props> = ({ groupName, generalOptions, element: { id, name, color } }) => {
   const classes = useStyles();
-  const { name: prefix, color: groupColor } = generalOptions;
+  const { prefix, color: groupColor } = generalOptions;
 
   const { mode } = useContext(ColorModeContext);
 

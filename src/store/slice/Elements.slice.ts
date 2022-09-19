@@ -32,7 +32,7 @@ interface ElementsState {
 }
 
 const initialGeneralOptions = {
-  name: '',
+  prefix: '',
   color: undefined,
 };
 

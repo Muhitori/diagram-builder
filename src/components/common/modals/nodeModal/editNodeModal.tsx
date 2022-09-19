@@ -25,7 +25,7 @@ export const EditNodeModal: FC = () => {
   const nodeId = search.get('nodeId');
   const nodeName = search.get('nodeName');
   
-  const values = useSelector(modalDataSelector('node'));
+  const values = useSelector(modalDataSelector('node')) as NodeFormData;
 
   const open = useMemo(() => {
     return location.pathname === EDIT_NODE_ROUTE;

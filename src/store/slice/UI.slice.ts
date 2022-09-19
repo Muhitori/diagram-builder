@@ -13,7 +13,7 @@ interface UIState {
 }
 
 const initialGroupModalData: GroupFormData = {
-  name: '',
+  prefix: '',
   color: '#ffffff',
 };
 

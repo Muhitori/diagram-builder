@@ -4,7 +4,7 @@ export interface ElementFormData {
 }
 
 export interface GroupFormData {
-  name: string;
+  prefix: string;
   color: string | undefined;
 }
 

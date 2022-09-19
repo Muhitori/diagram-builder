@@ -4,17 +4,27 @@ import { Edge, Node, XYPosition } from 'react-flow-renderer';
 import { IElement } from 'src/types/Elements';
 import { ConnectedNode } from 'src/types/Nodes';
 import { getElementBackgroundColor } from './UI.helper';
+import { GroupFormData } from 'src/types/Forms';
 
-export const elementToNode = (element: IElement, position: XYPosition): Node => {
+export const elementToNode = (
+  element: IElement,
+  position: XYPosition,
+  generalOptions: GroupFormData
+): Node => {
   const { name, content, color } = element;
+  const { prefix, color: groupColor } = generalOptions;
 
   const id = uuid();
   const type = 'custom-default';
 
-  const backgroundColor = getElementBackgroundColor(color);
+
+  const label = prefix ? `${prefix}-${name}` : name;
+  const backgroundColor = color
+    ? getElementBackgroundColor(color)
+    : getElementBackgroundColor(groupColor);
 
   const data = {
-    label: name,
+    label,
     content,
     backgroundColor,
   };
@@ -35,7 +45,7 @@ export const elementToNode = (element: IElement, position: XYPosition): Node => 
     height,
     style: { ...styledSize },
     position,
-    positionAbsolute: position
+    positionAbsolute: position,
   };
 };
 

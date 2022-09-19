@@ -22,7 +22,7 @@ export const EditElementModal: FC = () => {
 
   const formRef = useRef<FormikProps<ElementFormData>>(null);
 
-  const values = useSelector(modalDataSelector('element'));
+  const values = useSelector(modalDataSelector('element')) as ElementFormData;
 
   const search = new URLSearchParams(location.search);
   const groupName = search.get('groupName');

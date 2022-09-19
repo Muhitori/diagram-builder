@@ -5,18 +5,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { snackbarGenerator } from 'src/components/SnackbarGenerator';
 import { modalDataSelector } from 'src/store/selector/UI.selector';
 import { setGroupGeneralOptions } from 'src/store/slice';
-import { GroupFormData, NodeFormData } from 'src/types/Forms';
+import { GroupFormData } from 'src/types/Forms';
 import { EDIT_GROUP_ROUTE } from 'src/utils/constants/route.constants';
 import { Dialog } from '../../dialog/Dialog';
 import { Form } from '../../form/Form';
 
 const fields = [
-  { name: 'name', label: 'Element prefix', fullWidth: true },
+  { name: 'prefix', label: 'Element prefix', fullWidth: true },
   { name: 'color', type: 'color', label: 'Color:' },
 ];
 
-const initialValues = {
-  name: '',
+const initialValues: GroupFormData = {
+  prefix: '',
   color: '#ffffff',
 };
 
@@ -29,7 +29,7 @@ export const EditElementGroupModal: FC = () => {
   const search = new URLSearchParams(location.search);
   const groupName = search.get('groupName');
 
-  const values = useSelector(modalDataSelector('group'));
+  const values = useSelector(modalDataSelector('group')) as GroupFormData;
 
   const open = useMemo(() => {
     return location.pathname === EDIT_GROUP_ROUTE;
@@ -45,8 +45,8 @@ export const EditElementGroupModal: FC = () => {
     }
   };
 
-  const handleFormSubmit = (data: NodeFormData) => {
-    const { name: prefix, color } = data;
+  const handleFormSubmit = (data: GroupFormData) => {
+    const { prefix, color } = data;
     const elementPrefix = prefix.trim();
 
     if (groupName) {
@@ -54,7 +54,7 @@ export const EditElementGroupModal: FC = () => {
         setGroupGeneralOptions({
           groupName,
           generalOptions: {
-            name: elementPrefix,
+            prefix: elementPrefix,
             color,
           },
         })
